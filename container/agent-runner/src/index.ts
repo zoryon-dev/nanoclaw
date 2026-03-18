@@ -389,9 +389,16 @@ async function runQuery(
     log(`Additional directories: ${extraDirs.join(', ')}`);
   }
 
+  // Model selection: CRON tasks use Haiku (fast/cheap), normal messages use Sonnet
+  // The agent can escalate to Opus during conversation via setModel() for complex tasks
+  const defaultModel = containerInput.isScheduledTask
+    ? (process.env.NANOCLAW_CRON_MODEL || 'haiku')
+    : (process.env.NANOCLAW_MODEL || 'sonnet');
+
   for await (const message of query({
     prompt: stream,
     options: {
+      model: defaultModel,
       cwd: '/workspace/group',
       additionalDirectories: extraDirs.length > 0 ? extraDirs : undefined,
       resume: sessionId,

@@ -12,6 +12,8 @@ const envConfig = readEnvFile([
   'TZ',
   'PARALLEL_API_KEY',
   'FIREFLIES_API_KEY',
+  'NANOCLAW_MODEL',
+  'NANOCLAW_CRON_MODEL',
 ]);
 
 // Set TZ early so it affects Intl, Date, and child processes
@@ -25,6 +27,14 @@ if (!process.env.PARALLEL_API_KEY && envConfig.PARALLEL_API_KEY) {
 }
 if (!process.env.FIREFLIES_API_KEY && envConfig.FIREFLIES_API_KEY) {
   process.env.FIREFLIES_API_KEY = envConfig.FIREFLIES_API_KEY;
+}
+
+// Model configuration
+if (!process.env.NANOCLAW_MODEL && envConfig.NANOCLAW_MODEL) {
+  process.env.NANOCLAW_MODEL = envConfig.NANOCLAW_MODEL;
+}
+if (!process.env.NANOCLAW_CRON_MODEL && envConfig.NANOCLAW_CRON_MODEL) {
+  process.env.NANOCLAW_CRON_MODEL = envConfig.NANOCLAW_CRON_MODEL;
 }
 
 export const ASSISTANT_NAME =

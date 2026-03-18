@@ -262,6 +262,14 @@ function buildContainerArgs(
   // Pass host timezone so container's local time matches the user's
   args.push('-e', `TZ=${TIMEZONE}`);
 
+  // Pass model configuration to container
+  if (process.env.NANOCLAW_MODEL) {
+    args.push('-e', `NANOCLAW_MODEL=${process.env.NANOCLAW_MODEL}`);
+  }
+  if (process.env.NANOCLAW_CRON_MODEL) {
+    args.push('-e', `NANOCLAW_CRON_MODEL=${process.env.NANOCLAW_CRON_MODEL}`);
+  }
+
   // Route API traffic through the credential proxy (containers never see real secrets)
   args.push(
     '-e',
