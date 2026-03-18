@@ -409,7 +409,8 @@ async function runQuery(
         'NotebookEdit',
         'mcp__nanoclaw__*',
         'mcp__parallel-search__*',
-        'mcp__parallel-task__*'
+        'mcp__parallel-task__*',
+        'mcp__gmail__*',
       ],
       env: sdkEnv,
       permissionMode: 'bypassPermissions',
@@ -437,6 +438,10 @@ async function runQuery(
             headers: { 'Authorization': `Bearer ${process.env.PARALLEL_API_KEY}` },
           },
         } : {}),
+        gmail: {
+          command: 'npx',
+          args: ['-y', '@gongrzhe/server-gmail-autoauth-mcp'],
+        },
       },
       hooks: {
         PreCompact: [{ hooks: [createPreCompactHook(containerInput.assistantName)] }],
