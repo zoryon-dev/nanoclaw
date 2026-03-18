@@ -411,6 +411,9 @@ async function runQuery(
         'mcp__parallel-search__*',
         'mcp__parallel-task__*',
         'mcp__gmail__*',
+        'mcp__calendar__*',
+        'mcp__gdrive__*',
+        'mcp__fireflies__*',
       ],
       env: sdkEnv,
       permissionMode: 'bypassPermissions',
@@ -442,6 +445,21 @@ async function runQuery(
           command: 'npx',
           args: ['-y', '@gongrzhe/server-gmail-autoauth-mcp'],
         },
+        calendar: {
+          command: 'npx',
+          args: ['-y', '@gongrzhe/server-calendar-autoauth-mcp'],
+        },
+        gdrive: {
+          command: 'npx',
+          args: ['-y', '@piotr-agier/google-drive-mcp'],
+        },
+        ...(process.env.FIREFLIES_API_KEY ? {
+          fireflies: {
+            command: 'npx',
+            args: ['-y', 'fireflies-mcp-server'],
+            env: { 'FIREFLIES_API_KEY': process.env.FIREFLIES_API_KEY },
+          },
+        } : {}),
       },
       hooks: {
         PreCompact: [{ hooks: [createPreCompactHook(containerInput.assistantName)] }],

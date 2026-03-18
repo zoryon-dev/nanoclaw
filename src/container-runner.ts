@@ -175,6 +175,26 @@ function buildVolumeMounts(
     });
   }
 
+  // Google Calendar credentials directory
+  const calendarDir = path.join(homeDir, '.calendar-mcp');
+  if (fs.existsSync(calendarDir)) {
+    mounts.push({
+      hostPath: calendarDir,
+      containerPath: '/home/node/.calendar-mcp',
+      readonly: false,
+    });
+  }
+
+  // Google Drive credentials directory
+  const gdriveDir = path.join(homeDir, '.gdrive-mcp');
+  if (fs.existsSync(gdriveDir)) {
+    mounts.push({
+      hostPath: gdriveDir,
+      containerPath: '/home/node/.gdrive-mcp',
+      readonly: false,
+    });
+  }
+
   // Per-group IPC namespace: each group gets its own IPC directory
   // This prevents cross-group privilege escalation via IPC
   const groupIpcDir = resolveGroupIpcPath(group.folder);
@@ -259,9 +279,12 @@ function buildContainerArgs(
     args.push('-e', 'CLAUDE_CODE_OAUTH_TOKEN=placeholder');
   }
 
-  // Pass Parallel AI API key if configured
+  // Pass third-party API keys if configured
   if (process.env.PARALLEL_API_KEY) {
     args.push('-e', `PARALLEL_API_KEY=${process.env.PARALLEL_API_KEY}`);
+  }
+  if (process.env.FIREFLIES_API_KEY) {
+    args.push('-e', `FIREFLIES_API_KEY=${process.env.FIREFLIES_API_KEY}`);
   }
 
   // Runtime-specific args for host gateway resolution
