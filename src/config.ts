@@ -10,11 +10,17 @@ const envConfig = readEnvFile([
   'ASSISTANT_NAME',
   'ASSISTANT_HAS_OWN_NUMBER',
   'TZ',
+  'PARALLEL_API_KEY',
 ]);
 
 // Set TZ early so it affects Intl, Date, and child processes
 if (!process.env.TZ && envConfig.TZ) {
   process.env.TZ = envConfig.TZ;
+}
+
+// Pass Parallel API key to process env so container-runner can forward it
+if (!process.env.PARALLEL_API_KEY && envConfig.PARALLEL_API_KEY) {
+  process.env.PARALLEL_API_KEY = envConfig.PARALLEL_API_KEY;
 }
 
 export const ASSISTANT_NAME =
