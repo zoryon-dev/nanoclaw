@@ -338,9 +338,7 @@ async function runAgent(
         'Container agent error',
       );
       // Clear stale session so next attempt starts fresh
-      if (
-        output.error?.includes('No conversation found with session ID')
-      ) {
+      if (output.error?.includes('No conversation found with session ID')) {
         delete sessions[group.folder];
         clearSession(group.folder);
         logger.info(
