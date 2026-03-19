@@ -44,13 +44,18 @@ export class WhatsAppChannel implements Channel {
     this.opts = opts;
   }
 
+  // Resolve callback for the initial connect() Promise.
+  // Stored as instance field so reconnections can still resolve it.
+  private connectResolve?: () => void;
+
   async connect(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.connectInternal(resolve).catch(reject);
+      this.connectResolve = resolve;
+      this.connectInternal().catch(reject);
     });
   }
 
-  private async connectInternal(onFirstOpen?: () => void): Promise<void> {
+  private async connectInternal(): Promise<void> {
     const authDir = path.join(STORE_DIR, 'auth');
     fs.mkdirSync(authDir, { recursive: true });
 
@@ -134,10 +139,10 @@ export class WhatsAppChannel implements Channel {
           }, GROUP_SYNC_INTERVAL_MS);
         }
 
-        // Signal first connection to caller
-        if (onFirstOpen) {
-          onFirstOpen();
-          onFirstOpen = undefined;
+        // Signal first connection to caller (works even after reconnect)
+        if (this.connectResolve) {
+          this.connectResolve();
+          this.connectResolve = undefined;
         }
       }
     });

@@ -206,7 +206,17 @@ export function startIpcWatcher(deps: IpcDeps): void {
     setTimeout(processIpcFiles, IPC_POLL_INTERVAL);
   };
 
-  processIpcFiles();
+  // Wrap in a resilient loop that restarts on unexpected errors
+  const safeProcessIpcFiles = async () => {
+    try {
+      await processIpcFiles();
+    } catch (err) {
+      logger.error({ err }, 'IPC watcher crashed unexpectedly — restarting');
+      setTimeout(safeProcessIpcFiles, IPC_POLL_INTERVAL);
+    }
+  };
+
+  safeProcessIpcFiles();
   logger.info('IPC watcher started (per-group namespaces)');
 }
 

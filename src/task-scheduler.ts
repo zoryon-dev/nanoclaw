@@ -9,6 +9,7 @@ import {
   writeTasksSnapshot,
 } from './container-runner.js';
 import {
+  clearSession,
   getAllTasks,
   getDueTasks,
   getTaskById,
@@ -208,6 +209,20 @@ async function runTask(
       result = output.result;
     }
 
+    // Clear stale session so next attempt starts fresh (mirrors index.ts logic).
+    // Match broadly to survive API error message wording changes.
+    if (
+      output.error?.includes('No conversation found with session ID') ||
+      output.error?.includes('session') && output.error?.includes('not found') ||
+      output.error?.includes('invalid_session')
+    ) {
+      clearSession(task.group_folder);
+      logger.info(
+        { taskId: task.id, group: task.group_folder },
+        'Cleared stale session for task group, next attempt will start fresh',
+      );
+    }
+
     logger.info(
       { taskId: task.id, durationMs: Date.now() - startTime },
       'Task completed',
@@ -216,6 +231,19 @@ async function runTask(
     if (closeTimer) clearTimeout(closeTimer);
     error = err instanceof Error ? err.message : String(err);
     logger.error({ taskId: task.id, error }, 'Task failed');
+
+    // Also handle stale sessions from thrown errors
+    if (
+      error.includes('No conversation found with session ID') ||
+      error.includes('session') && error.includes('not found') ||
+      error.includes('invalid_session')
+    ) {
+      clearSession(task.group_folder);
+      logger.info(
+        { taskId: task.id, group: task.group_folder },
+        'Cleared stale session for task group after error',
+      );
+    }
   }
 
   const durationMs = Date.now() - startTime;
@@ -248,6 +276,10 @@ export function startSchedulerLoop(deps: SchedulerDependencies): void {
   schedulerRunning = true;
   logger.info('Scheduler loop started');
 
+  // Clean up expired one-time tasks every 10 minutes
+  let lastCleanup = 0;
+  const CLEANUP_INTERVAL_MS = 10 * 60 * 1000;
+
   const loop = async () => {
     try {
       const dueTasks = getDueTasks();
@@ -265,6 +297,29 @@ export function startSchedulerLoop(deps: SchedulerDependencies): void {
         deps.queue.enqueueTask(currentTask.chat_jid, currentTask.id, () =>
           runTask(currentTask, deps),
         );
+      }
+
+      // Periodically mark stale one-time tasks as completed
+      const now = Date.now();
+      if (now - lastCleanup > CLEANUP_INTERVAL_MS) {
+        lastCleanup = now;
+        const allTasks = getAllTasks();
+        for (const t of allTasks) {
+          if (
+            t.schedule_type === 'once' &&
+            t.status === 'active' &&
+            t.next_run &&
+            // Task is over 2 hours past its scheduled time and never ran
+            new Date(t.next_run).getTime() < now - 2 * 60 * 60 * 1000 &&
+            !t.last_run
+          ) {
+            updateTask(t.id, { status: 'completed' });
+            logger.warn(
+              { taskId: t.id, nextRun: t.next_run },
+              'Marked expired one-time task as completed (missed)',
+            );
+          }
+        }
       }
     } catch (err) {
       logger.error({ err }, 'Error in scheduler loop');

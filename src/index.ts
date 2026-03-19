@@ -201,7 +201,7 @@ async function processGroupMessages(chatJid: string): Promise<boolean> {
       setTyping: (typing) =>
         channel.setTyping?.(chatJid, typing) ?? Promise.resolve(),
       runAgent: (prompt, onOutput) =>
-        runAgent(group, prompt, chatJid, onOutput),
+        runAgent(group, prompt, chatJid, [], onOutput),
       closeStdin: () => queue.closeStdin(chatJid),
       advanceCursor: (ts) => {
         lastAgentTimestamp[chatJid] = ts;
@@ -436,8 +436,13 @@ async function runAgent(
         { group: group.name, error: output.error },
         'Container agent error',
       );
-      // Clear stale session so next attempt starts fresh
-      if (output.error?.includes('No conversation found with session ID')) {
+      // Clear stale session so next attempt starts fresh.
+      // Match broadly to survive API error message wording changes.
+      if (
+        output.error?.includes('No conversation found with session ID') ||
+        output.error?.includes('session') && output.error?.includes('not found') ||
+        output.error?.includes('invalid_session')
+      ) {
         delete sessions[group.folder];
         clearSession(group.folder);
         logger.info(
@@ -778,6 +783,7 @@ async function main(): Promise<void> {
   // Create and connect all registered channels.
   // Each channel self-registers via the barrel import above.
   // Factories return null when credentials are missing, so unconfigured channels are skipped.
+  const CHANNEL_CONNECT_TIMEOUT_MS = 30_000;
   for (const channelName of getRegisteredChannelNames()) {
     const factory = getChannelFactory(channelName)!;
     const channel = factory(channelOpts);
@@ -789,7 +795,22 @@ async function main(): Promise<void> {
       continue;
     }
     channels.push(channel);
-    await channel.connect();
+    try {
+      await Promise.race([
+        channel.connect(),
+        new Promise<never>((_, reject) =>
+          setTimeout(
+            () => reject(new Error(`Channel ${channelName} connect timed out after ${CHANNEL_CONNECT_TIMEOUT_MS / 1000}s`)),
+            CHANNEL_CONNECT_TIMEOUT_MS,
+          ),
+        ),
+      ]);
+    } catch (err) {
+      logger.error(
+        { channel: channelName, err },
+        'Channel connect failed — continuing with remaining channels',
+      );
+    }
   }
   if (channels.length === 0) {
     logger.fatal('No channels connected');
@@ -816,15 +837,23 @@ async function main(): Promise<void> {
   startIpcWatcher({
     sendMessage: (jid, text) => {
       const channel = findChannel(channels, jid);
-      if (!channel) throw new Error(`No channel for JID: ${jid}`);
+      if (!channel) {
+        logger.warn({ jid }, 'No channel owns JID (IPC sendMessage), skipping');
+        return Promise.resolve();
+      }
       return channel.sendMessage(jid, text);
     },
     sendReaction: async (jid, emoji, messageId) => {
       const channel = findChannel(channels, jid);
-      if (!channel) throw new Error(`No channel for JID: ${jid}`);
+      if (!channel) {
+        logger.warn({ jid }, 'No channel owns JID (IPC sendReaction), skipping');
+        return;
+      }
       if (messageId) {
-        if (!channel.sendReaction)
-          throw new Error('Channel does not support sendReaction');
+        if (!channel.sendReaction) {
+          logger.warn({ jid }, 'Channel does not support sendReaction, skipping');
+          return;
+        }
         const messageKey = {
           id: messageId,
           remoteJid: jid,
@@ -832,8 +861,10 @@ async function main(): Promise<void> {
         };
         await channel.sendReaction(jid, messageKey, emoji);
       } else {
-        if (!channel.reactToLatestMessage)
-          throw new Error('Channel does not support reactions');
+        if (!channel.reactToLatestMessage) {
+          logger.warn({ jid }, 'Channel does not support reactions, skipping');
+          return;
+        }
         await channel.reactToLatestMessage(jid, emoji);
       }
     },
