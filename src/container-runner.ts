@@ -43,7 +43,6 @@ export interface ContainerInput {
   isScheduledTask?: boolean;
   assistantName?: string;
   imageAttachments?: Array<{ relativePath: string; mediaType: string }>;
-
 }
 
 export interface ContainerOutput {
@@ -148,6 +147,16 @@ function buildVolumeMounts(
       ) + '\n',
     );
   }
+
+  // Ensure the .claude directory and its children are writable by the
+  // container's `node` user (UID 1000).  The host creates these as root,
+  // but Claude Code needs to write session transcripts and auto-memory
+  // inside projects/.  Without this, sessions die with the container and
+  // auto-memory never persists.
+  const projectsDir = path.join(groupSessionsDir, 'projects');
+  fs.mkdirSync(projectsDir, { recursive: true, mode: 0o777 });
+  fs.chmodSync(groupSessionsDir, 0o777);
+  fs.chmodSync(projectsDir, 0o777);
 
   // Sync skills from container/skills/ into each group's .claude/skills/
   const skillsSrc = path.join(process.cwd(), 'container', 'skills');
