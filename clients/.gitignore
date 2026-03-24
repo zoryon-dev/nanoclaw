@@ -1,0 +1,6 @@
+# Ignore client data (contains sensitive configs and docs)
+# Only keep the template
+*
+!_template/
+!_template/**
+!.gitignore

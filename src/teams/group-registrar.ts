@@ -4,10 +4,10 @@
  * Registers each agent as a NanoClaw group pointing to the correct Telegram chat/topic
  */
 
-import * as fs from 'fs';
 import * as path from 'path';
-import { listClients, getClientsDir } from './client-manager';
-import type { ClientConfig, AgentDefinition } from './types';
+import { listClients, getClientsDir } from './client-manager.js';
+import type { ClientConfig, AgentDefinition } from './types.js';
+import { slugify } from './types.js';
 
 interface GroupRegistration {
   jid: string;
@@ -31,11 +31,11 @@ interface GroupRegistration {
  * Each agent in a client becomes a registered group
  */
 export function registerClientGroups(): GroupRegistration[] {
-  const clients = listClients().filter(c => c.status === 'active');
+  const clients = listClients().filter((c: ClientConfig) => c.status === 'active');
   const registrations: GroupRegistration[] = [];
 
   for (const client of clients) {
-    for (const agent of client.agents.filter(a => a.status === 'active')) {
+    for (const agent of client.agents.filter((a: AgentDefinition) => a.status === 'active')) {
       registrations.push(agentToGroup(client, agent));
     }
   }
@@ -48,7 +48,6 @@ export function registerClientGroups(): GroupRegistration[] {
  */
 function agentToGroup(client: ClientConfig, agent: AgentDefinition): GroupRegistration {
   const clientsDir = getClientsDir();
-  const agentFolder = `client_${client.slug}_${slugify(agent.name)}`;
   const groupFolder = path.join('clients', client.slug, 'agents', slugify(agent.name));
 
   // Determine JID based on Telegram topic or group
@@ -91,11 +90,3 @@ function agentToGroup(client: ClientConfig, agent: AgentDefinition): GroupRegist
   };
 }
 
-function slugify(name: string): string {
-  return name
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-}

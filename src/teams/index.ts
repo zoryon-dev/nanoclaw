@@ -12,7 +12,7 @@ export {
   updateClientSettings,
   archiveClient,
   getClientsDir,
-} from './client-manager';
+} from './client-manager.js';
 
 export {
   ClientConfig,
@@ -20,6 +20,8 @@ export {
   ClientSettings,
   TeamTemplate,
   TEAM_TEMPLATES,
-} from './types';
+  PLAN_AGENT_LIMITS,
+  slugify,
+} from './types.js';
 
-export { registerClientGroups } from './group-registrar';
+export { registerClientGroups } from './group-registrar.js';

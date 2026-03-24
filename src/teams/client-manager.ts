@@ -3,23 +3,16 @@
  * Handles CRUD operations for client teams
  */
 
+import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as path from 'path';
-import { ClientConfig, AgentDefinition, ClientSettings, TEAM_TEMPLATES } from './types';
+import { ClientConfig, AgentDefinition, ClientSettings, TEAM_TEMPLATES, PLAN_AGENT_LIMITS, slugify } from './types.js';
 
-const CLIENTS_DIR = path.resolve(__dirname, '../../clients');
+// Resolve relative to project root (works with both src/ and dist/)
+const CLIENTS_DIR = path.resolve(process.cwd(), 'clients');
 
 function generateId(): string {
-  return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
-
-function slugify(name: string): string {
-  return name
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+  return crypto.randomUUID();
 }
 
 export function getClientsDir(): string {
@@ -88,7 +81,7 @@ export function createClient(options: {
   let agents: AgentDefinition[] = [];
   if (options.templateName && TEAM_TEMPLATES[options.templateName]) {
     const template = TEAM_TEMPLATES[options.templateName];
-    agents = template.agents.map(a => ({
+    agents = template.agents.map((a: Omit<AgentDefinition, 'id'>) => ({
       ...a,
       id: generateId(),
     }));
@@ -151,6 +144,13 @@ export function addAgent(
   const config = getClient(clientSlug);
   if (!config) throw new Error(`Cliente "${clientSlug}" não encontrado`);
 
+  const limit = PLAN_AGENT_LIMITS[config.plan] ?? 2;
+  if (config.agents.length >= limit) {
+    throw new Error(
+      `Limite de agentes atingido para o plano "${config.plan}" (max: ${limit})`
+    );
+  }
+
   const newAgent: AgentDefinition = {
     ...agent,
     id: generateId(),
@@ -175,12 +175,18 @@ export function removeAgent(clientSlug: string, agentId: string): void {
   const config = getClient(clientSlug);
   if (!config) throw new Error(`Cliente "${clientSlug}" não encontrado`);
 
-  const idx = config.agents.findIndex(a => a.id === agentId);
+  const idx = config.agents.findIndex((a: AgentDefinition) => a.id === agentId);
   if (idx === -1) throw new Error(`Agente "${agentId}" não encontrado`);
 
   const agent = config.agents[idx];
   config.agents.splice(idx, 1);
   saveConfig(config);
+
+  // Remove agent directory from disk
+  const agentDir = path.join(CLIENTS_DIR, clientSlug, 'agents', slugify(agent.name));
+  if (fs.existsSync(agentDir)) {
+    fs.rmSync(agentDir, { recursive: true });
+  }
 
   console.log(`✅ Agente "${agent.name}" removido do cliente "${config.name}"`);
 }
@@ -193,7 +199,7 @@ export function updateAgent(
   const config = getClient(clientSlug);
   if (!config) throw new Error(`Cliente "${clientSlug}" não encontrado`);
 
-  const idx = config.agents.findIndex(a => a.id === agentId);
+  const idx = config.agents.findIndex((a: AgentDefinition) => a.id === agentId);
   if (idx === -1) throw new Error(`Agente "${agentId}" não encontrado`);
 
   config.agents[idx] = { ...config.agents[idx], ...updates, id: agentId };
@@ -249,7 +255,7 @@ function generateClaudeMd(config: ClientConfig): string {
 - **Idioma:** ${config.settings.language}
 
 ## Agentes Disponíveis
-${config.agents.map(a => `- **${a.name}** (${a.triggerPattern}) - ${a.role}`).join('\n') || '_Nenhum agente configurado ainda_'}
+${config.agents.map((a: AgentDefinition) => `- **${a.name}** (${a.triggerPattern}) - ${a.role}`).join('\n') || '_Nenhum agente configurado ainda_'}
 
 ## Instruções Gerais
 - Sempre responda no idioma: ${config.settings.language}
@@ -276,10 +282,10 @@ ${agent.personality}
 Responda quando mencionado com: \`${agent.triggerPattern}\`
 
 ## Skills
-${agent.skills.map(s => `- ${s}`).join('\n')}
+${agent.skills.map((s: string) => `- ${s}`).join('\n')}
 
 ## Documentos de Referência
-${agent.documents.map(d => `- \`docs/${d}\``).join('\n')}
+${agent.documents.map((d: string) => `- \`docs/${d}\``).join('\n')}
 
 ## Contexto do Cliente
 - **Cliente:** ${config.name}

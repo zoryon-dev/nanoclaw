@@ -9,42 +9,23 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 
 cd "$PROJECT_DIR"
 
-node -e "
-const { listClients } = require('./src/teams/client-manager');
+node -e '
+const { listClients } = require("./dist/teams/client-manager");
 const clients = listClients();
 if (clients.length === 0) {
-  console.log('Nenhum cliente cadastrado.');
+  console.log("Nenhum cliente cadastrado.");
   process.exit(0);
 }
-console.log('\\n📋 Clientes Cadastrados:\\n');
+console.log("\nClientes Cadastrados:\n");
 clients.forEach(c => {
   const agentCount = c.agents.length;
-  const status = c.status === 'active' ? '🟢' : c.status === 'paused' ? '🟡' : '🔴';
-  console.log(\`  \${status} \${c.name} (\${c.slug})\`);
-  console.log(\`     Plano: \${c.plan} | Agentes: \${agentCount} | Telegram: \${c.telegramGroupId}\`);
+  const status = c.status === "active" ? "[ATIVO]" : c.status === "paused" ? "[PAUSADO]" : "[ARQUIVADO]";
+  console.log(`  ${status} ${c.name} (${c.slug})`);
+  console.log(`     Plano: ${c.plan} | Agentes: ${agentCount} | Telegram: ${c.telegramGroupId}`);
   c.agents.forEach(a => {
-    const aStatus = a.status === 'active' ? '✅' : '⏸️';
-    console.log(\`     \${aStatus} \${a.name} (\${a.triggerPattern}) - \${a.role}\`);
+    const aStatus = a.status === "active" ? "+" : "-";
+    console.log(`     ${aStatus} ${a.name} (${a.triggerPattern}) - ${a.role}`);
   });
-  console.log('');
+  console.log("");
 });
-" 2>/dev/null || npx ts-node -e "
-import { listClients } from './src/teams/client-manager';
-const clients = listClients();
-if (clients.length === 0) {
-  console.log('Nenhum cliente cadastrado.');
-  process.exit(0);
-}
-console.log('\\n📋 Clientes Cadastrados:\\n');
-clients.forEach(c => {
-  const agentCount = c.agents.length;
-  const status = c.status === 'active' ? '🟢' : c.status === 'paused' ? '🟡' : '🔴';
-  console.log(\`  \${status} \${c.name} (\${c.slug})\`);
-  console.log(\`     Plano: \${c.plan} | Agentes: \${agentCount} | Telegram: \${c.telegramGroupId}\`);
-  c.agents.forEach(a => {
-    const aStatus = a.status === 'active' ? '✅' : '⏸️';
-    console.log(\`     \${aStatus} \${a.name} (\${a.triggerPattern}) - \${a.role}\`);
-  });
-  console.log('');
-});
-"
+'

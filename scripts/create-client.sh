@@ -14,30 +14,22 @@ PLAN="${4:-starter}"
 
 cd "$PROJECT_DIR"
 
-node -e "
-const { createClient } = require('./src/teams/client-manager');
+node -e '
+const { createClient } = require("./dist/teams/client-manager");
+const [name, telegramGroupId, templateName, plan] = process.argv.slice(1);
 const config = createClient({
-  name: '$NAME',
-  telegramGroupId: '$TELEGRAM_ID',
-  templateName: '$TEMPLATE' || undefined,
-  plan: '$PLAN',
+  name,
+  telegramGroupId,
+  templateName: templateName || undefined,
+  plan: plan || "starter",
 });
 console.log(JSON.stringify(config, null, 2));
-" 2>/dev/null || npx ts-node -e "
-import { createClient } from './src/teams/client-manager';
-const config = createClient({
-  name: '$NAME',
-  telegramGroupId: '$TELEGRAM_ID',
-  templateName: '$TEMPLATE' || undefined,
-  plan: '$PLAN',
-});
-console.log(JSON.stringify(config, null, 2));
-"
+' -- "$NAME" "$TELEGRAM_ID" "$TEMPLATE" "$PLAN"
 
 echo ""
-echo "🎉 Cliente criado com sucesso!"
+echo "Cliente criado com sucesso!"
 echo ""
-echo "Próximos passos:"
-echo "  1. Adicione documentos em clients/$(echo "$NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g')/docs/"
-echo "  2. Configure os agentes em clients/$(echo "$NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g')/config.json"
+echo "Proximos passos:"
+echo "  1. Adicione documentos no diretorio docs/ do cliente"
+echo "  2. Configure os agentes no config.json do cliente"
 echo "  3. Reinicie o NanoClaw para aplicar: npm run dev"

@@ -3,6 +3,21 @@
  * Manages client teams, agents, and skills
  */
 
+export const PLAN_AGENT_LIMITS: Record<string, number> = {
+  starter: 2,
+  professional: 5,
+  enterprise: Infinity,
+};
+
+export function slugify(name: string): string {
+  return name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 export interface ClientConfig {
   id: string;
   name: string;

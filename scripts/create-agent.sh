@@ -15,31 +15,20 @@ PERSONALITY="${5:?Informe a personalidade do agente}"
 
 cd "$PROJECT_DIR"
 
-node -e "
-const { addAgent } = require('./src/teams/client-manager');
-const agent = addAgent('$CLIENT', {
-  name: '$NAME',
-  triggerPattern: '$TRIGGER',
-  role: '$ROLE',
-  personality: '$PERSONALITY',
+node -e '
+const { addAgent } = require("./dist/teams/client-manager");
+const [clientSlug, name, triggerPattern, role, personality] = process.argv.slice(1);
+const agent = addAgent(clientSlug, {
+  name,
+  triggerPattern,
+  role,
+  personality,
   skills: [],
   documents: [],
-  status: 'active',
+  status: "active",
 });
 console.log(JSON.stringify(agent, null, 2));
-" 2>/dev/null || npx ts-node -e "
-import { addAgent } from './src/teams/client-manager';
-const agent = addAgent('$CLIENT', {
-  name: '$NAME',
-  triggerPattern: '$TRIGGER',
-  role: '$ROLE',
-  personality: '$PERSONALITY',
-  skills: [],
-  documents: [],
-  status: 'active',
-});
-console.log(JSON.stringify(agent, null, 2));
-"
+' -- "$CLIENT" "$NAME" "$TRIGGER" "$ROLE" "$PERSONALITY"
 
 echo ""
-echo "🤖 Agente criado com sucesso!"
+echo "Agente criado com sucesso!"
