@@ -1,41 +1,44 @@
 /**
  * Group Registrar
- * Bridges client/agent configs with NanoClaw's group system
- * Registers each agent as a NanoClaw group pointing to the correct Telegram chat/topic
+ * Bridges client/agent configs with NanoClaw's group system.
+ * Each active agent in an active client becomes a registered NanoClaw group.
  */
 
-import * as path from 'path';
 import { listClients, getClientsDir } from './client-manager.js';
 import type { ClientConfig, AgentDefinition } from './types.js';
 import { slugify } from './types.js';
+import type { RegisteredGroup } from '../types.js';
 
-interface GroupRegistration {
+/**
+ * Build a valid NanoClaw group folder name for a client agent.
+ * Must satisfy: /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/
+ */
+export function teamGroupFolder(
+  clientSlug: string,
+  agentName: string,
+): string {
+  return `team-${clientSlug}-${slugify(agentName)}`.slice(0, 64);
+}
+
+export interface TeamGroupRegistration {
   jid: string;
-  name: string;
-  folder: string;
-  triggerPattern: string;
-  requiresTrigger: boolean;
-  isMain: boolean;
-  containerConfig?: {
-    additionalMounts?: Array<{
-      hostPath: string;
-      containerPath: string;
-      readonly: boolean;
-    }>;
-    timeout?: number;
-  };
+  group: RegisteredGroup;
 }
 
 /**
- * Generate NanoClaw group registrations from all active clients
- * Each agent in a client becomes a registered group
+ * Generate NanoClaw group registrations from all active clients.
+ * Each agent in a client becomes a registered group.
  */
-export function registerClientGroups(): GroupRegistration[] {
-  const clients = listClients().filter((c: ClientConfig) => c.status === 'active');
-  const registrations: GroupRegistration[] = [];
+export function registerClientGroups(): TeamGroupRegistration[] {
+  const clients = listClients().filter(
+    (c: ClientConfig) => c.status === 'active',
+  );
+  const registrations: TeamGroupRegistration[] = [];
 
   for (const client of clients) {
-    for (const agent of client.agents.filter((a: AgentDefinition) => a.status === 'active')) {
+    for (const agent of client.agents.filter(
+      (a: AgentDefinition) => a.status === 'active',
+    )) {
       registrations.push(agentToGroup(client, agent));
     }
   }
@@ -44,29 +47,29 @@ export function registerClientGroups(): GroupRegistration[] {
 }
 
 /**
- * Convert a single agent definition to a NanoClaw group registration
+ * Convert a single agent definition to a NanoClaw group registration.
  */
-function agentToGroup(client: ClientConfig, agent: AgentDefinition): GroupRegistration {
+function agentToGroup(
+  client: ClientConfig,
+  agent: AgentDefinition,
+): TeamGroupRegistration {
   const clientsDir = getClientsDir();
-  const groupFolder = path.join('clients', client.slug, 'agents', slugify(agent.name));
+  const folder = teamGroupFolder(client.slug, agent.name);
 
   // Determine JID based on Telegram topic or group
   const jid = agent.telegramTopicId
     ? `tg:${client.telegramGroupId}:${agent.telegramTopicId}`
     : `tg:${client.telegramGroupId}`;
 
-  // Build additional mounts for agent's documents
-  const docsDir = path.join(clientsDir, client.slug, 'docs');
-  const skillsDir = path.join(clientsDir, client.slug, 'skills');
-
+  // Build additional mounts for agent's documents and skills
   const additionalMounts = [
     {
-      hostPath: docsDir,
+      hostPath: `${clientsDir}/${client.slug}/docs`,
       containerPath: 'client-docs',
       readonly: true,
     },
     {
-      hostPath: skillsDir,
+      hostPath: `${clientsDir}/${client.slug}/skills`,
       containerPath: 'client-skills',
       readonly: true,
     },
@@ -78,15 +81,17 @@ function agentToGroup(client: ClientConfig, agent: AgentDefinition): GroupRegist
 
   return {
     jid,
-    name: `[${client.name}] ${agent.name}`,
-    folder: groupFolder,
-    triggerPattern: agent.triggerPattern,
-    requiresTrigger: true,
-    isMain: false,
-    containerConfig: {
-      additionalMounts,
-      timeout: agent.containerConfig?.timeout,
+    group: {
+      name: `[${client.name}] ${agent.name}`,
+      folder,
+      trigger: agent.triggerPattern,
+      added_at: new Date().toISOString(),
+      requiresTrigger: true,
+      isMain: false,
+      containerConfig: {
+        additionalMounts,
+        timeout: agent.containerConfig?.timeout,
+      },
     },
   };
 }
-

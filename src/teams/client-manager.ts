@@ -6,29 +6,43 @@
 import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as path from 'path';
-import { ClientConfig, AgentDefinition, ClientSettings, TEAM_TEMPLATES, PLAN_AGENT_LIMITS, slugify } from './types.js';
+import {
+  ClientConfig,
+  AgentDefinition,
+  ClientSettings,
+  TEAM_TEMPLATES,
+  PLAN_AGENT_LIMITS,
+  slugify,
+} from './types.js';
+import { teamGroupFolder } from './group-registrar.js';
 
-// Resolve relative to project root (works with both src/ and dist/)
-const CLIENTS_DIR = path.resolve(process.cwd(), 'clients');
+// Resolve at call time (not import time) so tests can override process.cwd()
+export function getClientsDir(): string {
+  return path.resolve(process.cwd(), 'clients');
+}
+
+function getGroupsDir(): string {
+  return path.resolve(process.cwd(), 'groups');
+}
 
 function generateId(): string {
   return crypto.randomUUID();
 }
 
-export function getClientsDir(): string {
-  return CLIENTS_DIR;
-}
-
 export function listClients(): ClientConfig[] {
-  if (!fs.existsSync(CLIENTS_DIR)) return [];
+  const clientsDir = getClientsDir();
+  if (!fs.existsSync(clientsDir)) return [];
 
-  return fs.readdirSync(CLIENTS_DIR)
-    .filter(dir => !dir.startsWith('_') && !dir.startsWith('.'))
-    .map(dir => {
-      const configPath = path.join(CLIENTS_DIR, dir, 'config.json');
+  return fs
+    .readdirSync(clientsDir)
+    .filter((dir) => !dir.startsWith('_') && !dir.startsWith('.'))
+    .map((dir) => {
+      const configPath = path.join(clientsDir, dir, 'config.json');
       if (!fs.existsSync(configPath)) return null;
       try {
-        return JSON.parse(fs.readFileSync(configPath, 'utf-8')) as ClientConfig;
+        return JSON.parse(
+          fs.readFileSync(configPath, 'utf-8'),
+        ) as ClientConfig;
       } catch {
         return null;
       }
@@ -37,7 +51,7 @@ export function listClients(): ClientConfig[] {
 }
 
 export function getClient(slug: string): ClientConfig | null {
-  const configPath = path.join(CLIENTS_DIR, slug, 'config.json');
+  const configPath = path.join(getClientsDir(), slug, 'config.json');
   if (!fs.existsSync(configPath)) return null;
   try {
     return JSON.parse(fs.readFileSync(configPath, 'utf-8'));
@@ -56,7 +70,7 @@ export function createClient(options: {
   templateName?: string;
 }): ClientConfig {
   const slug = slugify(options.name);
-  const clientDir = path.join(CLIENTS_DIR, slug);
+  const clientDir = path.join(getClientsDir(), slug);
 
   if (fs.existsSync(clientDir)) {
     throw new Error(`Cliente "${options.name}" já existe (${slug})`);
@@ -110,27 +124,37 @@ export function createClient(options: {
   // Save config
   fs.writeFileSync(
     path.join(clientDir, 'config.json'),
-    JSON.stringify(config, null, 2)
+    JSON.stringify(config, null, 2),
   );
 
   // Create CLAUDE.md (agent memory)
   const claudeMd = generateClaudeMd(config);
   fs.writeFileSync(path.join(clientDir, 'CLAUDE.md'), claudeMd);
 
-  // Create agent-specific CLAUDE.md files
+  // Create agent-specific CLAUDE.md files and NanoClaw group folders
   for (const agent of agents) {
     const agentDir = path.join(clientDir, 'agents', slugify(agent.name));
     fs.mkdirSync(agentDir, { recursive: true });
     fs.writeFileSync(
       path.join(agentDir, 'CLAUDE.md'),
-      generateAgentClaudeMd(agent, config)
+      generateAgentClaudeMd(agent, config),
+    );
+    // Create group folder under groups/ for NanoClaw integration
+    const groupDir = path.join(
+      getGroupsDir(),
+      teamGroupFolder(slug, agent.name),
+    );
+    fs.mkdirSync(path.join(groupDir, 'logs'), { recursive: true });
+    fs.writeFileSync(
+      path.join(groupDir, 'CLAUDE.md'),
+      generateAgentClaudeMd(agent, config),
     );
   }
 
   // Create default docs
   fs.writeFileSync(
     path.join(clientDir, 'docs', 'README.md'),
-    `# Base de Conhecimento - ${config.name}\n\nAdicione documentos aqui para que os agentes possam consultá-los.\n\n## Estrutura\n\n- Coloque arquivos .md com informações da empresa\n- Os agentes terão acesso somente aos documentos listados em sua configuração\n- Use nomes descritivos: \`politica-devolucao.md\`, \`tabela-precos.md\`, etc.\n`
+    `# Base de Conhecimento - ${config.name}\n\nAdicione documentos aqui para que os agentes possam consultá-los.\n\n## Estrutura\n\n- Coloque arquivos .md com informações da empresa\n- Os agentes terão acesso somente aos documentos listados em sua configuração\n- Use nomes descritivos: \`politica-devolucao.md\`, \`tabela-precos.md\`, etc.\n`,
   );
 
   console.log(`✅ Cliente "${config.name}" criado em: ${clientDir}`);
@@ -139,7 +163,7 @@ export function createClient(options: {
 
 export function addAgent(
   clientSlug: string,
-  agent: Omit<AgentDefinition, 'id'>
+  agent: Omit<AgentDefinition, 'id'>,
 ): AgentDefinition {
   const config = getClient(clientSlug);
   if (!config) throw new Error(`Cliente "${clientSlug}" não encontrado`);
@@ -147,7 +171,7 @@ export function addAgent(
   const limit = PLAN_AGENT_LIMITS[config.plan] ?? 2;
   if (config.agents.length >= limit) {
     throw new Error(
-      `Limite de agentes atingido para o plano "${config.plan}" (max: ${limit})`
+      `Limite de agentes atingido para o plano "${config.plan}" (max: ${limit})`,
     );
   }
 
@@ -160,14 +184,32 @@ export function addAgent(
   saveConfig(config);
 
   // Create agent directory and memory
-  const agentDir = path.join(CLIENTS_DIR, clientSlug, 'agents', slugify(agent.name));
+  const agentDir = path.join(
+    getClientsDir(),
+    clientSlug,
+    'agents',
+    slugify(agent.name),
+  );
   fs.mkdirSync(agentDir, { recursive: true });
   fs.writeFileSync(
     path.join(agentDir, 'CLAUDE.md'),
-    generateAgentClaudeMd(newAgent, config)
+    generateAgentClaudeMd(newAgent, config),
   );
 
-  console.log(`✅ Agente "${agent.name}" adicionado ao cliente "${config.name}"`);
+  // Create group folder under groups/ for NanoClaw integration
+  const groupDir = path.join(
+    getGroupsDir(),
+    teamGroupFolder(clientSlug, agent.name),
+  );
+  fs.mkdirSync(path.join(groupDir, 'logs'), { recursive: true });
+  fs.writeFileSync(
+    path.join(groupDir, 'CLAUDE.md'),
+    generateAgentClaudeMd(newAgent, config),
+  );
+
+  console.log(
+    `✅ Agente "${agent.name}" adicionado ao cliente "${config.name}"`,
+  );
   return newAgent;
 }
 
@@ -175,7 +217,9 @@ export function removeAgent(clientSlug: string, agentId: string): void {
   const config = getClient(clientSlug);
   if (!config) throw new Error(`Cliente "${clientSlug}" não encontrado`);
 
-  const idx = config.agents.findIndex((a: AgentDefinition) => a.id === agentId);
+  const idx = config.agents.findIndex(
+    (a: AgentDefinition) => a.id === agentId,
+  );
   if (idx === -1) throw new Error(`Agente "${agentId}" não encontrado`);
 
   const agent = config.agents[idx];
@@ -183,9 +227,23 @@ export function removeAgent(clientSlug: string, agentId: string): void {
   saveConfig(config);
 
   // Remove agent directory from disk
-  const agentDir = path.join(CLIENTS_DIR, clientSlug, 'agents', slugify(agent.name));
+  const agentDir = path.join(
+    getClientsDir(),
+    clientSlug,
+    'agents',
+    slugify(agent.name),
+  );
   if (fs.existsSync(agentDir)) {
     fs.rmSync(agentDir, { recursive: true });
+  }
+
+  // Remove group folder from groups/
+  const groupDir = path.join(
+    getGroupsDir(),
+    teamGroupFolder(clientSlug, agent.name),
+  );
+  if (fs.existsSync(groupDir)) {
+    fs.rmSync(groupDir, { recursive: true });
   }
 
   console.log(`✅ Agente "${agent.name}" removido do cliente "${config.name}"`);
@@ -194,23 +252,30 @@ export function removeAgent(clientSlug: string, agentId: string): void {
 export function updateAgent(
   clientSlug: string,
   agentId: string,
-  updates: Partial<AgentDefinition>
+  updates: Partial<AgentDefinition>,
 ): AgentDefinition {
   const config = getClient(clientSlug);
   if (!config) throw new Error(`Cliente "${clientSlug}" não encontrado`);
 
-  const idx = config.agents.findIndex((a: AgentDefinition) => a.id === agentId);
+  const idx = config.agents.findIndex(
+    (a: AgentDefinition) => a.id === agentId,
+  );
   if (idx === -1) throw new Error(`Agente "${agentId}" não encontrado`);
 
   config.agents[idx] = { ...config.agents[idx], ...updates, id: agentId };
   saveConfig(config);
 
   // Update agent CLAUDE.md
-  const agentDir = path.join(CLIENTS_DIR, clientSlug, 'agents', slugify(config.agents[idx].name));
+  const agentDir = path.join(
+    getClientsDir(),
+    clientSlug,
+    'agents',
+    slugify(config.agents[idx].name),
+  );
   if (fs.existsSync(agentDir)) {
     fs.writeFileSync(
       path.join(agentDir, 'CLAUDE.md'),
-      generateAgentClaudeMd(config.agents[idx], config)
+      generateAgentClaudeMd(config.agents[idx], config),
     );
   }
 
@@ -219,7 +284,7 @@ export function updateAgent(
 
 export function updateClientSettings(
   clientSlug: string,
-  settings: Partial<ClientSettings>
+  settings: Partial<ClientSettings>,
 ): ClientConfig {
   const config = getClient(clientSlug);
   if (!config) throw new Error(`Cliente "${clientSlug}" não encontrado`);
@@ -241,7 +306,11 @@ export function archiveClient(clientSlug: string): void {
 // --- Internal helpers ---
 
 function saveConfig(config: ClientConfig): void {
-  const configPath = path.join(CLIENTS_DIR, config.slug, 'config.json');
+  const configPath = path.join(
+    getClientsDir(),
+    config.slug,
+    'config.json',
+  );
   fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
 }
 
@@ -269,7 +338,10 @@ _Adicione informações importantes sobre o cliente abaixo:_
 `;
 }
 
-function generateAgentClaudeMd(agent: AgentDefinition, config: ClientConfig): string {
+function generateAgentClaudeMd(
+  agent: AgentDefinition,
+  config: ClientConfig,
+): string {
   return `# ${agent.name}
 
 ## Papel

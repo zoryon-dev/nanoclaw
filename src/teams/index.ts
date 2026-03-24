@@ -24,4 +24,8 @@ export {
   slugify,
 } from './types.js';
 
-export { registerClientGroups } from './group-registrar.js';
+export {
+  registerClientGroups,
+  teamGroupFolder,
+} from './group-registrar.js';
+export type { TeamGroupRegistration } from './group-registrar.js';
