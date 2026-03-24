@@ -1,0 +1,24 @@
+{
+  "id": "",
+  "name": "Nome do Cliente",
+  "slug": "nome-do-cliente",
+  "telegramGroupId": "",
+  "status": "active",
+  "plan": "starter",
+  "agents": [],
+  "settings": {
+    "timezone": "America/Sao_Paulo",
+    "language": "pt-BR",
+    "maxConcurrentAgents": 3,
+    "allowedModels": ["claude-sonnet-4-6"],
+    "features": {
+      "scheduledTasks": true,
+      "webSearch": true,
+      "browserAutomation": false,
+      "fileSharing": true,
+      "imageVision": true,
+      "voiceTranscription": false
+    }
+  },
+  "createdAt": ""
+}

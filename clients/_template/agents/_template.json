@@ -1,0 +1,9 @@
+{
+  "name": "Nome do Agente",
+  "role": "Descrição do papel",
+  "triggerPattern": "@agente",
+  "personality": "Descreva a personalidade e tom de voz do agente",
+  "skills": [],
+  "documents": [],
+  "status": "active"
+}
