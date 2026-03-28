@@ -84,14 +84,22 @@ export class WhatsAppChannel implements Channel {
       );
       return { version: undefined };
     });
+    // Baileys expects a pino ILogger; our built-in logger needs stubs for the
+    // missing properties (level, child, trace) to satisfy the interface.
+    const baileysLogger = Object.assign(Object.create(logger), {
+      level: 'silent',
+      child: () => baileysLogger,
+      trace: (dataOrMsg: Record<string, unknown> | string, msg?: string) =>
+        logger.debug(dataOrMsg as Record<string, unknown>, msg),
+    });
     this.sock = makeWASocket({
       version,
       auth: {
         creds: state.creds,
-        keys: makeCacheableSignalKeyStore(state.keys, logger),
+        keys: makeCacheableSignalKeyStore(state.keys, baileysLogger),
       },
       printQRInTerminal: false,
-      logger,
+      logger: baileysLogger,
       browser: Browsers.macOS('Chrome'),
     });
 

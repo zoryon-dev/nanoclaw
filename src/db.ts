@@ -360,9 +360,27 @@ export function getMessagesSince(
   chatJid: string,
   sinceTimestamp: string,
   botPrefix: string,
+  limit?: number,
 ): NewMessage[] {
   // Filter bot messages using both the is_bot_message flag AND the content
   // prefix as a backstop for messages written before the migration ran.
+  if (limit) {
+    // Return the most recent `limit` messages, in ascending order.
+    const sql = `
+      SELECT * FROM (
+        SELECT id, chat_jid, sender, sender_name, content, timestamp, is_from_me
+        FROM messages
+        WHERE chat_jid = ? AND timestamp > ?
+          AND is_bot_message = 0 AND content NOT LIKE ?
+          AND content != '' AND content IS NOT NULL
+        ORDER BY timestamp DESC
+        LIMIT ?
+      ) ORDER BY timestamp
+    `;
+    return db
+      .prepare(sql)
+      .all(chatJid, sinceTimestamp, `${botPrefix}:%`, limit) as NewMessage[];
+  }
   const sql = `
     SELECT id, chat_jid, sender, sender_name, content, timestamp, is_from_me
     FROM messages
