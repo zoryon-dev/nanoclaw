@@ -286,39 +286,48 @@ async function processGroupMessages(chatJid: string): Promise<boolean> {
   let outputSentToUser = false;
   let firstOutputSeen = false;
 
-  const output = await runAgent(group, prompt, chatJid, imageAttachments, async (result) => {
-    // Streaming output callback — called for each agent result
-    if (result.result) {
-      if (!firstOutputSeen) {
-        firstOutputSeen = true;
-        for (const um of userMessages) {
-          statusTracker.markWorking(um.id);
+  const output = await runAgent(
+    group,
+    prompt,
+    chatJid,
+    imageAttachments,
+    async (result) => {
+      // Streaming output callback — called for each agent result
+      if (result.result) {
+        if (!firstOutputSeen) {
+          firstOutputSeen = true;
+          for (const um of userMessages) {
+            statusTracker.markWorking(um.id);
+          }
         }
+        const raw =
+          typeof result.result === 'string'
+            ? result.result
+            : JSON.stringify(result.result);
+        // Strip <internal>...</internal> blocks — agent uses these for internal reasoning
+        const text = raw.replace(/<internal>[\s\S]*?<\/internal>/g, '').trim();
+        logger.info(
+          { group: group.name },
+          `Agent output: ${raw.slice(0, 200)}`,
+        );
+        if (text) {
+          await channel.sendMessage(chatJid, text);
+          outputSentToUser = true;
+        }
+        // Only reset idle timer on actual results, not session-update markers (result: null)
+        resetIdleTimer();
       }
-      const raw =
-        typeof result.result === 'string'
-          ? result.result
-          : JSON.stringify(result.result);
-      // Strip <internal>...</internal> blocks — agent uses these for internal reasoning
-      const text = raw.replace(/<internal>[\s\S]*?<\/internal>/g, '').trim();
-      logger.info({ group: group.name }, `Agent output: ${raw.slice(0, 200)}`);
-      if (text) {
-        await channel.sendMessage(chatJid, text);
-        outputSentToUser = true;
+
+      if (result.status === 'success') {
+        statusTracker.markAllDone(chatJid);
+        queue.notifyIdle(chatJid);
       }
-      // Only reset idle timer on actual results, not session-update markers (result: null)
-      resetIdleTimer();
-    }
 
-    if (result.status === 'success') {
-      statusTracker.markAllDone(chatJid);
-      queue.notifyIdle(chatJid);
-    }
-
-    if (result.status === 'error') {
-      hadError = true;
-    }
-  });
+      if (result.status === 'error') {
+        hadError = true;
+      }
+    },
+  );
 
   await channel.setTyping?.(chatJid, false);
   if (idleTimer) clearTimeout(idleTimer);
@@ -440,7 +449,8 @@ async function runAgent(
       // Match broadly to survive API error message wording changes.
       if (
         output.error?.includes('No conversation found with session ID') ||
-        output.error?.includes('session') && output.error?.includes('not found') ||
+        (output.error?.includes('session') &&
+          output.error?.includes('not found')) ||
         output.error?.includes('invalid_session')
       ) {
         delete sessions[group.folder];
@@ -800,7 +810,12 @@ async function main(): Promise<void> {
         channel.connect(),
         new Promise<never>((_, reject) =>
           setTimeout(
-            () => reject(new Error(`Channel ${channelName} connect timed out after ${CHANNEL_CONNECT_TIMEOUT_MS / 1000}s`)),
+            () =>
+              reject(
+                new Error(
+                  `Channel ${channelName} connect timed out after ${CHANNEL_CONNECT_TIMEOUT_MS / 1000}s`,
+                ),
+              ),
             CHANNEL_CONNECT_TIMEOUT_MS,
           ),
         ),
@@ -846,12 +861,18 @@ async function main(): Promise<void> {
     sendReaction: async (jid, emoji, messageId) => {
       const channel = findChannel(channels, jid);
       if (!channel) {
-        logger.warn({ jid }, 'No channel owns JID (IPC sendReaction), skipping');
+        logger.warn(
+          { jid },
+          'No channel owns JID (IPC sendReaction), skipping',
+        );
         return;
       }
       if (messageId) {
         if (!channel.sendReaction) {
-          logger.warn({ jid }, 'Channel does not support sendReaction, skipping');
+          logger.warn(
+            { jid },
+            'Channel does not support sendReaction, skipping',
+          );
           return;
         }
         const messageKey = {

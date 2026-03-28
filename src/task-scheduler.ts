@@ -213,7 +213,8 @@ async function runTask(
     // Match broadly to survive API error message wording changes.
     if (
       output.error?.includes('No conversation found with session ID') ||
-      output.error?.includes('session') && output.error?.includes('not found') ||
+      (output.error?.includes('session') &&
+        output.error?.includes('not found')) ||
       output.error?.includes('invalid_session')
     ) {
       clearSession(task.group_folder);
@@ -235,7 +236,7 @@ async function runTask(
     // Also handle stale sessions from thrown errors
     if (
       error.includes('No conversation found with session ID') ||
-      error.includes('session') && error.includes('not found') ||
+      (error.includes('session') && error.includes('not found')) ||
       error.includes('invalid_session')
     ) {
       clearSession(task.group_folder);
