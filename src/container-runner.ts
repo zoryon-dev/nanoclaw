@@ -44,6 +44,7 @@ export interface ContainerInput {
   assistantName?: string;
   imageAttachments?: Array<{ relativePath: string; mediaType: string }>;
   script?: string;
+  modelOverride?: string;
 }
 
 export interface ContainerOutput {
@@ -277,6 +278,7 @@ function buildVolumeMounts(
 function buildContainerArgs(
   mounts: VolumeMount[],
   containerName: string,
+  modelOverride?: string,
 ): string[] {
   const args: string[] = ['run', '-i', '--rm', '--name', containerName];
 
@@ -301,7 +303,10 @@ function buildContainerArgs(
   }
 
   // Pass model configuration to container
-  if (process.env.NANOCLAW_MODEL) {
+  // Per-message model override takes precedence over env defaults
+  if (modelOverride) {
+    args.push('-e', `NANOCLAW_MODEL=${modelOverride}`);
+  } else if (process.env.NANOCLAW_MODEL) {
     args.push('-e', `NANOCLAW_MODEL=${process.env.NANOCLAW_MODEL}`);
   }
   if (process.env.NANOCLAW_CRON_MODEL) {
@@ -365,7 +370,7 @@ export async function runContainerAgent(
   const mounts = buildVolumeMounts(group, input.isMain);
   const safeName = group.folder.replace(/[^a-zA-Z0-9-]/g, '-');
   const containerName = `nanoclaw-${safeName}-${Date.now()}`;
-  const containerArgs = buildContainerArgs(mounts, containerName);
+  const containerArgs = buildContainerArgs(mounts, containerName, input.modelOverride);
 
   logger.debug(
     {

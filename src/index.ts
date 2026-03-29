@@ -464,17 +464,29 @@ async function runAgent(
       }
     : undefined;
 
+  // Detect model override: "/opus" or "/haiku" prefix in prompt
+  let modelOverride: string | undefined;
+  let cleanPrompt = prompt;
+  const modelMatch = prompt.match(/^\/(?:opus|haiku|sonnet)\b/i);
+  if (modelMatch) {
+    modelOverride = modelMatch[0].slice(1).toLowerCase();
+    cleanPrompt = prompt.slice(modelMatch[0].length).trim();
+    // If only the command was sent with no follow-up, keep original prompt
+    if (!cleanPrompt) cleanPrompt = prompt;
+  }
+
   try {
     const output = await runContainerAgent(
       group,
       {
-        prompt,
+        prompt: cleanPrompt,
         sessionId,
         groupFolder: group.folder,
         chatJid,
         isMain,
         assistantName: ASSISTANT_NAME,
         ...(imageAttachments.length > 0 && { imageAttachments }),
+        ...(modelOverride && { modelOverride }),
       },
       (proc, containerName) =>
         queue.registerProcess(chatJid, proc, containerName, group.folder),
