@@ -29,6 +29,9 @@ if (!process.env.PARALLEL_API_KEY && envConfig.PARALLEL_API_KEY) {
 if (!process.env.FIREFLIES_API_KEY && envConfig.FIREFLIES_API_KEY) {
   process.env.FIREFLIES_API_KEY = envConfig.FIREFLIES_API_KEY;
 }
+if (!process.env.FIRECRAWL_API_KEY && envConfig.FIRECRAWL_API_KEY) {
+  process.env.FIRECRAWL_API_KEY = envConfig.FIRECRAWL_API_KEY;
+}
 
 // Model configuration
 if (!process.env.NANOCLAW_MODEL && envConfig.NANOCLAW_MODEL) {

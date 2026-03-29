@@ -315,6 +315,15 @@ function buildContainerArgs(
   if (process.env.FIREFLIES_API_KEY) {
     args.push('-e', `FIREFLIES_API_KEY=${process.env.FIREFLIES_API_KEY}`);
   }
+  if (process.env.TODOIST_API_TOKEN) {
+    args.push('-e', `TODOIST_API_TOKEN=${process.env.TODOIST_API_TOKEN}`);
+  }
+  if (process.env.MEM_API_KEY) {
+    args.push('-e', `MEM_API_KEY=${process.env.MEM_API_KEY}`);
+  }
+  if (process.env.FIRECRAWL_API_KEY) {
+    args.push('-e', `FIRECRAWL_API_KEY=${process.env.FIRECRAWL_API_KEY}`);
+  }
 
   // Runtime-specific args for host gateway resolution
   args.push(...hostGatewayArgs());

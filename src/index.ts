@@ -178,7 +178,6 @@ function registerGroup(jid: string, group: RegisteredGroup): void {
     }
   }
 
-
   logger.info(
     { jid, name: group.name, folder: group.folder },
     'Group registered',

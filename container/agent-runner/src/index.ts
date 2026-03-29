@@ -461,6 +461,10 @@ async function runQuery(
         'mcp__calendar__*',
         'mcp__gdrive__*',
         'mcp__fireflies__*',
+        'mcp__composio__*',
+        'mcp__firecrawl__*',
+        'mcp__mem__*',
+        'mcp__todoist__*',
       ],
       env: sdkEnv,
       permissionMode: 'bypassPermissions',
@@ -505,6 +509,30 @@ async function runQuery(
             command: 'npx',
             args: ['-y', 'fireflies-mcp-server'],
             env: { 'FIREFLIES_API_KEY': process.env.FIREFLIES_API_KEY },
+          },
+        } : {}),
+        composio: {
+          type: 'http' as const,
+          url: 'https://connect.composio.dev/mcp',
+        },
+        ...(process.env.FIRECRAWL_API_KEY ? {
+          firecrawl: {
+            type: 'http' as const,
+            url: `https://mcp.firecrawl.dev/${process.env.FIRECRAWL_API_KEY}/v2/mcp`,
+          },
+        } : {}),
+        ...(process.env.MEM_API_KEY ? {
+          mem: {
+            type: 'http' as const,
+            url: 'https://mcp.mem.ai/mcp',
+            headers: { 'Authorization': `Bearer ${process.env.MEM_API_KEY}` },
+          },
+        } : {}),
+        ...(process.env.TODOIST_API_TOKEN ? {
+          todoist: {
+            command: 'npx',
+            args: ['-y', 'todoist-mcp'],
+            env: { 'TODOIST_API_TOKEN': process.env.TODOIST_API_TOKEN },
           },
         } : {}),
       },
