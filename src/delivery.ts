@@ -37,6 +37,7 @@ import {
 } from './db/session-db.js';
 import { log } from './log.js';
 import { normalizeOptions, type RawOption } from './channels/ask-question.js';
+import { sanitizeTelegramLegacyMarkdown } from './channels/telegram-markdown-sanitize.js';
 import {
   openInboundDb,
   openOutboundDb,
@@ -539,7 +540,11 @@ async function sendViaSwarmBot(
   files: OutboundFile[] | undefined,
 ): Promise<string | undefined> {
   const content = JSON.parse(contentJson) as Record<string, unknown>;
-  const text = typeof content.text === 'string' ? content.text : '';
+  const rawText = typeof content.text === 'string' ? content.text : '';
+  // Strip markdown so Telegram's parser never rejects with
+  // "can't parse entities". Plain text is reliable; rich formatting flows
+  // via attachments. See src/channels/telegram-markdown-sanitize.ts.
+  const text = sanitizeTelegramLegacyMarkdown(rawText);
 
   // Telegram chat_id is the numeric chat id. Our platform_id may carry a
   // "telegram:" namespace prefix (same convention as WhatsApp). Strip it.
@@ -556,11 +561,11 @@ async function sendViaSwarmBot(
   if (messageThreadId !== null) baseBody.message_thread_id = messageThreadId;
 
   if (!files || files.length === 0) {
-    // Plain text message.
+    // Plain text, no parse_mode — the sanitizer already stripped Markdown.
     const res = await fetch(`${api}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...baseBody, text: text || ' ', parse_mode: 'Markdown' }),
+      body: JSON.stringify({ ...baseBody, text: text || ' ' }),
     });
     const body = (await res.json()) as { ok: boolean; result?: { message_id: number }; description?: string };
     if (!body.ok) throw new Error(`Telegram sendMessage failed: ${body.description ?? res.status}`);
@@ -578,10 +583,7 @@ async function sendViaSwarmBot(
     const form = new FormData();
     form.set('chat_id', chatId);
     if (messageThreadId !== null) form.set('message_thread_id', String(messageThreadId));
-    if (i === 0 && text) {
-      form.set('caption', text);
-      form.set('parse_mode', 'Markdown');
-    }
+    if (i === 0 && text) form.set('caption', text);
     form.set(isImage ? 'photo' : 'document', new Blob([new Uint8Array(f.data)]), f.filename);
     const res = await fetch(`${api}/${endpoint}`, { method: 'POST', body: form });
     const body = (await res.json()) as { ok: boolean; result?: { message_id: number }; description?: string };

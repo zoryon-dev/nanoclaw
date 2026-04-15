@@ -17,7 +17,12 @@
 set -euo pipefail
 
 API="https://openrouter.ai/api/v1/chat/completions"
-MODEL="google/gemini-2.5-flash-image-preview"
+# Model override via env (set IMAGE_GEN_MODEL). Defaults to Nano Banana GA.
+# Other valid options at time of writing:
+#   google/gemini-2.5-flash-image        (Nano Banana, GA)        — default
+#   google/gemini-3.1-flash-image-preview (Nano Banana 2, preview)
+#   google/gemini-3-pro-image-preview     (Nano Banana Pro, preview)
+MODEL="${IMAGE_GEN_MODEL:-google/gemini-2.5-flash-image}"
 
 usage() {
   cat <<'EOF' >&2
@@ -133,10 +138,16 @@ fi
 
 # Extract base64 from the data URI. Accepts data:image/png;base64,... and
 # falls through to an HTTP URL if the model returned one.
-if [[ "$data_uri" =~ ^data:image/[a-zA-Z0-9+.-]+;base64,(.+)$ ]]; then
+#
+# Bash 5.2 changed the parsing of `;` inside `[[ =~ PATTERN ]]` — if the
+# pattern is inline, the `;` is ambiguous with a command separator. Storing
+# the pattern in a variable first is the portable fix.
+DATA_URI_RE='^data:image/[a-zA-Z0-9+.-]+;base64,(.+)$'
+HTTP_URI_RE='^https?://'
+if [[ "$data_uri" =~ $DATA_URI_RE ]]; then
   b64="${BASH_REMATCH[1]}"
   printf '%s' "$b64" | base64 -d > "$out"
-elif [[ "$data_uri" =~ ^https?:// ]]; then
+elif [[ "$data_uri" =~ $HTTP_URI_RE ]]; then
   curl -sfL "$data_uri" -o "$out"
 else
   jq -cn --arg preview "$data_uri" \

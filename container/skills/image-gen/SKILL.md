@@ -48,6 +48,10 @@ After `image-gen` returns a successful path, the agent's standard outbound flow 
 1. Write an outbound message with `files: ["<basename of path>"]` and copy the PNG into `outbox/<message-id>/` within the session.
 2. The host delivery loop attaches the PNG and sends it through the channel adapter.
 
+## ⚠️ DO NOT Read the generated PNG
+
+Never use the `Read` tool (or `cat`, `xxd`, etc.) on the returned `path`. Claude Code's Read returns image bytes as multimodal content, which gets included in the agent's next API call — and Anthropic rejects the full request with `"Could not process image"`, breaking the entire flow. Trust the JSON (`ok:true` + path) as confirmation; move the file with `cp` only.
+
 ## Failure modes
 
 - `upstream_status: 400` — prompt is likely malformed or contains blocked content. Rephrase.
