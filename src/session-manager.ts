@@ -91,7 +91,7 @@ export function resolveSession(
     }
   } else if (messagingGroupId) {
     const lookupThreadId = sessionMode === 'shared' ? null : threadId;
-    const existing = findSession(messagingGroupId, lookupThreadId);
+    const existing = findSession(agentGroupId, messagingGroupId, lookupThreadId);
     if (existing) {
       return { session: existing, created: false };
     }
@@ -126,6 +126,21 @@ export function initSessionFolder(agentGroupId: string, sessionId: string): void
 
   ensureSchema(inboundDbPath(agentGroupId, sessionId), 'inbound');
   ensureSchema(outboundDbPath(agentGroupId, sessionId), 'outbound');
+
+  // Container runs as UID 1000 (node user). When the host runs as root,
+  // session files default to root:root 0644 — readable but not writable by
+  // the container, which causes "attempt to write a readonly database" on
+  // outbound.db. chown to UID 1000 so the container can write.
+  if (process.getuid?.() === 0) {
+    try {
+      fs.chownSync(dir, 1000, 1000);
+      fs.chownSync(path.join(dir, 'outbox'), 1000, 1000);
+      fs.chownSync(inboundDbPath(agentGroupId, sessionId), 1000, 1000);
+      fs.chownSync(outboundDbPath(agentGroupId, sessionId), 1000, 1000);
+    } catch {
+      // Non-fatal: container may fail later if perms are wrong
+    }
+  }
 }
 
 /**

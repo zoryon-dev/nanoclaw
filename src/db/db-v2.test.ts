@@ -318,23 +318,38 @@ describe('sessions', () => {
     expect(result!.agent_group_id).toBe('ag-1');
   });
 
-  it('should find by messaging group (shared, no thread)', () => {
+  it('should find by agent + messaging group (shared, no thread)', () => {
     createSession(sess());
-    const result = findSession('mg-1', null);
+    const result = findSession('ag-1', 'mg-1', null);
     expect(result).toBeDefined();
     expect(result!.id).toBe('sess-1');
   });
 
-  it('should find by messaging group + thread', () => {
+  it('should find by agent + messaging group + thread', () => {
     createSession({ ...sess(), thread_id: 'thread-1' });
-    expect(findSession('mg-1', 'thread-1')).toBeDefined();
-    expect(findSession('mg-1', 'thread-2')).toBeUndefined();
-    expect(findSession('mg-1', null)).toBeUndefined();
+    expect(findSession('ag-1', 'mg-1', 'thread-1')).toBeDefined();
+    expect(findSession('ag-1', 'mg-1', 'thread-2')).toBeUndefined();
+    expect(findSession('ag-1', 'mg-1', null)).toBeUndefined();
   });
 
   it('should only find active sessions', () => {
     createSession({ ...sess(), status: 'closed' });
-    expect(findSession('mg-1', null)).toBeUndefined();
+    expect(findSession('ag-1', 'mg-1', null)).toBeUndefined();
+  });
+
+  it('should isolate sessions between different agents in same mg (Caio vs Zory bug)', () => {
+    createAgentGroup({
+      id: 'ag-2',
+      name: 'Agent Two',
+      folder: 'ag-two',
+      agent_provider: null,
+      container_config: null,
+      created_at: now(),
+    });
+    createSession({ ...sess(), id: 'sess-a1', agent_group_id: 'ag-1' });
+    createSession({ ...sess(), id: 'sess-a2', agent_group_id: 'ag-2' });
+    expect(findSession('ag-1', 'mg-1', null)?.id).toBe('sess-a1');
+    expect(findSession('ag-2', 'mg-1', null)?.id).toBe('sess-a2');
   });
 
   it('should list by agent group', () => {

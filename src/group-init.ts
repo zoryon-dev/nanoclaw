@@ -108,6 +108,24 @@ export function initGroupFilesystem(group: AgentGroup, opts?: { instructions?: s
     }
   }
 
+  // Container runs as UID 1000 (node). When the host is root, chown the
+  // agent-writable dirs so Claude Code can persist state, settings, and
+  // conversation transcripts.
+  if (process.getuid?.() === 0) {
+    try {
+      const chownRecursive = (p: string): void => {
+        if (!fs.existsSync(p)) return;
+        fs.chownSync(p, 1000, 1000);
+        if (fs.statSync(p).isDirectory()) {
+          for (const entry of fs.readdirSync(p)) chownRecursive(path.join(p, entry));
+        }
+      };
+      chownRecursive(path.join(DATA_DIR, 'v2-sessions', group.id));
+    } catch {
+      // Non-fatal
+    }
+  }
+
   if (initialized.length > 0) {
     log.info('Initialized group filesystem', {
       group: group.name,

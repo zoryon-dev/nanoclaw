@@ -65,6 +65,15 @@ export interface ChatSdkBridgeConfig {
    * quirk (e.g. Telegram's legacy Markdown parse mode).
    */
   transformOutboundText?: (text: string) => string;
+  /**
+   * If true, this bridge only forwards 1:1 DMs — group / channel handlers
+   * (`onSubscribedMessage`, `onNewMention`, catch-all `onNewMessage`) are not
+   * registered. Used by Telegram swarm secondaries: each non-primary bot is
+   * also a member of shared groups and would otherwise duplicate-route every
+   * message the primary already handles. The primary bot stays full-featured;
+   * only secondaries set this flag.
+   */
+  dmOnly?: boolean;
 }
 
 export function createChatSdkBridge(config: ChatSdkBridgeConfig): ChannelAdapter {
@@ -157,19 +166,44 @@ export function createChatSdkBridge(config: ChatSdkBridgeConfig): ChannelAdapter
         setupConfig.onInbound(channelId, thread.id, await messageToInbound(message));
       });
 
-      // @mention in unsubscribed thread — forward + subscribe
-      chat.onNewMention(async (thread, message) => {
-        const channelId = adapter.channelIdFromThreadId(thread.id);
-        setupConfig.onInbound(channelId, thread.id, await messageToInbound(message));
-        await thread.subscribe();
-      });
-
-      // DMs — always forward + subscribe
+      // DMs — always forward + subscribe (registered for both modes).
       chat.onDirectMessage(async (thread, message) => {
         const channelId = adapter.channelIdFromThreadId(thread.id);
         setupConfig.onInbound(channelId, null, await messageToInbound(message));
         await thread.subscribe();
       });
+
+      // Group/channel handlers are skipped for `dmOnly` bridges. Used by
+      // Telegram swarm secondaries: Caio/Lad/Grow's bots also see @mentions
+      // of themselves in shared groups, but the PRIMARY bot (Zory) handles
+      // all group routing. Forwarding from secondaries would cause duplicate
+      // routing of the same message.
+      if (!config.dmOnly) {
+        // Subscribed threads — forward all messages (replaces the old
+        // onSubscribedMessage above; placement just below DM handler keeps
+        // setup ordering identical to before this refactor).
+        chat.onSubscribedMessage(async (thread, message) => {
+          const channelId = adapter.channelIdFromThreadId(thread.id);
+          setupConfig.onInbound(channelId, thread.id, await messageToInbound(message));
+        });
+
+        // @mention in unsubscribed thread — forward + subscribe
+        chat.onNewMention(async (thread, message) => {
+          const channelId = adapter.channelIdFromThreadId(thread.id);
+          setupConfig.onInbound(channelId, thread.id, await messageToInbound(message));
+          await thread.subscribe();
+        });
+
+        // Catch-all for registered channels: forum-supergroup topics and
+        // other group chats where the first message of a new thread may not
+        // be a @mention. See docs/telegram-forum-topics.md.
+        chat.onNewMessage(/[\s\S]*/, async (thread, message) => {
+          const channelId = adapter.channelIdFromThreadId(thread.id);
+          if (!conversations.has(channelId)) return;
+          setupConfig.onInbound(channelId, thread.id, await messageToInbound(message));
+          await thread.subscribe();
+        });
+      }
 
       // Handle button clicks (ask_user_question, credential card)
       chat.onAction(async (event) => {

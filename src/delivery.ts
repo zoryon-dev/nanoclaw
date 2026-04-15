@@ -12,6 +12,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { GROUPS_DIR } from './config.js';
+import { clearRoutesForAgentInGroup } from './db/active-agent-routes.js';
 import {
   getRunningSessions,
   getActiveSessions,
@@ -57,6 +58,16 @@ const MAX_DELIVERY_ATTEMPTS = 3;
 
 /** Track delivery attempt counts. Resets on process restart (gives failed messages a fresh chance). */
 const deliveryAttempts = new Map<string, number>();
+
+/**
+ * Process-local in-flight tracker keyed by message ID. Prevents the active +
+ * sweep pollers (or two near-simultaneous active iterations) from delivering
+ * the same outbound row twice while the first attempt is mid-flight. Without
+ * this, slow channel calls (e.g. swarm-mode HTTP to Telegram Bot API, ~200ms)
+ * leave a window where the second poller reads the same `undelivered` row
+ * before the first calls `markDelivered`.
+ */
+const inFlightMessages = new Set<string>();
 
 export interface ChannelDeliveryAdapter {
   deliver(
@@ -257,6 +268,10 @@ async function deliverSessionMessages(session: Session): Promise<void> {
     migrateDeliveredTable(inDb);
 
     for (const msg of undelivered) {
+      // Race guard: skip if another poller (active vs sweep, or overlapping
+      // active iterations during a slow deliver) already started this msg.
+      if (inFlightMessages.has(msg.id)) continue;
+      inFlightMessages.add(msg.id);
       try {
         const platformMsgId = await deliverMessage(msg, session, inDb);
         markDelivered(inDb, msg.id, platformMsgId ?? null);
@@ -283,6 +298,8 @@ async function deliverSessionMessages(session: Session): Promise<void> {
             err,
           });
         }
+      } finally {
+        inFlightMessages.delete(msg.id);
       }
     }
   } finally {
@@ -433,21 +450,61 @@ async function deliverMessage(
     if (files.length === 0) files = undefined;
   }
 
-  const platformMsgId = await deliveryAdapter.deliver(
-    msg.channel_type,
-    msg.platform_id,
-    msg.thread_id,
-    msg.kind,
-    msg.content,
-    files,
-  );
+  // Sticky-exit marker: agents that participate in sticky routing can end
+  // their own session by appending `[CAIO-EXIT]` to a message. We strip the
+  // marker before delivering (the user shouldn't see it) and clear the
+  // sticky route after successful delivery so the NEXT inbound goes back to
+  // the fallback agent (usually Zory).
+  const exitSignaled = detectExitMarker(content);
+  const deliveredContent = exitSignaled ? stripExitMarker(msg.content, content) : msg.content;
+
+  // Telegram swarm: if this agent has its own bot token in container_config,
+  // deliver via the Telegram Bot API using that token so the message shows
+  // up with the correct agent identity (avatar + @handle). Falls through to
+  // the default chat-sdk-telegram adapter when no swarm token is configured.
+  let platformMsgId: string | undefined;
+  const swarmToken = msg.channel_type === 'telegram'
+    ? getSwarmBotToken(session.agent_group_id)
+    : null;
+  if (swarmToken) {
+    platformMsgId = await sendViaSwarmBot(
+      swarmToken,
+      msg.platform_id,
+      msg.thread_id,
+      deliveredContent,
+      files,
+    );
+  } else {
+    platformMsgId = await deliveryAdapter.deliver(
+      msg.channel_type,
+      msg.platform_id,
+      msg.thread_id,
+      msg.kind,
+      deliveredContent,
+      files,
+    );
+  }
   log.info('Message delivered', {
     id: msg.id,
     channelType: msg.channel_type,
     platformId: msg.platform_id,
     platformMsgId,
     fileCount: files?.length,
+    swarm: !!swarmToken,
   });
+
+  if (exitSignaled) {
+    const mg = getMessagingGroupByPlatform(msg.channel_type, msg.platform_id);
+    if (mg) {
+      const cleared = clearRoutesForAgentInGroup(mg.id, session.agent_group_id);
+      log.info('Sticky route cleared after exit marker', {
+        sessionId: session.id,
+        agentGroup: session.agent_group_id,
+        messagingGroup: mg.id,
+        cleared,
+      });
+    }
+  }
 
   // Clean up outbox directory after successful delivery
   if (fs.existsSync(outboxDir)) {
@@ -455,6 +512,125 @@ async function deliverMessage(
   }
 
   return platformMsgId;
+}
+
+/**
+ * Telegram swarm: per-agent bot token lookup. Reads
+ * `agent_groups.container_config.telegramBotToken` for the agent that owns
+ * this session. Returns null if the agent has no swarm token configured —
+ * in that case delivery falls back to the default chat-sdk-telegram adapter.
+ */
+function getSwarmBotToken(agentGroupId: string): string | null {
+  const agentGroup = getAgentGroup(agentGroupId);
+  if (!agentGroup?.container_config) return null;
+  try {
+    const cfg = JSON.parse(agentGroup.container_config) as { telegramBotToken?: unknown };
+    return typeof cfg.telegramBotToken === 'string' && cfg.telegramBotToken ? cfg.telegramBotToken : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Send a message through the Telegram Bot API using a specific agent's bot
+ * token. Used by the swarm flow so different agents appear as different bot
+ * identities in the same chat.
+ *
+ * Supports text + photos + documents. Reply keyboards, edits, and reactions
+ * still go through the chat-sdk path (no agent-identity requirement there).
+ */
+async function sendViaSwarmBot(
+  botToken: string,
+  platformId: string,
+  threadId: string | null,
+  contentJson: string,
+  files: OutboundFile[] | undefined,
+): Promise<string | undefined> {
+  const content = JSON.parse(contentJson) as Record<string, unknown>;
+  const text = typeof content.text === 'string' ? content.text : '';
+
+  // Telegram chat_id is the numeric chat id. Our platform_id may carry a
+  // "telegram:" namespace prefix (same convention as WhatsApp). Strip it.
+  const chatId = platformId.startsWith('telegram:') ? platformId.slice('telegram:'.length) : platformId;
+  const api = `https://api.telegram.org/bot${botToken}`;
+
+  // Forum topic support: Telegram supergroups with topics require
+  // `message_thread_id` on every send so the message lands in the right
+  // topic instead of the general chat. Accept either a bare numeric string
+  // ("2") or chat-sdk's composite "chatId:threadId" encoding.
+  const messageThreadId = parseThreadId(threadId);
+
+  const baseBody: Record<string, unknown> = { chat_id: chatId };
+  if (messageThreadId !== null) baseBody.message_thread_id = messageThreadId;
+
+  if (!files || files.length === 0) {
+    // Plain text message.
+    const res = await fetch(`${api}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...baseBody, text: text || ' ', parse_mode: 'Markdown' }),
+    });
+    const body = (await res.json()) as { ok: boolean; result?: { message_id: number }; description?: string };
+    if (!body.ok) throw new Error(`Telegram sendMessage failed: ${body.description ?? res.status}`);
+    return body.result ? String(body.result.message_id) : undefined;
+  }
+
+  // Files present: use sendPhoto for images (captioned with text on the first
+  // one), sendDocument for everything else. Multiple attachments → multiple
+  // calls; first carries the caption, rest are captionless.
+  let firstMsgId: string | undefined;
+  for (let i = 0; i < files.length; i++) {
+    const f = files[i];
+    const isImage = /\.(png|jpe?g|webp|gif)$/i.test(f.filename);
+    const endpoint = isImage ? 'sendPhoto' : 'sendDocument';
+    const form = new FormData();
+    form.set('chat_id', chatId);
+    if (messageThreadId !== null) form.set('message_thread_id', String(messageThreadId));
+    if (i === 0 && text) {
+      form.set('caption', text);
+      form.set('parse_mode', 'Markdown');
+    }
+    form.set(
+      isImage ? 'photo' : 'document',
+      new Blob([new Uint8Array(f.data)]),
+      f.filename,
+    );
+    const res = await fetch(`${api}/${endpoint}`, { method: 'POST', body: form });
+    const body = (await res.json()) as { ok: boolean; result?: { message_id: number }; description?: string };
+    if (!body.ok) throw new Error(`Telegram ${endpoint} failed: ${body.description ?? res.status}`);
+    if (i === 0 && body.result) firstMsgId = String(body.result.message_id);
+  }
+  return firstMsgId;
+}
+
+function parseThreadId(threadId: string | null): number | null {
+  if (!threadId) return null;
+  // chat-sdk encoding may be "chatId:threadId" — take the right side.
+  const raw = threadId.includes(':') ? threadId.split(':').pop()! : threadId;
+  const n = Number(raw);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
+/** True if message text contains the literal `[CAIO-EXIT]` marker. */
+function detectExitMarker(content: Record<string, unknown>): boolean {
+  const text = typeof content.text === 'string' ? content.text : '';
+  return text.includes('[CAIO-EXIT]');
+}
+
+/**
+ * Return a version of the JSON content with `[CAIO-EXIT]` stripped from the
+ * `text` field. Preserves all other fields verbatim. Tolerates trailing
+ * whitespace around the marker.
+ */
+function stripExitMarker(rawContent: string, parsedContent: Record<string, unknown>): string {
+  const text = typeof parsedContent.text === 'string' ? parsedContent.text : '';
+  const stripped = text.replace(/\s*\[CAIO-EXIT\]\s*$/g, '').replace(/\[CAIO-EXIT\]/g, '').trimEnd();
+  const patched = { ...parsedContent, text: stripped };
+  try {
+    return JSON.stringify(patched);
+  } catch {
+    return rawContent; // shouldn't happen — parsedContent came from JSON.parse
+  }
 }
 
 /**

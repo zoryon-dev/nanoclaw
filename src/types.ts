@@ -72,11 +72,27 @@ export interface MessagingGroupAgent {
   id: string;
   messaging_group_id: string;
   agent_group_id: string;
-  trigger_rules: string | null; // JSON: { pattern, mentionOnly, excludeSenders, includeSenders }
+  trigger_rules: string | null; // JSON — see TriggerRules
   response_scope: 'all' | 'triggered' | 'allowlisted';
   session_mode: 'shared' | 'per-thread' | 'agent-shared';
   priority: number;
   created_at: string;
+}
+
+/**
+ * Stored JSON-serialized in `messaging_group_agents.trigger_rules`.
+ *
+ * `prefixes`: case-insensitive string prefixes. Message content (after a
+ *   best-effort text extraction) is matched with `.toLowerCase().startsWith(prefix)`.
+ *   An agent with at least one prefix is a "triggered" agent — it only
+ *   activates when a prefix matches (or via sticky route).
+ *
+ * An agent with `trigger_rules: null` (or `{}`) is a "fallback" agent —
+ * gets any message that no triggered agent matched. In a single messaging
+ * group, at most one fallback is useful (the one with highest priority wins).
+ */
+export interface TriggerRules {
+  prefixes?: string[];
 }
 
 export interface Session {

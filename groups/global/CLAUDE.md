@@ -94,14 +94,49 @@ Para conectar toolkit novo: COMPOSIO_SEARCH_TOOLS → COMPOSIO_MANAGE_CONNECTION
 
 ## Arquivos de Referencia
 
-Consultar sob demanda — nao carregar sempre:
+Consultar sob demanda — nao carregar sempre. Todos em `/workspace/global/` (read-only).
 
-- `zoryon.md` — empresa, premissas, servicos
-- `clientes.md` — clientes ativos e contexto
-- `produtos.md` — produtos em desenvolvimento e status
-- `personas.md` — personas B2B/B2C e anti-persona
-- `stack.md` — stack tecnica completa
-- `dados-empresa.md` — CNPJ, banco, dados fiscais (sensivel — nao compartilhar sem autorizacao)
+### Zoryon (empresa)
+
+Estrutura canônica (DOCS-OFICIAIS v1.1, validados 2026-04-11):
+
+- `zoryon/plano-mestre.md` — visão mestre da operação Zoryon V2
+- `zoryon/projeto-base.md` — projeto-base e premissas estruturais
+- `zoryon/sobre.md` — business overview, legal, CNPJ, fundação
+- `zoryon/posicionamento.md` — posicionamento e marca
+- `zoryon/avatares.md` — avatares / ICPs
+- `zoryon/modelo-receita.md` — modelo de receita (TrackGo é separado)
+- `zoryon/catalogo-servicos.md` — catálogo de serviços
+- `zoryon/estrutura-cursos.md` — estrutura de cursos/formações
+- `zoryon/jornada-cliente.md` — jornada completa do cliente
+- `zoryon/presenca-digital.md` — presença digital (site, redes)
+- `zoryon/estrategia-conteudo.md` — estratégia de conteúdo
+- `zoryon/stack-ferramentas.md` — stack técnica e ferramentas
+- `zoryon/roadmap-execucao.md` — roadmap de execução
+- `zoryon/plano-transicao.md` — plano de transição V1→V2
+- `zoryon/brand-system/voz-tom.md` — voz e tom (brand voice guide)
+- `zoryon/brand-system/brand-book.html` — brand book visual
+- `zoryon/brand-system/design-tokens.css` — tokens (cores, tipografia)
+- `zoryon/brand-system/tailwind.config.js` — config Tailwind
+- `zoryon/brand-system/logo-white.svg`, `logo-white-v2.svg` — logos
+
+### Jonas
+
+- `sobre-jonas.md` — perfil estendido (valores, estilo, historico)
+
+### Clientes
+
+- `clientes/INDEX.md` — lista rápida dos clientes ativos
+- `clientes/<slug>/` — pasta por cliente. Nome do arquivo de visão geral varia: `brief.md` (estrutura leve) ou `empresa.md`/`perfil.md` (estrutura densa)
+- Subdiretórios opcionais por cliente: `lancamentos/<slug>/`, `pesquisas/`, `assets/`, `drive-links.md`
+
+Clientes com material denso hoje:
+- `clientes/marcos-salomao-educacao/` — perfil, personas, tom-voz, estratégia-funil, procedimentos, pesquisas/, lancamentos/ (RID, Oratória, CDL, etc.), drive-links.md
+- `clientes/abel-fiorot/` — empresa, perfil, personas, tom-voz, catálogo-produtos, vendas-conversão, operações-apis, prova-social, índice
+
+## Regra de atualizacao
+
+Global e read-only dentro dos containers. Atualizacoes acontecem no host (Jonas edita direto) ou via fluxo de aprovacao. Se um agente sugere mudanca, formalizar como sugestao — nao tentar editar.
 
 ## Memoria Viva
 
@@ -110,11 +145,10 @@ O CLAUDE.md de cada grupo e memoria viva. Atualizar IMEDIATAMENTE quando info re
 ### Gatilhos de salvamento automatico
 
 SEMPRE salvar quando Jonas:
-- Mencionar cliente novo ou perda de cliente → `clientes.md`
-- Compartilhar decisao de negocio → arquivo relevante
+- Mencionar cliente novo ou perda de cliente → sugerir atualizacao em `global/clientes/` (global e RO — agente nao edita direto)
+- Compartilhar decisao de negocio → arquivo relevante do proprio grupo, ou sugerir global
 - Mudar preferencia de como quer ser atendido → CLAUDE.md do grupo
-- Compartilhar dados financeiros → `financeiro.md` (se nao existir, criar)
-- Definir meta ou prazo → arquivo relevante
+- Definir meta ou prazo → arquivo do grupo ou Mem
 - Pedir explicitamente pra lembrar algo
 
 ### Regras de arquivos

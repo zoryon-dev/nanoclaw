@@ -515,11 +515,16 @@ registerChannelAdapter('whatsapp', {
             const timestamp = new Date(Number(msg.messageTimestamp) * 1000).toISOString();
             const isGroup = chatJid.endsWith('@g.us');
 
+            // Adapter boundary: add the "whatsapp:" namespace prefix that
+            // messaging_groups.platform_id carries. Matches the delivery-side
+            // strip (see `deliver()` below) and keeps DB lookups consistent.
+            const namespacedId = `whatsapp:${chatJid}`;
+
             // Notify metadata for group discovery
-            setupConfig.onMetadata(chatJid, undefined, isGroup);
+            setupConfig.onMetadata(namespacedId, undefined, isGroup);
 
             // Only forward messages for registered conversations
-            if (!conversations.has(chatJid)) continue;
+            if (!conversations.has(namespacedId)) continue;
 
             let content =
               normalized.conversation ||
@@ -539,7 +544,12 @@ registerChannelAdapter('whatsapp', {
             // Skip empty protocol messages (no text and no attachments)
             if (!content && attachments.length === 0) continue;
 
-            const sender = msg.key.participant || msg.key.remoteJid || '';
+            // For DMs the sender is the chat counterparty — same as chatJid,
+            // which was already translated LID → phone at the top of this loop.
+            // For groups, fall back to participant (may still be in @lid form;
+            // group sender translation is a separate concern).
+            const rawSender = msg.key.participant || msg.key.remoteJid || '';
+            const sender = isGroup ? rawSender : chatJid;
             const senderName = msg.pushName || sender.split('@')[0];
             const fromMe = msg.key.fromMe || false;
             // Filter bot's own messages to prevent echo loops.
@@ -584,8 +594,10 @@ registerChannelAdapter('whatsapp', {
               timestamp,
             };
 
-            // WhatsApp doesn't use threads — threadId is null
-            setupConfig.onInbound(chatJid, null, inbound);
+            // WhatsApp doesn't use threads — threadId is null. Use the
+            // namespaced id so router.getMessagingGroupByPlatform matches the
+            // DB row (platform_id stored with "whatsapp:" prefix).
+            setupConfig.onInbound(namespacedId, null, inbound);
           } catch (err) {
             log.error('Error processing incoming WhatsApp message', {
               err,
@@ -622,6 +634,9 @@ registerChannelAdapter('whatsapp', {
         _threadId: string | null,
         message: OutboundMessage,
       ): Promise<string | undefined> {
+        // Strip the "whatsapp:" namespace prefix that messaging_groups.platform_id
+        // carries. Baileys expects a bare JID (e.g. "5511...@s.whatsapp.net").
+        if (platformId.startsWith('whatsapp:')) platformId = platformId.slice('whatsapp:'.length);
         const content = message.content as Record<string, unknown>;
 
         // Ask question → text with slash command replies
@@ -705,6 +720,7 @@ registerChannelAdapter('whatsapp', {
       },
 
       async setTyping(platformId: string) {
+        if (platformId.startsWith('whatsapp:')) platformId = platformId.slice('whatsapp:'.length);
         try {
           await sock.sendPresenceUpdate('composing', platformId);
         } catch (err) {

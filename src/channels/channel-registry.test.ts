@@ -185,7 +185,7 @@ describe('channel + router integration', () => {
     });
 
     // Verify session was created and message written
-    const session = findSession('mg-1', null);
+    const session = findSession('ag-1', 'mg-1', null);
     expect(session).toBeDefined();
 
     const dbPath = inboundDbPath('ag-1', session!.id);

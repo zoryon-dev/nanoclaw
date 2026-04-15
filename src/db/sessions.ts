@@ -16,15 +16,25 @@ export function getSession(id: string): Session | undefined {
   return getDb().prepare('SELECT * FROM sessions WHERE id = ?').get(id) as Session | undefined;
 }
 
-export function findSession(messagingGroupId: string, threadId: string | null): Session | undefined {
+export function findSession(
+  agentGroupId: string,
+  messagingGroupId: string,
+  threadId: string | null,
+): Session | undefined {
   if (threadId) {
     return getDb()
-      .prepare('SELECT * FROM sessions WHERE messaging_group_id = ? AND thread_id = ? AND status = ?')
-      .get(messagingGroupId, threadId, 'active') as Session | undefined;
+      .prepare(
+        `SELECT * FROM sessions
+         WHERE agent_group_id = ? AND messaging_group_id = ? AND thread_id = ? AND status = 'active'`,
+      )
+      .get(agentGroupId, messagingGroupId, threadId) as Session | undefined;
   }
   return getDb()
-    .prepare('SELECT * FROM sessions WHERE messaging_group_id = ? AND thread_id IS NULL AND status = ?')
-    .get(messagingGroupId, 'active') as Session | undefined;
+    .prepare(
+      `SELECT * FROM sessions
+       WHERE agent_group_id = ? AND messaging_group_id = ? AND thread_id IS NULL AND status = 'active'`,
+    )
+    .get(agentGroupId, messagingGroupId) as Session | undefined;
 }
 
 /** Find an active session scoped to an agent group (ignoring messaging group). */

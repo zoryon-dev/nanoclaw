@@ -2,9 +2,18 @@
  * Telegram channel adapter (v2) — uses Chat SDK bridge, with a pairing
  * interceptor wrapped around onInbound to verify chat ownership before
  * registration. See telegram-pairing.ts for the why.
+ *
+ * Multi-bot (swarm DM) support: the PRIMARY bot uses TELEGRAM_BOT_TOKEN env
+ * and registers as channel_type='telegram' (full-featured: groups + DMs).
+ * SECONDARY bots are discovered from `agent_groups.container_config.telegramBotToken`
+ * and each registers as a separate channel with channel_type='telegram-<folder>'
+ * and `dmOnly` mode (only forward 1:1 DMs — the primary handles all groups).
+ * Result: each agent is reachable in its own private DM via its own bot
+ * identity, while group routing stays consolidated through the primary.
  */
 import { createTelegramAdapter } from '@chat-adapter/telegram';
 
+import { getAllAgentGroups } from '../db/agent-groups.js';
 import { readEnvFile } from '../env.js';
 import { log } from '../log.js';
 import { createMessagingGroup, getMessagingGroupByPlatform, updateMessagingGroup } from '../db/messaging-groups.js';
@@ -167,35 +176,98 @@ function createPairingInterceptor(
   };
 }
 
+/**
+ * Build a single Telegram bot ChannelAdapter. Used for both primary and
+ * secondary bots; the only difference is `dmOnly` (secondaries don't handle
+ * groups to avoid duplicate-routing messages the primary already sees).
+ */
+function createTelegramBotAdapter(token: string, channelType: string, dmOnly: boolean): ChannelAdapter {
+  const telegramAdapter = createTelegramAdapter({
+    botToken: token,
+    mode: 'polling',
+  });
+  const bridge = createChatSdkBridge({
+    adapter: telegramAdapter,
+    concurrency: 'concurrent',
+    extractReplyContext,
+    // Forum-supergroup topics are first-class threads in Telegram.
+    // supportsThreads=true preserves message_thread_id end-to-end so
+    // (a) the router scopes sessions per topic (per-thread mode) and
+    // (b) the swarm delivery path passes message_thread_id back to the
+    // Bot API so replies land in the right topic, not General.
+    supportsThreads: true,
+    transformOutboundText: sanitizeTelegramLegacyMarkdown,
+    dmOnly,
+  });
+
+  const botUsernamePromise = fetchBotUsername(token);
+
+  return {
+    ...bridge,
+    name: channelType,
+    channelType,
+    async setup(hostConfig: ChannelSetup) {
+      const intercepted: ChannelSetup = {
+        ...hostConfig,
+        onInbound: createPairingInterceptor(botUsernamePromise, hostConfig.onInbound),
+      };
+      return withRetry(() => bridge.setup(intercepted), `bridge.setup:${channelType}`);
+    },
+  };
+}
+
+/**
+ * Discover swarm-secondary bot tokens stored in agent_groups.container_config
+ * and register one ChannelAdapter per bot. Skips:
+ * - The token equal to TELEGRAM_BOT_TOKEN (that's the primary).
+ * - Agents with no token configured.
+ *
+ * Each secondary registers under channel_type='telegram-<folder>' so that
+ * messaging_groups for per-bot DMs route correctly. Called once from the
+ * primary factory; works because Map iteration in `initChannelAdapters`
+ * picks up entries added during the loop.
+ */
+function registerSecondaryBots(primaryToken: string): void {
+  let agentGroups: Awaited<ReturnType<typeof getAllAgentGroups>> = [];
+  try {
+    agentGroups = getAllAgentGroups();
+  } catch (err) {
+    log.warn('Telegram: could not query agent_groups for secondary bots', { err });
+    return;
+  }
+
+  const seenTokens = new Set<string>([primaryToken]);
+  for (const ag of agentGroups) {
+    if (!ag.container_config) continue;
+    let cfg: { telegramBotToken?: unknown };
+    try {
+      cfg = JSON.parse(ag.container_config) as { telegramBotToken?: unknown };
+    } catch {
+      continue;
+    }
+    const token = typeof cfg.telegramBotToken === 'string' ? cfg.telegramBotToken : null;
+    if (!token || seenTokens.has(token)) continue;
+    seenTokens.add(token);
+
+    const channelType = `telegram-${ag.folder}`;
+    log.info('Registering secondary Telegram bot', { agentGroup: ag.id, folder: ag.folder, channelType });
+    registerChannelAdapter(channelType, {
+      factory: () => createTelegramBotAdapter(token, channelType, /*dmOnly*/ true),
+    });
+  }
+}
+
 registerChannelAdapter('telegram', {
   factory: () => {
     const env = readEnvFile(['TELEGRAM_BOT_TOKEN']);
     if (!env.TELEGRAM_BOT_TOKEN) return null;
     const token = env.TELEGRAM_BOT_TOKEN;
-    const telegramAdapter = createTelegramAdapter({
-      botToken: token,
-      mode: 'polling',
-    });
-    const bridge = createChatSdkBridge({
-      adapter: telegramAdapter,
-      concurrency: 'concurrent',
-      extractReplyContext,
-      supportsThreads: false,
-      transformOutboundText: sanitizeTelegramLegacyMarkdown,
-    });
 
-    const botUsernamePromise = fetchBotUsername(token);
+    // Discover & register secondary bots (DM-only). They get instantiated by
+    // initChannelAdapters in the same iteration loop right after this primary
+    // (Map iteration visits entries added during iteration).
+    registerSecondaryBots(token);
 
-    const wrapped: ChannelAdapter = {
-      ...bridge,
-      async setup(hostConfig: ChannelSetup) {
-        const intercepted: ChannelSetup = {
-          ...hostConfig,
-          onInbound: createPairingInterceptor(botUsernamePromise, hostConfig.onInbound),
-        };
-        return withRetry(() => bridge.setup(intercepted), 'bridge.setup');
-      },
-    };
-    return wrapped;
+    return createTelegramBotAdapter(token, 'telegram', /*dmOnly*/ false);
   },
 });

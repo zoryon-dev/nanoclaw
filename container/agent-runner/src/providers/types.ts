@@ -49,7 +49,7 @@ export interface QueryInput {
   };
 }
 
-export type McpServerConfig = McpServerStdio | McpServerUrl;
+export type McpServerConfig = McpServerStdio | McpServerHttp | McpServerSse;
 
 export interface McpServerStdio {
   command: string;
@@ -57,8 +57,14 @@ export interface McpServerStdio {
   env?: Record<string, string>;
 }
 
-export interface McpServerUrl {
-  type: 'url';
+export interface McpServerHttp {
+  type: 'http';
+  url: string;
+  headers?: Record<string, string>;
+}
+
+export interface McpServerSse {
+  type: 'sse';
   url: string;
   headers?: Record<string, string>;
 }

@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y \
     libxshmfence1 \
     curl \
     git \
+    jq \
     poppler-utils \
     && rm -rf /var/lib/apt/lists/*
 
@@ -52,6 +53,10 @@ RUN npm run build
 # Install pdf-reader CLI
 COPY skills/pdf-reader/pdf-reader /usr/local/bin/pdf-reader
 RUN chmod +x /usr/local/bin/pdf-reader
+
+# Install image-gen CLI (OpenRouter / Nano Banana via OneCLI-injected auth)
+COPY skills/image-gen/image-gen /usr/local/bin/image-gen
+RUN chmod +x /usr/local/bin/image-gen
 
 # Create workspace directories
 RUN mkdir -p /workspace/group /workspace/global /workspace/extra

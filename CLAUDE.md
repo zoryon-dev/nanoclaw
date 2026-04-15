@@ -6,6 +6,8 @@ Personal Claude assistant. See [README.md](README.md) for philosophy and setup. 
 
 Single Node.js process with skill-based channel system. Channels (WhatsApp, Telegram, Slack, Discord, Gmail) are skills that self-register at startup. Messages route to Claude Agent SDK running in containers (Linux VMs). Each group has isolated filesystem and memory.
 
+**Multi-agent Telegram swarm:** see [`docs/telegram-swarm.md`](docs/telegram-swarm.md) for the full architecture (multiple bots, per-agent identities, shared sessions, DM and group routing). Forum-topic gotcha: [`docs/telegram-forum-topics.md`](docs/telegram-forum-topics.md).
+
 ## Key Files
 
 | File | Purpose |

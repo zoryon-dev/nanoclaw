@@ -230,7 +230,7 @@ describe('router', () => {
     await routeInbound(event);
 
     // Verify session was created
-    const session = findSession('mg-1', null);
+    const session = findSession('ag-1', 'mg-1', null);
     expect(session).toBeDefined();
 
     // Verify message was written to inbound DB
@@ -291,7 +291,7 @@ describe('router', () => {
     });
 
     // Both should be in the same session
-    const session = findSession('mg-1', null);
+    const session = findSession('ag-1', 'mg-1', null);
     const dbPath = inboundDbPath('ag-1', session!.id);
     const db = new Database(dbPath);
     const rows = db.prepare('SELECT * FROM messages_in ORDER BY timestamp').all();

@@ -1,0 +1,152 @@
+#!/bin/bash
+# image-gen — generate an image via OpenRouter / Gemini 2.5 Flash Image (Nano Banana)
+#
+# The OneCLI gateway injects `Authorization: Bearer <OPENROUTER_API_KEY>` for
+# requests to openrouter.ai. No credential handling inside the container.
+#
+# Usage:
+#   image-gen generate "<prompt>" [--aspect RATIO] [--out PATH]
+#
+#   --aspect    1:1 (default) | 16:9 | 9:16 | 3:4 | 4:3
+#   --out       Output PNG path. Default: /tmp/image-gen-<ts>.png
+#
+# Output on stdout (JSON):
+#   { "ok": true, "path": "/tmp/…png", "bytes": 123456, "aspect": "16:9" }
+#   { "ok": false, "error": "…", "upstream_status": 400 }
+
+set -euo pipefail
+
+API="https://openrouter.ai/api/v1/chat/completions"
+MODEL="google/gemini-2.5-flash-image-preview"
+
+usage() {
+  cat <<'EOF' >&2
+Usage:
+  image-gen generate "<prompt>" [--aspect 1:1|16:9|9:16|3:4|4:3] [--out /path/file.png]
+
+Examples:
+  image-gen generate "Editorial photo of a Brazilian man in charcoal coat..."
+  image-gen generate "Moody dark academia still life" --aspect 3:4 --out /tmp/cover.png
+EOF
+  exit 2
+}
+
+command="${1:-help}"
+if [ "$command" != "generate" ]; then
+  usage
+fi
+shift
+
+prompt=""
+aspect="1:1"
+out=""
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --aspect) aspect="$2"; shift 2 ;;
+    --out)    out="$2";    shift 2 ;;
+    -h|--help) usage ;;
+    -*) echo "unknown flag: $1" >&2; usage ;;
+    *)
+      if [ -z "$prompt" ]; then prompt="$1"; shift
+      else echo "unexpected positional: $1" >&2; usage
+      fi
+      ;;
+  esac
+done
+
+if [ -z "$prompt" ]; then
+  echo '{"ok":false,"error":"prompt is required"}' >&2
+  usage
+fi
+
+case "$aspect" in
+  1:1|16:9|9:16|3:4|4:3) ;;
+  *) echo "invalid aspect: $aspect (allowed: 1:1, 16:9, 9:16, 3:4, 4:3)" >&2; exit 2 ;;
+esac
+
+if [ -z "$out" ]; then
+  out="/tmp/image-gen-$(date +%s)-$$.png"
+fi
+
+ts=$(date +%s)
+tmp_response=$(mktemp /tmp/image-gen-resp-XXXXXX.json)
+trap 'rm -f "$tmp_response"' EXIT
+
+# Construct the multimodal-aware chat completion request. Gemini 2.5 Flash
+# Image returns image bytes inline when `modalities` explicitly includes
+# "image". The aspect ratio is suggested in the prompt text — the model
+# respects the instruction reliably.
+annotated_prompt=$(
+  printf '%s\n\nAspect ratio: %s' "$prompt" "$aspect"
+)
+
+payload=$(jq -n \
+  --arg model "$MODEL" \
+  --arg text "$annotated_prompt" \
+  '{
+    model: $model,
+    modalities: ["image", "text"],
+    messages: [
+      { role: "user", content: [{ type: "text", text: $text }] }
+    ]
+  }')
+
+http_code=$(
+  curl -s -w "%{http_code}" -o "$tmp_response" \
+    -X POST "$API" \
+    -H "Content-Type: application/json" \
+    -H "HTTP-Referer: https://zoryon.dev" \
+    -H "X-Title: NanoClaw Grow" \
+    -d "$payload"
+)
+
+if [ "$http_code" != "200" ]; then
+  err=$(jq -cr '.error // {}' < "$tmp_response" 2>/dev/null || echo "{}")
+  jq -cn --argjson err "$err" --arg code "$http_code" \
+    '{ok: false, upstream_status: ($code | tonumber), error: ($err | tostring)}'
+  exit 1
+fi
+
+# Gemini returns image bytes in one of these shapes depending on routing:
+#   A) choices[0].message.images[0].image_url.url         (data URI)
+#   B) choices[0].message.content[n].image_url.url        (data URI)
+#   C) choices[0].message.content as string with data URI embedded
+#
+# We try them in order. First hit wins.
+data_uri=$(jq -r '
+  .choices[0].message.images[0].image_url.url //
+  (.choices[0].message.content
+    | if type == "array"
+        then (map(select(.type == "image_url")) | .[0].image_url.url)
+        else tostring
+      end
+    | tostring
+  ) // empty
+' < "$tmp_response")
+
+if [ -z "$data_uri" ] || [ "$data_uri" = "null" ]; then
+  err_preview=$(jq -c '.choices[0].message // .error // .' < "$tmp_response" 2>/dev/null | head -c 400)
+  jq -cn --arg preview "$err_preview" \
+    '{ok: false, error: "no image in response", preview: $preview}'
+  exit 1
+fi
+
+# Extract base64 from the data URI. Accepts data:image/png;base64,... and
+# falls through to an HTTP URL if the model returned one.
+if [[ "$data_uri" =~ ^data:image/[a-zA-Z0-9+.-]+;base64,(.+)$ ]]; then
+  b64="${BASH_REMATCH[1]}"
+  printf '%s' "$b64" | base64 -d > "$out"
+elif [[ "$data_uri" =~ ^https?:// ]]; then
+  curl -sfL "$data_uri" -o "$out"
+else
+  jq -cn --arg preview "$data_uri" \
+    '{ok: false, error: "unrecognized image reference", preview: $preview}'
+  exit 1
+fi
+
+bytes=$(stat -c %s "$out" 2>/dev/null || stat -f %z "$out")
+jq -cn \
+  --arg path "$out" \
+  --argjson bytes "$bytes" \
+  --arg aspect "$aspect" \
+  '{ok: true, path: $path, bytes: $bytes, aspect: $aspect}'
