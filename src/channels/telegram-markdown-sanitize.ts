@@ -56,12 +56,9 @@ export function sanitizeTelegramLegacyMarkdown(input: string): string {
   text = text.replace(/[*_[\]]/g, '');
 
   // 7. Restore protected code spans verbatim.
-  return text.replace(
-    new RegExp(`${PLACEHOLDER_PREFIX}(\\d+)${PLACEHOLDER_SUFFIX}`, 'g'),
-    (_, i) => {
-      const seg = codeSegments[Number(i)];
-      // Strip language tag on fenced blocks (```python → ```).
-      return seg.replace(/^```[a-zA-Z0-9_-]+\n/, '```\n');
-    },
-  );
+  return text.replace(new RegExp(`${PLACEHOLDER_PREFIX}(\\d+)${PLACEHOLDER_SUFFIX}`, 'g'), (_, i) => {
+    const seg = codeSegments[Number(i)];
+    // Strip language tag on fenced blocks (```python → ```).
+    return seg.replace(/^```[a-zA-Z0-9_-]+\n/, '```\n');
+  });
 }
