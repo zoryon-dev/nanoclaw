@@ -18,12 +18,7 @@
  */
 import { canAccessAgentGroup } from './access.js';
 import { getChannelAdapter } from './channels/channel-registry.js';
-import {
-  clearActiveRoute,
-  getActiveRoute,
-  setActiveRoute,
-  touchActiveRoute,
-} from './db/active-agent-routes.js';
+import { clearActiveRoute, getActiveRoute, setActiveRoute, touchActiveRoute } from './db/active-agent-routes.js';
 import { isMember } from './db/agent-group-members.js';
 import { getMessagingGroupByPlatform, createMessagingGroup, getMessagingGroupAgents } from './db/messaging-groups.js';
 import { upsertUser, getUser } from './db/users.js';

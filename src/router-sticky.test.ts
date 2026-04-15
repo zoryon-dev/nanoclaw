@@ -243,7 +243,7 @@ describe('pickAgent — with sticky route', () => {
     expect(route!.updated_at > recent).toBe(true);
   });
 
-  it('user with no sticky route is unaffected by another user\'s route', () => {
+  it("user with no sticky route is unaffected by another user's route", () => {
     setActiveRoute('mg-1', 'whatsapp:jonas', 'ag-caio');
 
     const match = pickAgent('mg-1', 'whatsapp:other', makeEvent('oi'));

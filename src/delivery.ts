@@ -463,17 +463,9 @@ async function deliverMessage(
   // up with the correct agent identity (avatar + @handle). Falls through to
   // the default chat-sdk-telegram adapter when no swarm token is configured.
   let platformMsgId: string | undefined;
-  const swarmToken = msg.channel_type === 'telegram'
-    ? getSwarmBotToken(session.agent_group_id)
-    : null;
+  const swarmToken = msg.channel_type === 'telegram' ? getSwarmBotToken(session.agent_group_id) : null;
   if (swarmToken) {
-    platformMsgId = await sendViaSwarmBot(
-      swarmToken,
-      msg.platform_id,
-      msg.thread_id,
-      deliveredContent,
-      files,
-    );
+    platformMsgId = await sendViaSwarmBot(swarmToken, msg.platform_id, msg.thread_id, deliveredContent, files);
   } else {
     platformMsgId = await deliveryAdapter.deliver(
       msg.channel_type,
@@ -590,11 +582,7 @@ async function sendViaSwarmBot(
       form.set('caption', text);
       form.set('parse_mode', 'Markdown');
     }
-    form.set(
-      isImage ? 'photo' : 'document',
-      new Blob([new Uint8Array(f.data)]),
-      f.filename,
-    );
+    form.set(isImage ? 'photo' : 'document', new Blob([new Uint8Array(f.data)]), f.filename);
     const res = await fetch(`${api}/${endpoint}`, { method: 'POST', body: form });
     const body = (await res.json()) as { ok: boolean; result?: { message_id: number }; description?: string };
     if (!body.ok) throw new Error(`Telegram ${endpoint} failed: ${body.description ?? res.status}`);
@@ -624,7 +612,10 @@ function detectExitMarker(content: Record<string, unknown>): boolean {
  */
 function stripExitMarker(rawContent: string, parsedContent: Record<string, unknown>): string {
   const text = typeof parsedContent.text === 'string' ? parsedContent.text : '';
-  const stripped = text.replace(/\s*\[CAIO-EXIT\]\s*$/g, '').replace(/\[CAIO-EXIT\]/g, '').trimEnd();
+  const stripped = text
+    .replace(/\s*\[CAIO-EXIT\]\s*$/g, '')
+    .replace(/\[CAIO-EXIT\]/g, '')
+    .trimEnd();
   const patched = { ...parsedContent, text: stripped };
   try {
     return JSON.stringify(patched);
