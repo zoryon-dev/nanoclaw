@@ -49,10 +49,18 @@ export interface QueryInput {
   };
 }
 
-export interface McpServerConfig {
+export type McpServerConfig = McpServerStdio | McpServerUrl;
+
+export interface McpServerStdio {
   command: string;
   args: string[];
-  env: Record<string, string>;
+  env?: Record<string, string>;
+}
+
+export interface McpServerUrl {
+  type: 'url';
+  url: string;
+  headers?: Record<string, string>;
 }
 
 export interface AgentQuery {

@@ -1,0 +1,83 @@
+#!/bin/bash
+# Mem CLI — create notes, search, and list via Mem API v2
+# Usage: mem-cli <command> [args]
+
+set -euo pipefail
+
+API="https://api.mem.ai/v2"
+TOKEN="${MEM_API_KEY:-}"
+
+if [ -z "$TOKEN" ]; then
+  echo "Error: MEM_API_KEY not set" >&2
+  exit 1
+fi
+
+AUTH="Authorization: Bearer $TOKEN"
+CT="Content-Type: application/json"
+
+case "${1:-help}" in
+  create)
+    # mem-cli create "Title" "Content body"
+    # or: mem-cli create "Content only" (title auto-generated)
+    shift
+    if [ $# -eq 2 ]; then
+      TITLE="$1"; BODY="$2"
+      CONTENT="# ${TITLE}\n\n${BODY}"
+    elif [ $# -eq 1 ]; then
+      CONTENT="$1"
+    else
+      echo "Usage: mem-cli create \"content\" or mem-cli create \"title\" \"body\"" >&2
+      exit 1
+    fi
+    PAYLOAD=$(jq -n --arg c "$CONTENT" '{content: $c}')
+    curl -s -X POST "$API/notes" -H "$AUTH" -H "$CT" -d "$PAYLOAD"
+    ;;
+
+  search)
+    # mem-cli search "query"
+    shift
+    QUERY="${1:-}"
+    if [ -z "$QUERY" ]; then
+      echo "Usage: mem-cli search \"query\"" >&2
+      exit 1
+    fi
+    PAYLOAD=$(jq -n --arg q "$QUERY" '{query: $q}')
+    curl -s -X POST "$API/search" -H "$AUTH" -H "$CT" -d "$PAYLOAD"
+    ;;
+
+  list)
+    # mem-cli list [limit]
+    shift
+    LIMIT="${1:-10}"
+    curl -s -X GET "$API/notes?page_size=$LIMIT" -H "$AUTH"
+    ;;
+
+  get)
+    # mem-cli get <note-id>
+    shift
+    ID="${1:-}"
+    if [ -z "$ID" ]; then
+      echo "Usage: mem-cli get <note-id>" >&2
+      exit 1
+    fi
+    curl -s -X GET "$API/notes/$ID" -H "$AUTH"
+    ;;
+
+  help|*)
+    cat <<'HELP'
+Mem CLI — Memoria de longo prazo
+
+Comandos:
+  mem-cli create "conteudo"              Criar nota (titulo auto)
+  mem-cli create "titulo" "conteudo"     Criar nota com titulo
+  mem-cli search "query"                 Buscar notas
+  mem-cli list [limite]                  Listar notas recentes (padrao: 10)
+  mem-cli get <note-id>                  Ler nota especifica
+
+Exemplos:
+  mem-cli create "Decisao: mudar pricing do TrackGO" "Jonas decidiu em 28/03 reduzir o preco de R$97 para R$67 no lancamento."
+  mem-cli search "pricing TrackGO"
+  mem-cli list 5
+HELP
+    ;;
+esac

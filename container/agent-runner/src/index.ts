@@ -89,10 +89,11 @@ async function main(): Promise<void> {
   // Merge additional MCP servers from host configuration
   if (process.env.NANOCLAW_MCP_SERVERS) {
     try {
-      const additional = JSON.parse(process.env.NANOCLAW_MCP_SERVERS) as Record<string, { command: string; args: string[]; env: Record<string, string> }>;
+      const additional = JSON.parse(process.env.NANOCLAW_MCP_SERVERS) as Record<string, Record<string, unknown>>;
       for (const [name, config] of Object.entries(additional)) {
-        mcpServers[name] = config;
-        log(`Additional MCP server: ${name} (${config.command})`);
+        mcpServers[name] = config as (typeof mcpServers)[string];
+        const label = 'url' in config ? (config as { url: string }).url : (config as { command: string }).command;
+        log(`Additional MCP server: ${name} (${label})`);
       }
     } catch (e) {
       log(`Failed to parse NANOCLAW_MCP_SERVERS: ${e}`);

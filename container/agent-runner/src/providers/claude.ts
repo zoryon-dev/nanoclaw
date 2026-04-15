@@ -30,6 +30,14 @@ const TOOL_ALLOWLIST = [
   'Skill',
   'NotebookEdit',
   'mcp__nanoclaw__*',
+  'mcp__parallel-search__*',
+  'mcp__parallel-task__*',
+  'mcp__fireflies__*',
+  'mcp__composio__*',
+  'mcp__firecrawl__*',
+  'mcp__mem__*',
+  'mcp__todoist__*',
+  'mcp__qmd__*',
 ];
 
 interface SDKUserMessage {
