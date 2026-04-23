@@ -82,10 +82,16 @@ export function deleteSession(id: string): void {
 
 // ── Pending Questions ──
 
-export function createPendingQuestion(pq: PendingQuestion): void {
-  getDb()
+/**
+ * Insert a pending question row. Idempotent: when delivery fails and retries,
+ * the second attempt calls this with the same question_id — without `OR
+ * IGNORE` that would throw UNIQUE and prevent the retry from reaching the
+ * actual send step. Returns true if a new row was inserted.
+ */
+export function createPendingQuestion(pq: PendingQuestion): boolean {
+  const result = getDb()
     .prepare(
-      `INSERT INTO pending_questions (question_id, session_id, message_out_id, platform_id, channel_type, thread_id, title, options_json, created_at)
+      `INSERT OR IGNORE INTO pending_questions (question_id, session_id, message_out_id, platform_id, channel_type, thread_id, title, options_json, created_at)
        VALUES (@question_id, @session_id, @message_out_id, @platform_id, @channel_type, @thread_id, @title, @options_json, @created_at)`,
     )
     .run({
@@ -99,6 +105,7 @@ export function createPendingQuestion(pq: PendingQuestion): void {
       options_json: JSON.stringify(pq.options),
       created_at: pq.created_at,
     });
+  return result.changes > 0;
 }
 
 export function getPendingQuestion(questionId: string): PendingQuestion | undefined {
@@ -116,16 +123,21 @@ export function deletePendingQuestion(questionId: string): void {
 
 // ── Pending Approvals ──
 
+/**
+ * Insert a pending approval row. Idempotent for the same reason as
+ * createPendingQuestion: delivery retries with the same approval_id must not
+ * fail on UNIQUE before the send step gets a chance to succeed.
+ */
 export function createPendingApproval(
   pa: Partial<PendingApproval> &
     Pick<
       PendingApproval,
       'approval_id' | 'request_id' | 'action' | 'payload' | 'created_at' | 'title' | 'options_json'
     >,
-): void {
-  getDb()
+): boolean {
+  const result = getDb()
     .prepare(
-      `INSERT INTO pending_approvals
+      `INSERT OR IGNORE INTO pending_approvals
          (approval_id, session_id, request_id, action, payload, created_at,
           agent_group_id, channel_type, platform_id, platform_message_id, expires_at, status,
           title, options_json)
@@ -144,6 +156,7 @@ export function createPendingApproval(
       status: 'pending',
       ...pa,
     });
+  return result.changes > 0;
 }
 
 export function getPendingApproval(approvalId: string): PendingApproval | undefined {
