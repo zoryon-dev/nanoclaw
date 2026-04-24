@@ -2,7 +2,11 @@ import { findByName, getAllDestinations, type DestinationEntry } from './destina
 import { getPendingMessages, markProcessing, markCompleted, type MessageInRow } from './db/messages-in.js';
 import { writeMessageOut } from './db/messages-out.js';
 import { touchHeartbeat, clearStaleProcessingAcks } from './db/connection.js';
-import { getStoredSessionId, setStoredSessionId, clearStoredSessionId } from './db/session-state.js';
+import {
+  clearContinuation,
+  migrateLegacyContinuation,
+  setContinuation,
+} from './db/session-state.js';
 import { formatMessages, extractRouting, categorizeMessage, type RoutingContext } from './formatter.js';
 import type { AgentProvider, AgentQuery, ProviderEvent } from './providers/types.js';
 
@@ -20,6 +24,12 @@ function generateId(): string {
 
 export interface PollLoopConfig {
   provider: AgentProvider;
+  /**
+   * Name of the provider (e.g. "claude", "codex", "opencode"). Used to key
+   * the stored continuation per-provider so flipping providers doesn't
+   * resurrect a stale id from a different backend.
+   */
+  providerName: string;
   cwd: string;
   systemContext?: {
     instructions?: string;
@@ -46,8 +56,9 @@ export async function runPollLoop(config: PollLoopConfig): Promise<void> {
   // Resume the agent's prior session from a previous container run if one
   // was persisted. The continuation is opaque to the poll-loop — the
   // provider decides how to use it (Claude resumes a .jsonl transcript,
-  // other providers may reload a thread ID, etc.).
-  let continuation: string | undefined = getStoredSessionId();
+  // other providers may reload a thread ID, etc.). Keyed per-provider so
+  // a Codex thread id never gets handed to Claude or vice versa.
+  let continuation: string | undefined = migrateLegacyContinuation(config.providerName);
 
   if (continuation) {
     log(`Resuming agent session ${continuation}`);
@@ -116,7 +127,7 @@ export async function runPollLoop(config: PollLoopConfig): Promise<void> {
         if (cmdInfo.command === '/clear') {
           log('Clearing session (resetting continuation)');
           continuation = undefined;
-          clearStoredSessionId();
+          clearContinuation(config.providerName);
           writeMessageOut({
             id: generateId(),
             kind: 'chat',
@@ -171,7 +182,7 @@ export async function runPollLoop(config: PollLoopConfig): Promise<void> {
       const result = await processQuery(query, routing, config, processingIds);
       if (result.continuation && result.continuation !== continuation) {
         continuation = result.continuation;
-        setStoredSessionId(continuation);
+        setContinuation(config.providerName, continuation);
       }
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : String(err);
@@ -183,7 +194,7 @@ export async function runPollLoop(config: PollLoopConfig): Promise<void> {
       if (continuation && config.provider.isSessionInvalid(err)) {
         log(`Stale session detected (${continuation}) — clearing for next retry`);
         continuation = undefined;
-        clearStoredSessionId();
+        clearContinuation(config.providerName);
       }
 
       // Write error response so the user knows something went wrong
@@ -240,7 +251,12 @@ interface QueryResult {
   continuation?: string;
 }
 
-async function processQuery(query: AgentQuery, routing: RoutingContext, config: PollLoopConfig, processingIds: string[]): Promise<QueryResult> {
+async function processQuery(
+  query: AgentQuery,
+  routing: RoutingContext,
+  config: PollLoopConfig,
+  initialBatchIds: string[],
+): Promise<QueryResult> {
   let queryContinuation: string | undefined;
   let done = false;
   let lastEventTime = Date.now();
@@ -285,8 +301,16 @@ async function processQuery(query: AgentQuery, routing: RoutingContext, config: 
 
       if (event.type === 'init') {
         queryContinuation = event.continuation;
-      } else if (event.type === 'result' && event.text) {
-        dispatchResultText(event.text, routing);
+        // Persist immediately so a mid-turn container crash still lets the
+        // next wake resume the conversation.
+        setContinuation(config.providerName, event.continuation);
+      } else if (event.type === 'result') {
+        // Mark the initial batch completed so the host sweep doesn't see
+        // stale 'processing' claims while the query stays open for follow-ups.
+        markCompleted(initialBatchIds);
+        if (event.text) {
+          dispatchResultText(event.text, routing);
+        }
       }
     }
   } finally {
