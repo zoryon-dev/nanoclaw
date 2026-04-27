@@ -56,10 +56,9 @@ function buildMcpServers(): Record<string, McpServer> {
     };
   }
 
-  servers['composio'] = {
-    type: 'http',
-    url: 'https://connect.composio.dev/mcp',
-  };
+  // composio is provisioned separately via scripts/composio-provision-sessions.ts
+  // (Tool Router session URLs stored directly in container_config, auth
+  // injected by the OneCLI gateway via the "Composio Backend" vault secret)
 
   if (env.FIRECRAWL_API_KEY) {
     servers['firecrawl'] = {

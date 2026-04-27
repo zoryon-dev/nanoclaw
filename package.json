@@ -32,6 +32,8 @@
     "@chat-adapter/teams": "^4.24.0",
     "@chat-adapter/telegram": "^4.24.0",
     "@chat-adapter/whatsapp": "^4.24.0",
+    "@composio/claude-agent-sdk": "^0.6.10",
+    "@composio/core": "^0.6.10",
     "@onecli-sh/sdk": "^0.3.1",
     "@resend/chat-sdk-adapter": "^0.1.1",
     "@types/qrcode": "^1.5.6",
