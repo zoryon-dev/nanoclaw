@@ -55,6 +55,7 @@ Migration target is `upstream/v2`, which is an architectural rewrite. Most v1 sk
 - [07-ci-workflows.md](07-ci-workflows.md) — CI/CD customizations
 - [08-channels.md](08-channels.md) — Gmail and Emacs channel notes
 - [09-upstream-sync-2026-04-28.md](09-upstream-sync-2026-04-28.md) — Selective cherry-pick from upstream/main; what was taken, skipped, deferred
+- [10-swarm-routing-fix-2026-04-28.md](10-swarm-routing-fix-2026-04-28.md) — Creative_Lab routing fix (Zory catch-all), Lad system-prompt (no silent re-route to Grow), Caio briefing simplified (auto-Zoryon + auto-tom)
 
 ## Applied Skills (v1)
 
