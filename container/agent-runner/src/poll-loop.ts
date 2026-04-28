@@ -13,7 +13,16 @@ import type { AgentProvider, AgentQuery, ProviderEvent } from './providers/types
 
 const POLL_INTERVAL_MS = 1000;
 const ACTIVE_POLL_INTERVAL_MS = 500;
-const IDLE_END_MS = 20_000; // End stream after 20s with no SDK events
+// End stream after 120s with no SDK events. Resuming a long Claude session can
+// take 60-90s before the first event arrives, and tool calls (esp. Composio
+// remote bash + workbench, Drive uploads) regularly run silent for 30-60s
+// without yielding any SDK events. Aborting too early disconnects the
+// agent-runner iterator while the underlying claude subprocess keeps running —
+// it finishes the work and writes the final response, but to a closed
+// listener, so the user gets nothing back. 120s is long enough to cover
+// resume + slow tool runs, and short enough that a genuinely hung query
+// doesn't leave the container wedged forever.
+const IDLE_END_MS = 120_000;
 
 function log(msg: string): void {
   console.error(`[poll-loop] ${msg}`);
