@@ -198,3 +198,30 @@ sqlite3 data/v2.db "DELETE FROM active_agent_routes WHERE messaging_group_id='mg
 ```
 
 To recover from a hung run, ask Caio in chat: "Caio, o Lad só anunciou conclusão e não emitiu os prompts. Reenvia os 6 briefings pra ele." Caio will re-emit the per-slide `<message to="lad">` blocks, and the freshly-spawned Lad (with the new rule) will respond per-slide.
+
+## Fix 6 — Drive parent folder for carousel exports (added after first end-to-end run)
+
+**Symptom:** Etapa 5.5 worked end-to-end (Caio generated PNGs/PDF/HTML, uploaded to Drive, sent the link), but each carousel folder was created at the root of the Drive instead of inside a project-specific parent. Jonas wants every carousel folder under `1EsyW29q2QlihYRASyKBCKAsfUTyU4KV0`.
+
+The original Etapa 5.5 spec said "Criar pasta: `/Carrosséis/YYYY-MM-DD — <slug>/`" (a path-style hint), but Composio's `GOOGLEDRIVE_CREATE_FOLDER` doesn't take paths — it takes `parent_id`. With no `parent_id`, Caio defaulted to root.
+
+Update `groups/content-machine/system-prompt.md` Etapa 5.5 Passo 3:
+
+```diff
+-**Passo 3 — Upload para Google Drive** via Composio MCP (`COMPOSIO_MULTI_EXECUTE_TOOL` com toolkit `googledrive`):
+-- Criar pasta: `/Carrosséis/YYYY-MM-DD — <slug-do-tema>/` (slug derivado da headline escolhida, lowercase, kebab-case, sem acentos)
+-- Upload: todos os 9 PNGs ... `legenda.txt`
+-- Obter link compartilhável da pasta (permissão: qualquer pessoa com o link pode ver)
++**Passo 3 — Upload para Google Drive** via Composio MCP:
++- **Pasta-mãe (parent obrigatório):** `1EsyW29q2QlihYRASyKBCKAsfUTyU4KV0` — TODA pasta de carrossel é criada dentro dessa. Em `GOOGLEDRIVE_CREATE_FOLDER`, passar `parent_id="1EsyW29q2QlihYRASyKBCKAsfUTyU4KV0"`.
++- Subpasta: `YYYY-MM-DD — <slug-do-tema>` (slug kebab-case sem acentos).
++- Upload de todos os arquivos com `parent_id` = id da subpasta recém-criada.
++- Permissões herdam da pasta-mãe (view-link).
+```
+
+After editing, kill any running Caio container so next spawn picks up the new prompt:
+```bash
+docker kill $(docker ps --filter name=nanoclaw-v2-content-machine --format '{{.Names}}')
+```
+
+If older carousel folders exist at Drive root and need to be moved, ask Caio in chat: "Caio, move a pasta `<id>` (carrossel `<tema>`) pra dentro da pasta-mãe `1EsyW29q2QlihYRASyKBCKAsfUTyU4KV0`." He has googledrive (51 tools) and can use `GOOGLEDRIVE_MOVE_FILE`.
