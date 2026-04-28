@@ -49,6 +49,21 @@ The match condition (`channel_type === channelType && platform_id === platformId
      chown 1000:1000 data/v2-sessions/$ag/agent-runner-src/poll-loop.ts
    done
    ```
+
+   **WARNING — staleness gotcha:** the per-group copies were taken at group-init time and never refreshed. If they predate any other change in `container/agent-runner/src/` (e.g. the upstream-sync 81ef193 that renamed `session-state.ts` exports), copying just `poll-loop.ts` will produce a TypeScript error inside the container (TS2305: missing exports), the container exits code 2, and no agent responds. To avoid that, sync everything that diverged:
+   ```bash
+   for ag in $(ls data/v2-sessions/ | grep '^ag-'); do
+     diff -rq container/agent-runner/src/ data/v2-sessions/$ag/agent-runner-src/ \
+       | grep -v '^Only in data/v2-sessions' \
+       | awk '{print $2}' \
+       | while read src; do
+           rel="${src#container/agent-runner/src/}"
+           cp "$src" "data/v2-sessions/$ag/agent-runner-src/$rel"
+         done
+     chown -R 1000:1000 "data/v2-sessions/$ag/agent-runner-src"
+   done
+   ```
+   Then validate with `docker run --rm --entrypoint bash -v $(pwd)/data/v2-sessions/<one-ag>/agent-runner-src:/app/src nanoclaw-agent:latest -c 'cd /app && npx tsc --outDir /tmp/dist'` — must exit 0 before continuing.
 4. Kill running swarm containers so next spawn picks up the new code:
    ```bash
    docker kill $(docker ps --filter name=nanoclaw-v2 --format '{{.Names}}')
