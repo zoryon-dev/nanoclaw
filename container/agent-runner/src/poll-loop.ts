@@ -262,6 +262,7 @@ async function processQuery(
   let done = false;
   let endRequested = false;
   let endRequestedAt = 0;
+  let aborted = false;
   let lastEventTime = Date.now();
 
   // Concurrent polling: push follow-ups, checkpoint WAL, detect idle
@@ -270,10 +271,11 @@ async function processQuery(
 
     // After end() was requested, the SDK iterator may not terminate (e.g.
     // post-/compact, events.next() can stay pending indefinitely). Give it
-    // 10s of grace, then force-abort so the container doesn't hang.
+    // 10s of grace, then force-abort once and stop polling.
     if (endRequested) {
-      if (Date.now() - endRequestedAt > 10_000) {
+      if (!aborted && Date.now() - endRequestedAt > 10_000) {
         log('SDK iterator did not terminate 10s after end(), aborting');
+        aborted = true;
         query.abort();
       }
       return;

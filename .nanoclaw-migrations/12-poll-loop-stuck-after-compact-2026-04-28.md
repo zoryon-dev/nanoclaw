@@ -15,21 +15,23 @@ Observed at 11:07:57 in Caio (`content-machine`) right after a /compact with 136
 Two changes in `container/agent-runner/src/poll-loop.ts`:
 
 1. Add `endRequested` flag set right after the first `query.end()` call. Skip the idle check on subsequent ticks so `query.end()` is called exactly once and the log line is emitted exactly once.
-2. As a safety net, if the iterator hasn't terminated within 10s of `endRequested = true`, call `query.abort()` (force-stop) so the container can exit cleanly. This handles the post-compact case where `query.end()` alone isn't enough.
+2. As a safety net, if the iterator hasn't terminated within 10s of `endRequested = true`, call `query.abort()` (force-stop) ONCE so the container can exit cleanly. Track `aborted` flag so the abort isn't re-fired on every 500ms tick — same spam pattern as the original bug, just with a different log line.
 
 ```diff
    let queryContinuation: string | undefined;
    let done = false;
 +  let endRequested = false;
 +  let endRequestedAt = 0;
++  let aborted = false;
    let lastEventTime = Date.now();
 
    const pollHandle = setInterval(() => {
      if (done) return;
 +
 +    if (endRequested) {
-+      if (Date.now() - endRequestedAt > 10_000) {
++      if (!aborted && Date.now() - endRequestedAt > 10_000) {
 +        log('SDK iterator did not terminate 10s after end(), aborting');
++        aborted = true;
 +        query.abort();
 +      }
 +      return;
