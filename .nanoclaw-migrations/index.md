@@ -5,6 +5,8 @@ Base (merge-base): 934f063aff5c30e7b49ce58b53b41901d3472a3e
 HEAD at generation: 595f8ea
 Upstream target: upstream/v2 (db3aa0b)
 
+> **Status (2026-04-28):** v1→v2 migration completed. Local has since added Composio Tool Router, multi-agent Telegram swarm, cold DM infra, and per-card approvals. Selective upstream sync done on 2026-04-28 — see [09-upstream-sync-2026-04-28.md](09-upstream-sync-2026-04-28.md). The full `src/modules/` refactor remains deferred.
+
 ## Overview
 
 This fork belongs to Jonas (Zoryon founder, Brazil). The assistant is named **Zory** — an executive secretary persona in Portuguese. The fork has 16 upstream skills applied and significant custom integrations (Composio, Parallel AI, Fireflies, Mem, Firecrawl, Todoist, QMD).
@@ -52,6 +54,7 @@ Migration target is `upstream/v2`, which is an architectural rewrite. Most v1 sk
 - [06-scheduled-tasks.md](06-scheduled-tasks.md) — Scheduled task configurations
 - [07-ci-workflows.md](07-ci-workflows.md) — CI/CD customizations
 - [08-channels.md](08-channels.md) — Gmail and Emacs channel notes
+- [09-upstream-sync-2026-04-28.md](09-upstream-sync-2026-04-28.md) — Selective cherry-pick from upstream/main; what was taken, skipped, deferred
 
 ## Applied Skills (v1)
 
