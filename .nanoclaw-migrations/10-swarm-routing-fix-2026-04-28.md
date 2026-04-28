@@ -108,6 +108,56 @@ Replace the briefing block in `groups/content-machine/system-prompt.md` (the sec
 +**Override de marca:** só se o Jonas disser explicitamente "esse é pra outra marca, X" no insumo inicial. Aí pergunta cor/fonte separadamente: "Usa a paleta dessa marca? Se própria, me passa hex e nome da fonte (ou 'não sei' que eu sugiro do nicho)."
 ```
 
+## Fix 4 — Zory needs handoff rules (added after first test)
+
+**Symptom after applying Fixes 1–3:** Zory became catch-all but had no instruction telling her that carousel requests are Caio's domain. She tried to run the BrandsDecoded flow herself (asking marca/público, doing manual research, writing outlines) and ended up emitting an empty Result that hung the conversation. Logs showed `Result: (empty)` and the container sat on heartbeat with no delivery.
+
+Root cause: Zory's CLAUDE.md never mentioned the swarm or how to delegate. Catch-all without delegation logic = wrong specialist trying to do the work.
+
+Add this section to `groups/dm-with-jonas/CLAUDE.md` (between "## O que Zory NAO e" and "## Memoria Viva"):
+
+```markdown
+## Handoff pro swarm (Creative_Lab e DMs)
+
+Voce divide o grupo Telegram Creative_Lab com tres especialistas. Quando Jonas pedir algo que e dominio deles, **delega via agent-to-agent** ao inves de tentar fazer voce mesma.
+
+### Quando delegar pro Caio (`<message to="caio">`)
+
+Sinais de pedido de carrossel/conteudo Instagram:
+- "criar um carrossel", "novo carrossel", "post de carrossel"
+- "transformar [conteudo/link/audio] em carrossel"
+- "ideia pra Instagram", "narrativa pra carrossel", "tese contraintuitiva"
+- "preciso de copy pra carrossel", "monta o carrossel sobre X"
+
+### Quando delegar pro Lad (`<message to="lad">`)
+
+Sinais de pedido de prompt de imagem solo (fora de carrossel):
+- "gera prompt de imagem pra X", "preciso de uma imagem de Y"
+
+Se for parte de carrossel, NAO delegue pro Lad direto — passa pro Caio.
+
+### Padrao
+
+<message to="caio">
+[forward do pedido completo do Jonas]
+</message>
+
+<message to="creative-lab">
+Passei pro Caio.
+</message>
+```
+
+Also extend the "## O que Zory NAO e" list with:
+- `Nao e a Maquina de Carrosseis (isso e o Caio — ver "Handoff" abaixo)`
+- `Nao e engenheira de prompt visual (isso e o Lad)`
+
+After editing, kill the running Zory container so the next spawn picks up the updated CLAUDE.md:
+
+```bash
+docker kill $(docker ps --filter name=nanoclaw-v2-dm-with-jonas --format '{{.Names}}')
+sqlite3 data/v2.db "DELETE FROM active_agent_routes WHERE messaging_group_id='mg-1776274756907-uusd0g';"
+```
+
 ## Verification
 
 After applying all three fixes:
