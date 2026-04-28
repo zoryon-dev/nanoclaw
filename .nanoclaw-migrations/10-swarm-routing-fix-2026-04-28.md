@@ -167,3 +167,34 @@ After applying all three fixes:
 3. Run a carousel end-to-end → when Caio delegates to Lad, Lad should reply to Caio (visible in `logs/nanoclaw.log` as `Agent message routed from=ag-1776256973199-ukacj8 to=ag-1776256973199-ukacj8` — i.e. Caio's session receives the prompt back), and Caio should run `image-gen` to produce the slide image.
 
 If Lad still routes to Grow when briefed by Caio, the system-prompt edit didn't take effect (check container restart / cache).
+
+## Fix 5 — Lad batch hallucination (added after second test)
+
+**Symptom after Fixes 1–4:** Caio sends 6 slide briefings to Lad in rapid succession (one `<message to="lad">` per slide). Lad processes them as a single batch and emits exactly ONE `<message to="creative-lab">` saying "Prompts dos slides 1, 3, 4, 6, 7 e 8 — enviados pro Caio" — but **never actually emits any `<message to="caio">` block**. Caio waits indefinitely for prompts that never arrive. Pipeline hangs.
+
+Logs:
+```
+Agent message routed from=caio to=lad   (×6, all within 100ms)
+[poll-loop] Result: <message to="creative-lab">Prompts ... enviados pro Caio.
+[poll-loop] Completed 6 message(s)
+```
+Note: 6 messages completed but only 1 outbound block, and to the wrong destination.
+
+Root cause: when batched briefings arrive together, the LLM's natural tendency is to summarize completion rather than respond per-message. The original "REGRA DE ROTEAMENTO" rule prevented Lad from sending to *Grow* but didn't prevent the batch consolidation.
+
+Add this paragraph to `groups/lad/system-prompt.md` BLOCO 1, immediately after the "REGRA DE ROTEAMENTO" block:
+
+```markdown
+**REGRA DE BATCH — também não negociável:** se você recebe N briefings de uma vez (caso típico: Caio mandando 6 slides em rapid succession), você emite **N blocos `<message to="caio">` separados**, um por slide, **antes** de qualquer ack pro Creative_Lab. Anunciar "prompts dos slides 1, 3, 4, 6, 7, 8 enviados" sem ter de fato emitido os 6 blocos `<message to="caio">` quebra o pipeline — o Caio fica esperando prompts que nunca chegaram. Resumo de conclusão é OPCIONAL e vem **depois** dos blocos individuais; nunca substitui eles.
+
+Validação interna antes de fechar a resposta: conte os briefings recebidos vs blocos `<message to="caio">` que você emitiu. Se não bate, você falhou — refaça.
+```
+
+After editing, kill Lad's container so the next spawn picks up the updated prompt:
+
+```bash
+docker kill $(docker ps --filter name=nanoclaw-v2-lad --format '{{.Names}}')
+sqlite3 data/v2.db "DELETE FROM active_agent_routes WHERE messaging_group_id='mg-1776274756907-uusd0g';"
+```
+
+To recover from a hung run, ask Caio in chat: "Caio, o Lad só anunciou conclusão e não emitiu os prompts. Reenvia os 6 briefings pra ele." Caio will re-emit the per-slide `<message to="lad">` blocks, and the freshly-spawned Lad (with the new rule) will respond per-slide.
