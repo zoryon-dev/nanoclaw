@@ -2,6 +2,7 @@ import { findByName, getAllDestinations, type DestinationEntry } from './destina
 import { getPendingMessages, markProcessing, markCompleted, type MessageInRow } from './db/messages-in.js';
 import { writeMessageOut } from './db/messages-out.js';
 import { touchHeartbeat, clearStaleProcessingAcks } from './db/connection.js';
+import { getSessionRouting } from './db/session-routing.js';
 import {
   clearContinuation,
   migrateLegacyContinuation,
@@ -420,16 +421,25 @@ function dispatchResultText(text: string, routing: RoutingContext): void {
 function sendToDestination(dest: DestinationEntry, body: string, routing: RoutingContext): void {
   const platformId = dest.type === 'channel' ? dest.platformId! : dest.agentGroupId!;
   const channelType = dest.type === 'channel' ? dest.channelType! : 'agent';
-  // Inherit thread_id from the inbound routing context so replies land in the
-  // same thread the conversation is in. For non-threaded adapters the router
-  // strips thread_id at ingest, so this will already be null.
+  // Inherit thread_id: prefer routing context (the thread the inbound came from);
+  // if the inbound had no thread (e.g. agent-to-agent delivery, which always passes
+  // threadId=null) but the destination matches the session's default channel+platform,
+  // fall back to session_routing.thread_id so the reply lands in the session's
+  // configured thread instead of defaulting to the channel's general topic.
+  let threadId = routing.threadId;
+  if (threadId === null && dest.type === 'channel') {
+    const sr = getSessionRouting();
+    if (sr.channel_type === channelType && sr.platform_id === platformId && sr.thread_id) {
+      threadId = sr.thread_id;
+    }
+  }
   writeMessageOut({
     id: generateId(),
     in_reply_to: routing.inReplyTo,
     kind: 'chat',
     platform_id: platformId,
     channel_type: channelType,
-    thread_id: routing.threadId,
+    thread_id: threadId,
     content: JSON.stringify({ text: body }),
   });
 }

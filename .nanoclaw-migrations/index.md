@@ -56,6 +56,7 @@ Migration target is `upstream/v2`, which is an architectural rewrite. Most v1 sk
 - [08-channels.md](08-channels.md) — Gmail and Emacs channel notes
 - [09-upstream-sync-2026-04-28.md](09-upstream-sync-2026-04-28.md) — Selective cherry-pick from upstream/main; what was taken, skipped, deferred
 - [10-swarm-routing-fix-2026-04-28.md](10-swarm-routing-fix-2026-04-28.md) — Creative_Lab routing fix (Zory catch-all), Lad system-prompt (no silent re-route to Grow), Caio briefing simplified (auto-Zoryon + auto-tom)
+- [11-thread-id-on-agent-to-agent-handoff-2026-04-28.md](11-thread-id-on-agent-to-agent-handoff-2026-04-28.md) — Caio's reply landing in General instead of CreativeLab's after Zory handoff; fix in `sendToDestination` to fall back to `session_routing.thread_id`
 
 ## Applied Skills (v1)
 
