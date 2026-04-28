@@ -260,11 +260,24 @@ async function processQuery(
 ): Promise<QueryResult> {
   let queryContinuation: string | undefined;
   let done = false;
+  let endRequested = false;
+  let endRequestedAt = 0;
   let lastEventTime = Date.now();
 
   // Concurrent polling: push follow-ups, checkpoint WAL, detect idle
   const pollHandle = setInterval(() => {
     if (done) return;
+
+    // After end() was requested, the SDK iterator may not terminate (e.g.
+    // post-/compact, events.next() can stay pending indefinitely). Give it
+    // 10s of grace, then force-abort so the container doesn't hang.
+    if (endRequested) {
+      if (Date.now() - endRequestedAt > 10_000) {
+        log('SDK iterator did not terminate 10s after end(), aborting');
+        query.abort();
+      }
+      return;
+    }
 
     // Skip system messages (MCP tool responses) and admin commands (need fresh query)
     const newMessages = getPendingMessages().filter((m) => {
@@ -287,9 +300,14 @@ async function processQuery(
       lastEventTime = Date.now(); // new input counts as activity
     }
 
-    // End stream when agent is idle: no SDK events and no pending messages
+    // End stream when agent is idle: no SDK events and no pending messages.
+    // Guard with endRequested so we don't re-call query.end() (and re-log) on
+    // every 500ms tick while the SDK iterator is still draining — a /compact
+    // result can leave events.next() pending indefinitely.
     if (Date.now() - lastEventTime > IDLE_END_MS) {
       log(`No SDK events for ${IDLE_END_MS / 1000}s, ending query`);
+      endRequested = true;
+      endRequestedAt = Date.now();
       query.end();
     }
   }, ACTIVE_POLL_INTERVAL_MS);
