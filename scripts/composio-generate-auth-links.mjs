@@ -10,7 +10,7 @@ if (!apiKey) { console.error('Set COMPOSIO_API_KEY'); process.exit(1); }
 
 const ALL = ['googledrive', 'googlesheets', 'googledocs', 'tavily'];
 const MATRIX = {
-  Zory: ['gmail', 'googledrive', 'googlesheets', 'googledocs', 'googlecalendar', 'github', 'instagram', 'metaads', 'neon', 'cloudflare', 'short_io', 'tavily'],
+  Zory: ['gmail', 'googledrive', 'googlesheets', 'googledocs', 'googlecalendar', 'google_analytics', 'github', 'instagram', 'metaads', 'neon', 'cloudflare', 'short_io', 'tavily'],
   Caio: ALL,
   Lad: ALL,
   Grow: ALL,

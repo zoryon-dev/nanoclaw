@@ -54,6 +54,7 @@ NUNCA chutar nome de tool. Sempre descobrir via SEARCH.
 | `googlesheets` | leitura/edicao de planilhas | 36 |
 | `googledocs` | leitura/edicao de docs | 32 |
 | `googlecalendar` | eventos, agenda, busca de horarios | 28 |
+| `google_analytics` | GA4 Admin/Data API: contas, properties, run reports | 4 |
 | `github` | repos, issues, PRs, code (catalogo amplo) | 823 |
 | `instagram` | Graph API: posts, insights, business | 16 |
 | `metaads` | campanhas, anuncios, insights Meta | 16 |
@@ -62,7 +63,7 @@ NUNCA chutar nome de tool. Sempre descobrir via SEARCH.
 | `short_io` | encurtar URLs + analytics | 18 |
 | `tavily` | web search AI-native | 1 |
 
-Total ~1.129 tools no catalogo. Use SEARCH_TOOLS — nao memorize slugs.
+Total ~1.133 tools no catalogo. Use SEARCH_TOOLS — nao memorize slugs.
 
 ### Como usar Firecrawl
 
