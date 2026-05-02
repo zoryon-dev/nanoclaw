@@ -22,6 +22,7 @@ import { log } from '../log.js';
 import { SqliteStateAdapter } from '../state-sqlite.js';
 import { registerWebhookAdapter } from '../webhook-server.js';
 import { getAskQuestionRender } from '../db/sessions.js';
+import { transcribeAudio, TRANSCRIPTION_FALLBACK } from '../transcription.js';
 import { normalizeOptions, type NormalizedOption } from './ask-question.js';
 import type { ChannelAdapter, ChannelSetup, ConversationConfig, InboundMessage } from './adapter.js';
 
@@ -144,6 +145,7 @@ export function createChatSdkBridge(config: ChatSdkBridgeConfig): ChannelAdapter
     // Download attachment data before serialization loses fetchData()
     if (message.attachments && message.attachments.length > 0) {
       const enriched = [];
+      const voiceTranscripts: string[] = [];
       for (const att of message.attachments) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const entry: Record<string, any> = {
@@ -158,6 +160,11 @@ export function createChatSdkBridge(config: ChatSdkBridgeConfig): ChannelAdapter
           try {
             const buffer = await att.fetchData();
             entry.data = buffer.toString('base64');
+            if (att.type === 'audio') {
+              const transcript = await transcribeAudio(buffer, att.mimeType, att.name);
+              entry.transcript = transcript ?? TRANSCRIPTION_FALLBACK;
+              voiceTranscripts.push(transcript ?? TRANSCRIPTION_FALLBACK);
+            }
           } catch (err) {
             log.warn('Failed to download attachment', { type: att.type, err });
           }
@@ -165,6 +172,10 @@ export function createChatSdkBridge(config: ChatSdkBridgeConfig): ChannelAdapter
         enriched.push(entry);
       }
       serialized.attachments = enriched;
+      if (voiceTranscripts.length > 0) {
+        const voiceText = voiceTranscripts.map((t) => `[Voice: ${t}]`).join('\n');
+        serialized.text = serialized.text ? `${serialized.text}\n${voiceText}` : voiceText;
+      }
     }
 
     // Extract reply context via platform-specific hook
