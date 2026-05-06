@@ -111,6 +111,12 @@ export function initGroupFilesystem(group: AgentGroup, opts?: { instructions?: s
   // Container runs as UID 1000 (node). When the host is root, chown the
   // agent-writable dirs so Claude Code can persist state, settings, and
   // conversation transcripts.
+  //
+  // Also chowns the group dir (`groups/<folder>/`) so the agent can write
+  // to its own CLAUDE.md, system-prompt.md, perfil/plano files, etc.
+  // Without this, files created by the host (eg via host-side Write tool
+  // during initial install) end up root-owned and the container — running
+  // as uid 1000 — gets EACCES on write. Rerun is idempotent.
   if (process.getuid?.() === 0) {
     try {
       const chownRecursive = (p: string): void => {
@@ -121,6 +127,7 @@ export function initGroupFilesystem(group: AgentGroup, opts?: { instructions?: s
         }
       };
       chownRecursive(path.join(DATA_DIR, 'v2-sessions', group.id));
+      chownRecursive(groupDir);
     } catch {
       // Non-fatal
     }
