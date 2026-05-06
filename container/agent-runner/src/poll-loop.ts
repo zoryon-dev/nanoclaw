@@ -8,7 +8,7 @@ import {
   migrateLegacyContinuation,
   setContinuation,
 } from './db/session-state.js';
-import { formatMessages, extractRouting, categorizeMessage, type RoutingContext } from './formatter.js';
+import { formatMessages, extractRouting, extractImageAttachments, categorizeMessage, type RoutingContext } from './formatter.js';
 import type { AgentProvider, AgentQuery, ProviderEvent } from './providers/types.js';
 
 const POLL_INTERVAL_MS = 1000;
@@ -19,10 +19,12 @@ const ACTIVE_POLL_INTERVAL_MS = 500;
 // without yielding any SDK events. Aborting too early disconnects the
 // agent-runner iterator while the underlying claude subprocess keeps running —
 // it finishes the work and writes the final response, but to a closed
-// listener, so the user gets nothing back. 120s is long enough to cover
-// resume + slow tool runs, and short enough that a genuinely hung query
-// doesn't leave the container wedged forever.
-const IDLE_END_MS = 120_000;
+// listener, so the user gets nothing back. 300s covers long agent turns
+// where the model pauses mid-stream during cross-skill reasoning or while
+// waiting on slow MCP tool calls (Composio cold-start, Drive/Gmail latency).
+// Still short enough that a genuinely hung query doesn't wedge the container
+// forever.
+const IDLE_END_MS = 300_000;
 
 function log(msg: string): void {
   console.error(`[poll-loop] ${msg}`);
@@ -177,10 +179,19 @@ export async function runPollLoop(config: PollLoopConfig): Promise<void> {
     // provider natively handles slash commands), others get XML.
     const prompt = formatMessagesWithCommands(normalMessages, config.provider.supportsNativeSlashCommands);
 
-    log(`Processing ${normalMessages.length} message(s), kinds: ${[...new Set(normalMessages.map((m) => m.kind))].join(',')}`);
+    // Extract image attachments — passed alongside the prompt as multimodal
+    // content blocks so the agent actually sees the image bytes, not just
+    // a text reference like "[image: photo.jpg]".
+    const images = extractImageAttachments(normalMessages);
+
+    log(
+      `Processing ${normalMessages.length} message(s), kinds: ${[...new Set(normalMessages.map((m) => m.kind))].join(',')}` +
+        (images.length > 0 ? `, images: ${images.length}` : ''),
+    );
 
     const query = config.provider.query({
       prompt,
+      images: images.length > 0 ? images : undefined,
       continuation,
       cwd: config.cwd,
       systemContext: config.systemContext,

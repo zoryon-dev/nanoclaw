@@ -3,7 +3,33 @@ import path from 'path';
 
 import { query as sdkQuery, type HookCallback, type PreCompactHookInput } from '@anthropic-ai/claude-agent-sdk';
 
-import type { AgentProvider, AgentQuery, McpServerConfig, ProviderEvent, ProviderOptions, QueryInput } from './types.js';
+import type {
+  AgentProvider,
+  AgentQuery,
+  ImageAttachment,
+  McpServerConfig,
+  ProviderEvent,
+  ProviderOptions,
+  QueryInput,
+} from './types.js';
+
+type SDKContentBlock =
+  | { type: 'text'; text: string }
+  | { type: 'image'; source: { type: 'base64'; media_type: ImageAttachment['mediaType']; data: string } };
+
+type SDKMessageContent = string | SDKContentBlock[];
+
+/** Build an Anthropic-compatible content array from text + images. */
+function buildMultimodalContent(text: string, images: ImageAttachment[]): SDKContentBlock[] {
+  const blocks: SDKContentBlock[] = [{ type: 'text', text }];
+  for (const img of images) {
+    blocks.push({
+      type: 'image',
+      source: { type: 'base64', media_type: img.mediaType, data: img.data },
+    });
+  }
+  return blocks;
+}
 
 function log(msg: string): void {
   console.error(`[claude-provider] ${msg}`);
@@ -42,23 +68,27 @@ const TOOL_ALLOWLIST = [
 
 interface SDKUserMessage {
   type: 'user';
-  message: { role: 'user'; content: string };
+  message: { role: 'user'; content: SDKMessageContent };
   parent_tool_use_id: null;
   session_id: string;
 }
 
 /**
  * Push-based async iterable for streaming user messages to the Claude SDK.
+ *
+ * `push` accepts either plain text or a multimodal content array (text +
+ * image blocks). The Anthropic API treats both shapes identically; the
+ * array form is needed when an inbound message carries image attachments.
  */
 class MessageStream {
   private queue: SDKUserMessage[] = [];
   private waiting: (() => void) | null = null;
   private done = false;
 
-  push(text: string): void {
+  push(content: SDKMessageContent): void {
     this.queue.push({
       type: 'user',
-      message: { role: 'user', content: text },
+      message: { role: 'user', content },
       parent_tool_use_id: null,
       session_id: '',
     });
@@ -207,7 +237,11 @@ export class ClaudeProvider implements AgentProvider {
 
   query(input: QueryInput): AgentQuery {
     const stream = new MessageStream();
-    stream.push(input.prompt);
+    const initialContent: SDKMessageContent =
+      input.images && input.images.length > 0
+        ? buildMultimodalContent(input.prompt, input.images)
+        : input.prompt;
+    stream.push(initialContent);
 
     const instructions = input.systemContext?.instructions;
 

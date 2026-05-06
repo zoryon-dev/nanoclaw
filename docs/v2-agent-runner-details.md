@@ -672,7 +672,7 @@ The agent can use tools (Read, Bash) to access saved files.
 
 For channels where direct download isn't possible (e.g., WhatsApp buffered streams), the channel adapter serves the media via a local URL. The agent-runner downloads from that URL.
 
-**Content block construction (Claude):** The agent-runner builds multi-part `MessageParam` content: `[{ type: 'image', source: { type: 'base64', media_type, data } }, { type: 'text', text: '...' }]`. The prompt passed to the provider is not a plain string in this case — the `QueryInput.prompt` field needs to support structured content for Claude. The provider's `query()` method handles the format-specific construction.
+**Content block construction (Claude):** `QueryInput` carries `prompt: string` plus optional `images: ImageAttachment[]` (extracted by `formatter.extractImageAttachments` from inbound messages). When `images` is non-empty, the Claude provider builds multi-part content: `[{ type: 'text', text: prompt }, { type: 'image', source: { type: 'base64', media_type, data } }, …]`. Filters in the extractor: media type must be jpeg/png/gif/webp, base64 must be ≤ ~6.7MB encoded (~5MB decoded — Anthropic's per-image limit). Out-of-bounds images are silently skipped at the multimodal layer but still referenced as text in the prompt via `formatAttachments` so the agent knows an attachment was sent.
 
 **Content block construction (Codex/OpenCode):** Everything is text. File references are inlined in the prompt string. The provider receives a plain string prompt.
 

@@ -32,6 +32,13 @@ export interface QueryInput {
   prompt: string;
 
   /**
+   * Image attachments to send alongside the initial prompt as multimodal
+   * content blocks. The formatter extracts these from messages_in rows
+   * whose attachments include base64-encoded image bytes.
+   */
+  images?: ImageAttachment[];
+
+  /**
    * Opaque continuation token from a previous query. The provider decides
    * what this means (session ID, thread ID, nothing at all).
    */
@@ -47,6 +54,16 @@ export interface QueryInput {
   systemContext?: {
     instructions?: string;
   };
+}
+
+/** Anthropic-supported image media types. */
+export type ImageMediaType = 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp';
+
+export interface ImageAttachment {
+  mediaType: ImageMediaType;
+  /** Base64-encoded image bytes (no `data:` prefix). */
+  data: string;
+  name?: string;
 }
 
 export type McpServerConfig = McpServerStdio | McpServerHttp | McpServerSse;

@@ -1,5 +1,6 @@
 import { findByRouting } from './destinations.js';
 import type { MessageInRow } from './db/messages-in.js';
+import type { ImageAttachment, ImageMediaType } from './providers/types.js';
 
 /**
  * Command categories for messages starting with '/'.
@@ -168,6 +169,38 @@ function formatReplyContext(replyTo: any): string {
   const text = replyTo.text || '';
   const preview = text.length > 100 ? text.slice(0, 100) + '…' : text;
   return `\n<reply-to sender="${escapeXml(sender)}">${escapeXml(preview)}</reply-to>\n`;
+}
+
+/**
+ * Anthropic API limits: max ~5MB per image, jpeg/png/gif/webp only.
+ * Base64-encoded length ≈ decoded * 4/3, so 5MB decoded ≈ 6.67MB encoded.
+ */
+const SUPPORTED_IMAGE_TYPES = new Set<ImageMediaType>(['image/jpeg', 'image/png', 'image/gif', 'image/webp']);
+const MAX_BASE64_BYTES = 6_700_000;
+
+/**
+ * Extract image attachments from a batch of inbound messages, ready to send
+ * as multimodal content blocks. Skips images that are oversized, missing
+ * base64 data, or in unsupported formats — those are still referenced as
+ * text in the formatted prompt via formatAttachments(), but don't reach
+ * the model as visual content.
+ */
+export function extractImageAttachments(messages: MessageInRow[]): ImageAttachment[] {
+  const images: ImageAttachment[] = [];
+  for (const msg of messages) {
+    const content = parseContent(msg.content);
+    const attachments = content.attachments;
+    if (!Array.isArray(attachments)) continue;
+    for (const att of attachments) {
+      if (att?.type !== 'image') continue;
+      if (typeof att.data !== 'string' || att.data.length === 0) continue;
+      if (att.data.length > MAX_BASE64_BYTES) continue;
+      const mediaType = (att.mimeType ?? 'image/jpeg') as ImageMediaType;
+      if (!SUPPORTED_IMAGE_TYPES.has(mediaType)) continue;
+      images.push({ mediaType, data: att.data, name: att.name });
+    }
+  }
+  return images;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
