@@ -15,6 +15,7 @@ const MATRIX = {
   Lad: ALL,
   Grow: ALL,
   Naia: ['googlesheets', 'googledrive', 'tavily'],
+  finance: ['googlesheets'],
 };
 
 const db = new Database('/root/nanoclaw/data/v2.db', { readonly: true });
