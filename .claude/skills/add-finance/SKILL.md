@@ -37,8 +37,24 @@ Run a Node script (inline, in `npm run dev`-equivalent context). The simplest pa
 
 ```typescript
 // scripts/finance/_register-agent-group.ts (one-shot, can be deleted after)
-import { createAgentGroup } from '../../src/db/agent-groups';
+import path from 'path';
+import { initDb } from '../../src/db/connection.js';
+import { createAgentGroup, getAgentGroup } from '../../src/db/agent-groups.js';
+import { runMigrations } from '../../src/db/migrations/index.js';
 
+// Initialize DB
+const dbPath = path.join(process.cwd(), 'data', 'v2.db');
+const db = initDb(dbPath);
+runMigrations(db);
+
+// Check if already exists
+const existing = getAgentGroup('finance');
+if (existing) {
+  console.log('ℹ️ Agent group "finance" already exists');
+  process.exit(0);
+}
+
+// Create agent group
 await createAgentGroup({
   id: 'finance',
   name: 'Finance',
@@ -59,13 +75,13 @@ Then:
 npx tsx scripts/finance/_register-agent-group.ts
 ```
 
-**Verify:** query the DB:
+**Verify:** Run the script and check for success message. Or query the DB directly:
 
 ```bash
-sqlite3 ~/.nanoclaw/state.db "SELECT id, name, folder FROM agent_groups WHERE id='finance';"
+sqlite3 data/v2.db "SELECT id, name, folder FROM agent_groups WHERE id='finance';"
 ```
 
-Expected: 1 row.
+Expected: 1 row with `finance | Finance | finance`.
 
 ---
 
