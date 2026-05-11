@@ -23,6 +23,7 @@ import { SqliteStateAdapter } from '../state-sqlite.js';
 import { registerWebhookAdapter } from '../webhook-server.js';
 import { getAskQuestionRender } from '../db/sessions.js';
 import { transcribeAudio, TRANSCRIPTION_FALLBACK } from '../transcription.js';
+import { normalizeImage } from '../image.js';
 import { normalizeOptions, type NormalizedOption } from './ask-question.js';
 import type { ChannelAdapter, ChannelSetup, ConversationConfig, InboundMessage } from './adapter.js';
 
@@ -159,7 +160,30 @@ export function createChatSdkBridge(config: ChatSdkBridgeConfig): ChannelAdapter
         if (att.fetchData) {
           try {
             const buffer = await att.fetchData();
-            entry.data = buffer.toString('base64');
+            if (att.type === 'image') {
+              try {
+                const normalized = await normalizeImage(buffer, att.mimeType);
+                entry.data = normalized.buffer.toString('base64');
+                entry.mimeType = normalized.mimeType;
+                entry.width = normalized.width;
+                entry.height = normalized.height;
+                log.info('Normalized image attachment', {
+                  name: att.name,
+                  originalMime: att.mimeType,
+                  originalBytes: buffer.byteLength,
+                  normalizedBytes: normalized.buffer.byteLength,
+                });
+              } catch (imgErr) {
+                log.warn('Failed to normalize image, falling back to raw', {
+                  name: att.name,
+                  mimeType: att.mimeType,
+                  err: imgErr,
+                });
+                entry.data = buffer.toString('base64');
+              }
+            } else {
+              entry.data = buffer.toString('base64');
+            }
             if (att.type === 'audio') {
               const transcript = await transcribeAudio(buffer, att.mimeType, att.name);
               entry.transcript = transcript ?? TRANSCRIPTION_FALLBACK;
