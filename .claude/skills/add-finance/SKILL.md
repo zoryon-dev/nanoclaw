@@ -21,14 +21,25 @@ If any of these are missing, fix them first (`/setup`, `/customize`, etc.) and c
 
 ---
 
-## Upgrade from Plan 1?
+## Upgrade from previous Plan?
 
-If `/add-finance` was already run (Plan 1) and the workbook + agent are working, **don't re-run this whole skill**. Instead:
+If `/add-finance` was already run (Plan 1 or Plan 2) and the workbook + agent are working, **don't re-run this whole skill**. Instead:
 
-1. Pull latest skill files (`git pull` to get Plan 2 templates)
-2. Copy `.claude/skills/add-finance/system-prompt.md` to `groups/finance/system-prompt.md` (replaces the Plan 1 prompt with the new intents)
-3. Operator pastes `migration-prompt.md` content into `@<bot>Bot` to apply schema changes to the existing sheet
-4. Run `scripts/finance/register-cron-jobs.ts` to register the 5 cron jobs
+### From Plan 1 → current
+1. `git pull` to get the latest skill templates.
+2. Copy `.claude/skills/add-finance/system-prompt.md` to `groups/finance/system-prompt.md`.
+3. Operator pastes `migration-prompt.md` content into `@<bot>Bot` to apply Plan 2 schema changes to the existing sheet (3 new tabs + 3 new columns in Lançamentos).
+4. Operator confirms the `_Log` tab exists; if not, ask the bot to create it with headers `[timestamp, job, status, qtd_processada, detalhes]`.
+5. Run `scripts/finance/unregister-cron-jobs.ts` then `scripts/finance/register-cron-jobs.ts` to install the 5 cron jobs (now with `kind='task'` + override block, Plan 2.5).
+6. In Telegram, send `/clear` to the bot so it reloads the updated `system-prompt.md` + `CLAUDE.md`.
+
+### From Plan 2 → Plan 2.5 only
+1. `git pull`.
+2. Confirm the `_Log` tab exists (Plan 2 should have created it).
+3. In `groups/finance/CLAUDE.md`, replace the 4 outdated tool slugs (lines around 69-73): `GOOGLESHEETS_BATCH_UPDATE` → `GOOGLESHEETS_UPDATE_VALUES_BATCH`; `GOOGLESHEETS_BATCH_UPDATE_VALUES_BY_DATA_FILTER` → `GOOGLESHEETS_UPDATE_VALUES_BATCH`; `GOOGLESHEETS_BATCH_CLEAR_VALUES_BY_DATA_FILTER` → `GOOGLESHEETS_CLEAR_VALUES`; `GOOGLESHEETS_GET_SPREADSHEET_BY_DATA_FILTER` → `GOOGLESHEETS_VALUES_GET`.
+4. `cp .claude/skills/add-finance/system-prompt.md groups/finance/system-prompt.md` (full overwrite — the live file is a mirror, not a customization).
+5. Run `scripts/finance/unregister-cron-jobs.ts` then `scripts/finance/register-cron-jobs.ts` to replace the 5 `kind='scheduled'` rows with `kind='task'` rows.
+6. In Telegram, send `/clear` to the bot.
 
 Skip the whole "create agent group / bot / sheet" flow.
 
@@ -418,7 +429,7 @@ sqlite3 data/v2-sessions/finance/<session-id>/inbound.db \
   "SELECT id, kind, recurrence, datetime(process_after) FROM messages_in WHERE recurrence IS NOT NULL;"
 ```
 
-Expected: 5 rows with ids `task-finance-sweep|daily|weekly|monthly|rollover` and matching cron expressions.
+Expected: 5 rows with ids `task-finance-sweep|daily|weekly|monthly|rollover`, all with `kind='task'` (not `scheduled`), and matching cron expressions.
 
 ---
 
