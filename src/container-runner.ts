@@ -38,7 +38,7 @@ import type { AgentGroup, Session } from './types.js';
 
 const onecli = new OneCLI({ url: ONECLI_URL });
 
-interface VolumeMount {
+export interface VolumeMount {
   hostPath: string;
   containerPath: string;
   readonly: boolean;
@@ -178,6 +178,30 @@ export function killContainer(sessionId: string, reason: string): void {
   }
 }
 
+/**
+ * Build the mount for the agent-runner TypeScript source tree. The container's
+ * /app/src is bound read-only directly from container/agent-runner/src/ in the
+ * repository — single source of truth in git. This replaces the per-session
+ * copy at data/v2-sessions/<id>/agent-runner-src/ that caused Bug D (silent
+ * drift across upstream changes; see Plan 2.7 spec §2).
+ *
+ * Read-only because (a) no code path writes to /app/src at runtime (the
+ * compile step writes to /tmp/dist, which is RW), and (b) blocking a
+ * compromised agent from rewriting its own runner is defense-in-depth.
+ *
+ * Exported so src/container-runner.test.ts can verify the path + readonly
+ * contract without spinning a real container.
+ */
+export function buildAgentRunnerMounts(projectRoot: string): VolumeMount[] {
+  return [
+    {
+      hostPath: path.join(projectRoot, 'container', 'agent-runner', 'src'),
+      containerPath: '/app/src',
+      readonly: true,
+    },
+  ];
+}
+
 function buildMounts(agentGroup: AgentGroup, session: Session): VolumeMount[] {
   // Per-group filesystem state lives forever after first creation. Init is
   // idempotent: it only writes paths that don't already exist, so this call
@@ -208,10 +232,10 @@ function buildMounts(agentGroup: AgentGroup, session: Session): VolumeMount[] {
   const claudeDir = path.join(DATA_DIR, 'v2-sessions', agentGroup.id, '.claude-shared');
   mounts.push({ hostPath: claudeDir, containerPath: '/home/node/.claude', readonly: false });
 
-  // Per-group agent-runner source at /app/src (initialized once at group
-  // creation, persistent thereafter — agents can modify their runner)
-  const groupRunnerDir = path.join(DATA_DIR, 'v2-sessions', agentGroup.id, 'agent-runner-src');
-  mounts.push({ hostPath: groupRunnerDir, containerPath: '/app/src', readonly: false });
+  // Agent-runner source at /app/src — bound read-only directly from the
+  // repository's container/agent-runner/src/. Single source of truth; no
+  // per-session copy. See Plan 2.7 spec for the Bug D context.
+  mounts.push(...buildAgentRunnerMounts(process.cwd()));
 
   // Additional mounts from container config
   const containerConfig = agentGroup.container_config ? JSON.parse(agentGroup.container_config) : {};
