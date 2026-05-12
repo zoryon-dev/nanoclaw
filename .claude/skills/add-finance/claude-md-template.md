@@ -1,3 +1,5 @@
+@./system-prompt.md
+
 # __AGENT_NAME__ — Jonas
 
 Dedicated finance agent. Single user: Jonas. PF + PJ tracked in one Google Sheets workbook.
@@ -16,19 +18,22 @@ Dedicated finance agent. Single user: Jonas. PF + PJ tracked in one Google Sheet
 - **Locale:** pt-BR (vírgula decimal, R$, dd/mm/yyyy)
 - **Timezone:** America/Sao_Paulo
 
-### Abas (9)
+### Abas (12)
 
 | Aba | Tipo | Função |
 |---|---|---|
 | `Dashboard` | leitura | KPIs vivos do mês |
-| `Lançamentos-PF` | escrita | linha por entrada/saída PF |
-| `Lançamentos-PJ` | escrita | linha por entrada/saída PJ |
+| `Lançamentos-PF` | escrita | linha por entrada/saída PF (cols incluem `conta_origem`/`conta_destino` e `meio_pagamento`) |
+| `Lançamentos-PJ` | escrita | linha por entrada/saída PJ (mesmo schema de PF) |
 | `Recorrentes` | config | assinaturas, contas fixas, salário |
 | `Orçamento` | config | teto mensal por categoria |
 | `Projeção` | leitura | fluxo de caixa 6m (depende de `SALDO_INICIAL`) |
-| `Lembretes` | fila | one-shot intraday (Plan 2) |
+| `Lembretes` | fila | one-shot intraday |
 | `Categorias` | taxonomia | lista permitida — fonte de validação |
-| `_Log` | sistema | execuções de cron (Plan 2) |
+| `Contas` | config | nome, escopo (PF/PJ), saldo_inicial, saldo_atual (fórmula) — fonte das contas |
+| `MeiosPagamento` | config | nome (PIX, Boleto, Cartão C1/C2/C3, Dinheiro), escopo, conta_origem default |
+| `Recebiveis` | escrita | recebíveis futuros (descricao, valor, conta_destino, data_prevista, status, recebido_em) |
+| `_Log` | sistema | execuções de cron |
 
 ### Schema crítico
 
@@ -76,14 +81,14 @@ Composio googlesheets, especialmente:
 
 ## Comportamento
 
-Veja [`system-prompt.md`](system-prompt.md) — vocabulário de intents, fluxo de confirmação, regras de ambiguidade, idempotência.
+Carregado do `system-prompt.md` (importado no topo deste arquivo) — vocabulário de intents, formato dos cards de confirmação, regras de ambiguidade, idempotência, comprovantes (imagens), regras de tasks CRON.
 
-## Limites do MVP (Plan 1)
+## Capacidades ativas
 
-- ❌ Sem cron / digests automáticos / lembretes intraday (Plan 2)
-- ❌ Sem reconciliação de recorrentes (Plan 2)
-- ❌ Sem leitura de PDF / imagem (futuro — usaria add-pdf-reader / add-image-vision)
-- ✅ Escrita manual via chat com confirmação
-- ✅ Consulta read-only via chat
-- ✅ Edição de lançamentos (last in session, por id)
-- ✅ Desfazer último write da sessão
+- ✅ Escrita manual via chat com confirmação (com `conta_origem`/`conta_destino` + `meio_pagamento` em despesa/receita)
+- ✅ Consulta read-only via chat (incl. saldos por conta)
+- ✅ Edição/desfazer último write da sessão
+- ✅ Recorrentes + reconciliação ("paguei o X")
+- ✅ Recebíveis futuros + confirmação ("caiu o pagamento da Hotmart")
+- ✅ Comprovante via imagem (OCR mental + card de confirmação)
+- ✅ Cron: `finance-sweep`, `finance-daily`, `finance-weekly`, `finance-monthly`, `finance-rollover`

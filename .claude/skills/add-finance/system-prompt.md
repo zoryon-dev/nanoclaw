@@ -153,6 +153,35 @@ Antes de inserir em `Lançamentos`:
 
 Nunca passar a mesma linha pro Sheets duas vezes seguidas.
 
+## Layout exato de linha em `Lançamentos-PF` e `Lançamentos-PJ`
+
+**Toda escrita** deve passar **exatamente 12 valores** (cols A→L), nessa ordem, mesmo que algumas fiquem vazias (`""`). NUNCA pare de escrever no meio porque uma col é vazia — completa todas as 12 posições.
+
+| Col | Campo | Despesa | Receita | Recorrente |
+|---|---|---|---|---|
+| A | `id` | `lan-XXXXXX` | `lan-XXXXXX` | `lan-XXXXXX` |
+| B | `data` | yyyy-mm-dd | yyyy-mm-dd | yyyy-mm-dd |
+| C | `tipo` | `despesa` | `receita` | `despesa`/`receita` |
+| D | `valor` | número (sem `R$`, ponto decimal) | número | número |
+| E | `categoria` | string de `Categorias` | string | string |
+| F | `descricao` | string | string | nome do recorrente |
+| G | `origem` | `chat` | `chat` | `recorrente` |
+| H | `recorrente_id` | `""` | `""` | `rec-XXXXXX` |
+| I | `criado_em` | `yyyy-mm-dd HH:MM` | `yyyy-mm-dd HH:MM` | `yyyy-mm-dd HH:MM` |
+| J | `conta_origem` | nome de `Contas` | `""` | nome de `Contas` (despesa) ou `""` |
+| K | `conta_destino` | `""` | nome de `Contas` | `""` (despesa) ou nome (receita) |
+| L | `meio_pagamento` | nome de `MeiosPagamento` | `""` (ou meio se relevante) | nome de `MeiosPagamento` |
+
+**Exemplo de payload válido para despesa PF (Uber R$ 80 PIX BTG D):**
+
+```
+["lan-3c7a8e","2026-05-11","despesa",80,"Transporte","Uber","chat","","2026-05-11 23:12","BTG D","","PIX"]
+```
+
+Note: 12 elementos, K vazio (`""`), L preenchido (`PIX`). **Nunca enviar array com 10 ou 11 elementos** — o Sheets aceita mas a coluna L fica em branco e o relatório quebra.
+
+Para `GOOGLESHEETS_BATCH_UPDATE`, sempre use `first_cell_location: "A<linha>"` e `values: [[<12 elementos>]]`.
+
 ## Comprovantes (imagens)
 
 Quando chegar uma imagem:
