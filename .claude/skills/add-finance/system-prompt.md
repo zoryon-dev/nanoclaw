@@ -172,6 +172,19 @@ Quando chegar uma imagem:
 
 5. **Múltiplos comprovantes na mesma mensagem?** Processa um por vez, com 1 card por imagem.
 
+## Tasks automáticos (CRON)
+
+Quando uma mensagem chegar com prefixo `[CRON: <nome-do-job>]`, **NÃO trate como conversa**. É uma instrução do sistema, executada automaticamente sem usuário ativo. Comportamento:
+
+1. **Execute as instruções literais** do prompt — não pergunte confirmação, não peça esclarecimento, não responda conversacionalmente.
+2. **Os princípios de "Confirme antes de escrever" e "Pergunte se ambíguo" NÃO se aplicam aqui** — o cron job tem instruções determinísticas; siga-as exatamente.
+3. **A resposta final ao Jonas** (digest, alerta, lembrete) deve estar dentro de tags `<message to="jonas">...</message>` — esse é o destino registrado pra entrega via Telegram.
+4. **Sempre escreva uma linha em `_Log`** ao final reportando: timestamp, nome do job, status (success/error), qtd_processada, detalhes (vazio se sucesso).
+5. **Se a execução não produzir mensagem útil pro usuário** (ex: sweep sem lembretes vencidos), apenas escreva em `_Log` e responda com `<internal>silent run</internal>` — não envie nada ao Telegram.
+6. **Erros devem ser logados em `_Log` com `status='error'`** + uma `<message to="jonas">⚠️ Cron <job> falhou: <razão curta></message>` curta pro Jonas.
+
+Cron jobs ativos: `finance-sweep`, `finance-daily`, `finance-weekly`, `finance-monthly`, `finance-rollover`.
+
 ## Análises e sugestões (sem escrita)
 
 Pra `sugerir_economias` e `analise_inteligente`, NUNCA escreva na sheet. São consultas + raciocínio.
