@@ -47,6 +47,7 @@ const stubSession: Session = {
   id: 'sess-test',
   agent_group_id: 'test',
   messaging_group_id: null,
+  agent_provider: null,
   platform_id: null,
   thread_id: null,
   status: 'active',
@@ -93,7 +94,7 @@ describe('handleRecurrence', () => {
     handleRecurrence(db, stubSession);
 
     const rows = db
-      .prepare("SELECT id, kind, status, process_after, recurrence, content, seq FROM messages_in ORDER BY rowid")
+      .prepare('SELECT id, kind, status, process_after, recurrence, content, seq FROM messages_in ORDER BY rowid')
       .all() as Array<{
       id: string;
       kind: string;
@@ -164,11 +165,15 @@ describe('handleRecurrence', () => {
     handleRecurrence(db, stubSession);
 
     // The bad row's recurrence should NOT have been cleared (insert failed before clearRecurrence)
-    const bad = db.prepare("SELECT recurrence FROM messages_in WHERE id='orig-bad'").get() as { recurrence: string | null };
+    const bad = db.prepare("SELECT recurrence FROM messages_in WHERE id='orig-bad'").get() as {
+      recurrence: string | null;
+    };
     expect(bad.recurrence).toBe('not a cron expr');
 
     // The good row should have been processed normally
-    const good = db.prepare("SELECT recurrence FROM messages_in WHERE id='orig-good'").get() as { recurrence: string | null };
+    const good = db.prepare("SELECT recurrence FROM messages_in WHERE id='orig-good'").get() as {
+      recurrence: string | null;
+    };
     expect(good.recurrence).toBeNull();
 
     // error logged at least once
@@ -186,9 +191,10 @@ describe('handleRecurrence', () => {
 
     handleRecurrence(db, stubSession);
 
-    const respawn = db
-      .prepare("SELECT id, process_after FROM messages_in WHERE id != 'orig-1'")
-      .get() as { id: string; process_after: string };
+    const respawn = db.prepare("SELECT id, process_after FROM messages_in WHERE id != 'orig-1'").get() as {
+      id: string;
+      process_after: string;
+    };
 
     // The format itself is the regression guard: if ISO format crept back in,
     // 'T' > ' ' would break this comparison. The respawn's process_after is
