@@ -1242,17 +1242,17 @@ git commit -m "chore(plans): mark Plan 2.6 complete"
 
 ## Acceptance criteria
 
-- [ ] Vitest green: 5 new tests in `formatter.test.ts` (T1 WhatsApp, T2 Chat SDK no swarm, T3 Chat SDK swarm-suffix, T4 already-prefixed, T5 empty content)
-- [ ] Vitest green: 5 new tests in `src/host-sweep.test.ts` (T1 sync, T2 respawn schema, T3 multiple rows, T4 invalid recurrence, T5 SQLite UTC regression guard)
-- [ ] Vitest green: 3 new tests in `src/db/sqlite-utc.test.ts` (T1 basic format, T2 strips ms+Z, T3 sortable vs `datetime('now')`)
-- [ ] Vitest green: existing 4 tests in `scripts/finance/__tests__/register-cron-jobs.test.ts` still pass after the import refactor
-- [ ] `src/db/sqlite-utc.ts` exists with the shared `toSqliteUtc` helper, JSDoc references commit `1c20a71` + Plan 2.6 spec §2
-- [ ] `src/host-sweep.ts`: `handleRecurrence` is `export function` (not `async`), top-level `CronExpressionParser` import, uses `toSqliteUtc(interval.next().toDate())` instead of `.toISOString()`
-- [ ] `container/agent-runner/src/formatter.ts`: `categorizeMessage` composes `senderId` with `${userKind}:${raw}` and strips swarm suffix
-- [ ] `scripts/finance/register-cron-jobs.ts`: imports `toSqliteUtc` from `../../src/db/sqlite-utc.js`, no inline copy
-- [ ] After deploy: `logs/nanoclaw.log` shows at least 1 "Inserted next recurrence" within 5 minutes; `logs/nanoclaw.error.log` stops accumulating "Failed to compute next recurrence"
-- [ ] After deploy: `/clear` via Telegram bot returns "Session cleared." (was "Permission denied")
-- [ ] After deploy: `messages_in` invariant — no session has `status='completed' AND recurrence IS NOT NULL` rows for more than ~70s
+- [x] Vitest green: 5 new tests in `formatter.test.ts` (T1 WhatsApp, T2 Chat SDK no swarm, T3 Chat SDK swarm-suffix, T4 already-prefixed, T5 empty content)
+- [x] Vitest green: 5 new tests in `src/host-sweep.test.ts` (T1 sync, T2 respawn schema, T3 multiple rows, T4 invalid recurrence, T5 SQLite UTC regression guard)
+- [x] Vitest green: 3 new tests in `src/db/sqlite-utc.test.ts` (T1 basic format, T2 strips ms+Z, T3 sortable vs `datetime('now')`)
+- [x] Vitest green: existing 4 tests in `scripts/finance/__tests__/register-cron-jobs.test.ts` still pass after the import refactor
+- [x] `src/db/sqlite-utc.ts` exists with the shared `toSqliteUtc` helper, JSDoc references commit `1c20a71` + Plan 2.6 spec §2
+- [x] `src/host-sweep.ts`: `handleRecurrence` is `export function` (not `async`), top-level `CronExpressionParser` import, uses `toSqliteUtc(interval.next().toDate())` instead of `.toISOString()`
+- [x] `container/agent-runner/src/formatter.ts`: `categorizeMessage` composes `senderId` with `${userKind}:${raw}` and strips swarm suffix
+- [x] `scripts/finance/register-cron-jobs.ts`: imports `toSqliteUtc` from `../../src/db/sqlite-utc.js`, no inline copy
+- [x] After deploy: `logs/nanoclaw.log` shows at least 1 "Inserted next recurrence" within 5 minutes; `logs/nanoclaw.error.log` stops accumulating "Failed to compute next recurrence" — **2 respawns observed (13:49:57 + 14:01:57), error log frozen at 154 entries since restart**
+- [x] After deploy: `/clear` via Telegram bot returns "Session cleared." (was "Permission denied") — **confirmed by operator**
+- [x] After deploy: `messages_in` invariant — no session has `status='completed' AND recurrence IS NOT NULL` rows for more than ~70s — **12 sessions audited, all 0**
 
 ---
 
@@ -1262,6 +1262,22 @@ git commit -m "chore(plans): mark Plan 2.6 complete"
 - **Existing log noise:** `logs/nanoclaw.error.log` contains pre-Plan 2.6 stack traces that will live forever unless truncated. Task 15 is optional cleanup.
 - **Active sessions mid-query:** Task 11 option B (passive idle-out) takes ~5 minutes. For zero-downtime, dock stop then expect host-sweep to respawn on next message.
 - **Future channels:** any new channel adapter should populate `content.senderId` with prefix, OR rely on the formatter's normalization. Document in CONTRIBUTING.md (separate follow-up issue, not Plan 2.6).
+
+### Bug D — discovered during Plan 2.6 deploy (deferred to Plan 2.7)
+
+`src/group-init.ts:101-109` only copies `container/agent-runner/src/` into `data/v2-sessions/<id>/agent-runner-src/` when the target directory does NOT exist:
+
+```typescript
+if (!fs.existsSync(groupRunnerDir)) {
+  // copy
+}
+```
+
+Effect: any change to `container/agent-runner/src/*.ts` after the initial install **never reaches existing sessions**. The image bake (`./container/build.sh`) has no effect because the container mounts `/app/src` from the per-session `agent-runner-src/` directory via volume bind (`-v .../agent-runner-src:/app/src`).
+
+**Symptom observed:** Plan 2.6 Smoke S2 returned `Permission denied` even after host restart + image rebuild, because all 7 active agent groups had stale `formatter.ts`. Manual `cp` to each `data/v2-sessions/*/agent-runner-src/formatter.ts` (then `docker stop` to force respawn) resolved the immediate test.
+
+**Deferred to Plan 2.7:** redesign `group-init.ts` (or add a separate sync step) to detect and update non-customized agent-runner-src files. Likely approach: hash compare `container/agent-runner/src/*` against `data/.../agent-runner-src/*` on every host start; copy if different; document a per-file customization opt-out (`.skip-sync` marker or similar).
 
 ---
 
