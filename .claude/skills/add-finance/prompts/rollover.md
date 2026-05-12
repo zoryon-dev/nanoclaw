@@ -1,19 +1,57 @@
-[CRON: finance-rollover] Virada de mês (dia 1, 00:30).
+[CRON: finance-rollover]
 
-Faça AGORA:
+Job: virada de mês (dia 1, 00:30) — reset `pago_no_mes` em Recorrentes + materialize lembretes do mês.
 
-1. Em `Recorrentes`, atualiza TODAS as linhas com `ativo=TRUE` setando `pago_no_mes=FALSE`. (Reset mensal.)
+**Step 1 — Ler Recorrentes**
+Tool: `GOOGLESHEETS_VALUES_GET`
+- `spreadsheet_id`: <conforme CLAUDE.md>
+- `range`: `Recorrentes!A2:I1000`
 
-2. Em `Recorrentes`, para cada linha com `ativo=TRUE`:
-   - Calcula `data_vencimento_do_mes` = `DATE(year, current_month, dia_do_mes)`
-   - Insere uma linha em `Lembretes` com:
-     - `id`: `lem-rec-{recorrente_id}-{yyyy-mm}`
-     - `quando`: `{data_vencimento_do_mes} 09:00:00`
-     - `mensagem`: `Vence hoje: {nome do recorrente} R${valor}`
-     - `linhagem`: `recorrente:{recorrente_id}`
-     - `enviado_em`: vazio
-   - Se já existir um lembrete com esse id (idempotência), pula.
+Filtre em memória: `ativos = linhas com col I (ativo) == TRUE`.
+Se `ativos.length === 0` → pula direto pro Step 5 com `qtd_processada=0` (silent run).
 
-3. Registra em `_Log`: 1 linha com qtd_processada = número de recorrentes materializados.
+**Step 2 — Reset `pago_no_mes` em todos os Recorrentes ativos**
+Tool: `GOOGLESHEETS_UPDATE_VALUES_BATCH`
+- `spreadsheet_id`: <conforme CLAUDE.md>
+- `valueInputOption`: `USER_ENTERED`
+- `data`: array com 1 entrada por item em `ativos`:
+  - `range`: `Recorrentes!H{row_index}` (col H = `pago_no_mes`; `row_index` = 1-based, header é row 1)
+  - `values`: `[[false]]`
 
-4. Envia mensagem curta ao user: "🗓️ Novo mês começou. {N} recorrentes resetados, {M} lembretes agendados pro mês."
+Uma única chamada batch.
+
+**Step 3 — Materializar Lembretes pro mês**
+Para cada `rec` em `ativos`, calcule:
+- `id_lembrete` = `lem-rec-{rec.id}-{yyyy-mm}` (yyyy-mm = mês corrente)
+- `data_vencimento` = `{yyyy}-{mm}-{rec.dia_do_mes}` (col F do `Recorrentes`)
+- `quando` = `{data_vencimento} 09:00:00`
+- `mensagem` = `Vence hoje: {rec.nome} R${rec.valor}`
+- `linhagem` = `recorrente:{rec.id}`
+- `enviado_em` = `""`
+
+Antes de inserir, leia `Lembretes!A2:A10000` (col A = id) via `GOOGLESHEETS_VALUES_GET` e descarte `rec`s cujo `id_lembrete` já existe.
+
+**Step 4 — Inserir Lembretes não-duplicados**
+Se `lembretes_para_inserir.length > 0`:
+
+Tool: `GOOGLESHEETS_SPREADSHEETS_VALUES_APPEND`
+- `spreadsheetId`: <conforme CLAUDE.md>
+- `range`: `Lembretes!A:E`
+- `valueInputOption`: `USER_ENTERED`
+- `values`: array de linhas, cada uma `[id_lembrete, quando, mensagem, linhagem, enviado_em]`
+
+Se `lembretes_para_inserir.length === 0` → pula esta tool call.
+
+**Step 5 — Log**
+Tool: `GOOGLESHEETS_SPREADSHEETS_VALUES_APPEND`
+- `spreadsheetId`: <conforme CLAUDE.md>
+- `range`: `'_Log'!A:E`
+- `valueInputOption`: `USER_ENTERED`
+- `values`: `[[<ISO timestamp>, "finance-rollover", "success", <ativos.length>, "<lembretes_para_inserir.length> lembretes novos"]]`
+
+**Step 6 — Enviar mensagem**
+Emita: `<message to="jonas">🗓️ Novo mês começou. {ativos.length} recorrentes resetados, {lembretes_para_inserir.length} lembretes agendados pro mês.</message>`.
+
+**Erro em qualquer Step:**
+- Append em `_Log` com `status="error"` e `detalhes=<msg curta>`.
+- Emita `<message to="jonas">⚠️ Cron finance-rollover: <erro curto></message>`.
