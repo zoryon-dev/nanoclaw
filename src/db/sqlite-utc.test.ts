@@ -27,9 +27,9 @@ describe('toSqliteUtc', () => {
     const future = toSqliteUtc(new Date(Date.now() + 60_000)); // 60s in the future
     db.prepare('INSERT INTO t (id, process_after) VALUES (?, ?)').run('future', future);
 
-    const dueRows = db
-      .prepare("SELECT id FROM t WHERE process_after <= datetime('now') ORDER BY id")
-      .all() as Array<{ id: string }>;
+    const dueRows = db.prepare("SELECT id FROM t WHERE process_after <= datetime('now') ORDER BY id").all() as Array<{
+      id: string;
+    }>;
     db.close();
 
     expect(dueRows.map((r) => r.id)).toEqual(['past']);
