@@ -1,14 +1,22 @@
 /**
- * Register the 5 finance cron jobs as recurring messages in the agent's session inbox.
+ * Register the 5 finance cron jobs as recurring 'task' messages in the agent's session inbox.
  *
  * Usage:
  *   npx tsx scripts/finance/register-cron-jobs.ts --session <session-id>
  *
  * The script:
  *   1. Reads cron-jobs.json (the 5 task definitions)
- *   2. Reads each prompt file referenced
- *   3. Inserts each task as a recurring message in the session's inbound.db
- *      (idempotent via INSERT OR REPLACE on the deterministic task id)
+ *   2. Reads _override-block.md (shared non-interactive instructions)
+ *   3. Reads each prompt file referenced by promptFile
+ *   4. Builds content = JSON.stringify({prompt: <override>+<prompt>})
+ *   5. Inserts each as a recurring row with kind='task' (idempotent via INSERT OR REPLACE)
+ *
+ * TODO(formatter-bug): the container's container/agent-runner/src/formatter.ts:80-105
+ * has a generic silent-drop bug — any messages_in row with `kind` not in
+ * (chat | chat-sdk | task | webhook | system) produces an empty prompt. We use
+ * kind='task' here to piggyback the existing envelope, but a future plan should
+ * either add a 'scheduled' / 'system_task' case to the formatter or document
+ * the supported kinds at the schema level.
  */
 import Database from 'better-sqlite3';
 import fs from 'fs';
@@ -30,6 +38,9 @@ interface JobConfig {
 
 export function registerCronJobs(opts: RegisterOptions): void {
   const config = JSON.parse(fs.readFileSync(opts.configPath, 'utf8')) as { jobs: JobConfig[] };
+  const overridePath = path.join(opts.promptsDir, '_override-block.md');
+  const overrideBlock = fs.readFileSync(overridePath, 'utf8');
+
   const db = new Database(opts.inboundDbPath);
 
   // Compute seq base — use even seq (per nextEvenSeq pattern from session-db.ts)
@@ -38,15 +49,15 @@ export function registerCronJobs(opts: RegisterOptions): void {
 
   const now = Date.now();
 
-  // SQLite-friendly UTC datetime: 'YYYY-MM-DD HH:MM:SS' (matches output of datetime('now')).
-  // CRITICAL: do NOT use Date.toISOString() — that returns 'YYYY-MM-DDTHH:MM:SS.sssZ' which
-  // string-compares INCORRECTLY against datetime('now') results in the container poll-loop
-  // ('T' > ' ' in ASCII, so an ISO process_after never matches `process_after <= datetime('now')`
-  // until well after its actual due time). Real bug found in Plan 2 install rehearsal.
+  // SQLite-friendly UTC datetime: 'YYYY-MM-DD HH:MM:SS' (matches datetime('now')).
+  // CRITICAL: do NOT use Date.toISOString() — 'T' > ' ' breaks process_after comparisons.
   const toSqliteUtc = (d: Date): string => d.toISOString().slice(0, 19).replace('T', ' ');
 
   for (const job of config.jobs) {
-    const content = fs.readFileSync(path.join(opts.promptsDir, job.promptFile), 'utf8');
+    const procedural = fs.readFileSync(path.join(opts.promptsDir, job.promptFile), 'utf8');
+    const prompt = overrideBlock + '\n\n' + procedural;
+    const content = JSON.stringify({ prompt });
+
     const processAfter = toSqliteUtc(new Date(now + job.firstRunOffsetMs));
     const timestamp = toSqliteUtc(new Date());
 
@@ -85,5 +96,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   registerCronJobs({ inboundDbPath, configPath, promptsDir });
 
   console.log(`✅ 5 cron jobs registered in ${inboundDbPath}`);
-  console.log('   Verify: sqlite3 ' + inboundDbPath + ' "SELECT id, recurrence, datetime(process_after) FROM messages_in WHERE recurrence IS NOT NULL;"');
+  console.log('   Verify: sqlite3 ' + inboundDbPath + ' "SELECT id, kind, recurrence, datetime(process_after) FROM messages_in WHERE recurrence IS NOT NULL;"');
 }
