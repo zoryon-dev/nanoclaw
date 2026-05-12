@@ -98,16 +98,6 @@ export function initGroupFilesystem(group: AgentGroup, opts?: { instructions?: s
     }
   }
 
-  // 3. data/v2-sessions/<id>/agent-runner-src/ — per-group source copy
-  const groupRunnerDir = path.join(DATA_DIR, 'v2-sessions', group.id, 'agent-runner-src');
-  if (!fs.existsSync(groupRunnerDir)) {
-    const agentRunnerSrc = path.join(projectRoot, 'container', 'agent-runner', 'src');
-    if (fs.existsSync(agentRunnerSrc)) {
-      fs.cpSync(agentRunnerSrc, groupRunnerDir, { recursive: true });
-      initialized.push('agent-runner-src/');
-    }
-  }
-
   // Container runs as UID 1000 (node). When the host is root, chown the
   // agent-writable dirs so Claude Code can persist state, settings, and
   // conversation transcripts.
