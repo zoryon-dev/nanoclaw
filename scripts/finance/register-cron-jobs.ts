@@ -38,10 +38,17 @@ export function registerCronJobs(opts: RegisterOptions): void {
 
   const now = Date.now();
 
+  // SQLite-friendly UTC datetime: 'YYYY-MM-DD HH:MM:SS' (matches output of datetime('now')).
+  // CRITICAL: do NOT use Date.toISOString() — that returns 'YYYY-MM-DDTHH:MM:SS.sssZ' which
+  // string-compares INCORRECTLY against datetime('now') results in the container poll-loop
+  // ('T' > ' ' in ASCII, so an ISO process_after never matches `process_after <= datetime('now')`
+  // until well after its actual due time). Real bug found in Plan 2 install rehearsal.
+  const toSqliteUtc = (d: Date): string => d.toISOString().slice(0, 19).replace('T', ' ');
+
   for (const job of config.jobs) {
     const content = fs.readFileSync(path.join(opts.promptsDir, job.promptFile), 'utf8');
-    const processAfter = new Date(now + job.firstRunOffsetMs).toISOString();
-    const timestamp = new Date().toISOString();
+    const processAfter = toSqliteUtc(new Date(now + job.firstRunOffsetMs));
+    const timestamp = toSqliteUtc(new Date());
 
     db.prepare(
       `INSERT OR REPLACE INTO messages_in
