@@ -166,7 +166,14 @@ export function handleRecurrence(inDb: Database.Database, session: Session): voi
 
   for (const msg of recurring) {
     try {
-      const interval = CronExpressionParser.parse(msg.recurrence);
+      // Interpret cron expressions in America/Sao_Paulo. The host runs UTC
+      // and stores process_after in UTC, but the humans authoring recurrence
+      // patterns in skills' cron-jobs.json (and any future per-group config)
+      // think in BRT — e.g. "rollover at 00:30 on the 1st" only makes sense
+      // if it fires AFTER the month rolls in BRT, not 21:30 BRT the previous
+      // day as UTC interpretation would yield. Brazil has no DST since 2019,
+      // so a fixed offset is fine; revisit if/when other timezones appear.
+      const interval = CronExpressionParser.parse(msg.recurrence, { tz: 'America/Sao_Paulo' });
       const nextRun = toSqliteUtc(interval.next().toDate());
       const newId = `msg-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 

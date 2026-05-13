@@ -213,4 +213,29 @@ describe('handleRecurrence', () => {
       .get(respawn.id);
     expect(pastDue).toBeDefined();
   });
+
+  it('cron expressions are interpreted in America/Sao_Paulo timezone', () => {
+    // Yearly recurrence pinned to Jan 1, 12:30. Distant enough that whichever
+    // year/month is "next" is unambiguous — the only thing that varies between
+    // UTC and BRT interpretation is the hour-of-day in the resulting UTC
+    // timestamp:
+    //
+    //   UTC interp: '2027-01-01 12:30:00' (next 12:30 UTC after now)
+    //   BRT interp: '2027-01-01 15:30:00' (next 12:30 BRT = 15:30 UTC after now)
+    //
+    // If the test ever runs after 2027-01-01 12:30 BRT, the year shifts to
+    // 2028 but the hour assertion is the actual regression guard.
+    insertCompletedRecurring(db, 'orig-tz', 2, '30 12 1 1 *');
+
+    handleRecurrence(db, stubSession);
+
+    const respawn = db
+      .prepare("SELECT process_after FROM messages_in WHERE id != 'orig-tz'")
+      .get() as { process_after: string };
+
+    // 12:30 BRT = 15:30 UTC year-round (Brazil has no DST since 2019).
+    expect(respawn.process_after).toMatch(/ 15:30:00$/);
+    // Sanity: NOT the UTC-interp hour.
+    expect(respawn.process_after).not.toMatch(/ 12:30:00$/);
+  });
 });
