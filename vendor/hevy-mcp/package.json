@@ -1,0 +1,18 @@
+{
+  "name": "nanoclaw-vendor-hevy-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vendored hevy-mcp for the Lobby agent. hevy-mcp cannot run via `npx -y`: (1) hevy-mcp >=1.22.0 requires Node >=24 but the agent container is Node 22, so we pin 1.21.0 (last Node-20-compatible release); (2) hevy-mcp lists the @kubb/* codegen toolchain as PRODUCTION deps and the @kubb monorepo is currently in a cross-version-skewed published state where @kubb/plugin-oas@4.37.7 is referenced but never published (404). The overrides below pin the whole @kubb/* family to 4.37.5 (last fully-consistent published set). @kubb/* is build-time-only (OpenAPI codegen) and never imported at runtime, so the pin is safe. See docs/superpowers/specs/2026-05-14-lobby-agent-design.md.",
+  "dependencies": {
+    "hevy-mcp": "1.21.0"
+  },
+  "overrides": {
+    "@kubb/cli": "4.37.5",
+    "@kubb/core": "4.37.5",
+    "@kubb/plugin-oas": "4.37.5",
+    "@kubb/plugin-ts": "4.37.5",
+    "@kubb/plugin-zod": "4.37.5",
+    "@kubb/plugin-faker": "4.37.5",
+    "@kubb/plugin-client": "4.37.5"
+  }
+}
