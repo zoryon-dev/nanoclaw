@@ -13,10 +13,17 @@ logs/
 groups/*
 !groups/main/
 !groups/global/
+!groups/lobby/
 groups/main/*
 groups/global/*
+groups/lobby/*
 !groups/main/CLAUDE.md
 !groups/global/CLAUDE.md
+!groups/lobby/system-prompt.md
+!groups/lobby/references/
+!groups/lobby/assets/
+!groups/lobby/scheduled-jobs/
+!groups/lobby/scratch/
 
 # Secrets
 *.keys.json
