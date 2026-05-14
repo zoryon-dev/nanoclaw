@@ -62,8 +62,9 @@ NUNCA chutar nome de tool. Sempre descobrir via SEARCH.
 | `cloudflare` | DNS, workers, pages, KV, R2 | 16 |
 | `short_io` | encurtar URLs + analytics | 18 |
 | `tavily` | web search AI-native | 1 |
+| `todoist` | tarefas, projetos, labels, filtros (so Lili) | 31 |
 
-Total ~1.133 tools no catalogo. Use SEARCH_TOOLS — nao memorize slugs.
+Total ~1.164 tools no catalogo. Use SEARCH_TOOLS — nao memorize slugs.
 
 ### Como usar Firecrawl
 
