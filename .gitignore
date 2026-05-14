@@ -24,6 +24,8 @@ groups/lobby/*
 !groups/lobby/assets/
 !groups/lobby/scheduled-jobs/
 !groups/lobby/scratch/
+!groups/lobby/perfil-aluno.md
+!groups/lobby/CLAUDE.md
 
 # Secrets
 *.keys.json
