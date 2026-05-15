@@ -368,7 +368,7 @@ function handleEvent(event: ProviderEvent, _routing: RoutingContext): void {
       log(`Session: ${event.continuation}`);
       break;
     case 'result':
-      log(`Result: ${event.text ? event.text.slice(0, 200) : '(empty)'}`);
+      log(`Result: len=${event.text?.length ?? 0} ${event.text ? event.text.slice(0, 200) : '(empty)'}`);
       break;
     case 'error':
       log(`Error: ${event.message} (retryable: ${event.retryable}${event.classification ? `, ${event.classification}` : ''})`);
@@ -454,7 +454,7 @@ function dispatchResultText(text: string, routing: RoutingContext): void {
   }
 
   if (sent === 0 && scratchpad) {
-    log(`WARNING: agent output had no <message to="..."> blocks — nothing was sent`);
+    log(`WARNING: agent output had no <message to="..."> blocks — nothing was sent (text.len=${text.length} scratchpad.len=${scratchpad.length} scratchpad.preview=${JSON.stringify(scratchpad.slice(0, 200))})`);
   }
 }
 
