@@ -67,6 +67,30 @@ If `/add-finance` was already run (Plan 1, Plan 2, or Plan 2.5) and the workbook
    - "exporta o doc" → confirma intent + gera diff resumido (não precisa confirmar a sobrescrita pra esse smoke-test — só ver o card)
 5. Se algum smoke-test falhar, faça `/clear` de novo (às vezes o bot precisa de 2 ciclos pra recarregar) e re-teste. Se ainda falhar, revise o diff entre seu `groups/finance/system-prompt.md` local e o template.
 
+### From Plan 3 PR 2 → Plan 3 PR 3 (three new crons)
+
+> Prerequisite: PR 2 already applied (system-prompt is Plan 3, bot has been `/clear`'d, smoke-tests pass). If you skipped PR 2, run that first.
+
+1. `git pull` to get the latest skill templates.
+2. Re-register the cron jobs so the three new ones land in the agent's inbound DB. Get the session id first:
+   ```bash
+   sqlite3 data/v2.db "SELECT id FROM sessions WHERE agent_group_id='finance' ORDER BY created_at DESC LIMIT 1;"
+   ```
+   Then run:
+   ```bash
+   npx tsx scripts/finance/unregister-cron-jobs.ts --session <session-id>
+   npx tsx scripts/finance/register-cron-jobs.ts --session <session-id>
+   ```
+   The registrar reports `✅ 8 cron jobs registered` (5 from Plan 2.5 + 3 from Plan 3).
+3. Verify the 8 jobs are pending in the inbound DB:
+   ```bash
+   sqlite3 data/v2-sessions/finance/<session-id>/inbound.db \
+     "SELECT id, recurrence FROM messages_in WHERE recurrence IS NOT NULL ORDER BY id;"
+   ```
+   Expected: 8 rows including `task-finance-trimestral`, `task-finance-semestral`, `task-finance-anual`.
+4. **No `/clear` needed** — system-prompt already knows the three new intents (PR 2 documented them as cron-only). The first natural fire of each is the next 13/14/15 of jan/abr/jul/out (whichever is earliest in your calendar).
+5. (Optional) Smoke-test by forcing one of the cron intents via chat: send `audita as assinaturas` to the bot — Levis should respond with the audit message format from `auditar-assinaturas.md`.
+
 Skip the whole "create agent group / bot / sheet" flow.
 
 ---
