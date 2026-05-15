@@ -34,6 +34,27 @@
       "recurrence": "30 0 1 * *",
       "promptFile": "rollover.md",
       "firstRunOffsetMs": 60000
+    },
+    {
+      "id": "task-finance-trimestral",
+      "kind": "task",
+      "recurrence": "0 9 13 1,4,7,10 *",
+      "promptFile": "auditar-assinaturas.md",
+      "firstRunOffsetMs": 60000
+    },
+    {
+      "id": "task-finance-semestral",
+      "kind": "task",
+      "recurrence": "0 9 14 1,7 *",
+      "promptFile": "revisao-estrutural.md",
+      "firstRunOffsetMs": 60000
+    },
+    {
+      "id": "task-finance-anual",
+      "kind": "task",
+      "recurrence": "0 9 15 1 *",
+      "promptFile": "revisao-anual.md",
+      "firstRunOffsetMs": 60000
     }
   ]
 }
