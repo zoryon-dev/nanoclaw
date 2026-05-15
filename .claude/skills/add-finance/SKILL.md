@@ -53,6 +53,20 @@ If `/add-finance` was already run (Plan 1, Plan 2, or Plan 2.5) and the workbook
 6. After the bot reports success, walk the validation checklist at the end of `migration.md`. Expect: 14 tabs, 3 Categorias, 13 Subcategorias, every Recorrentes row with `status` set, 1 `Decisoes` row with `tipo=migracao`, 1 `_Log` entry.
 7. **Do NOT** restart the bot or run `/clear` yet — PR 1 doesn't update `system-prompt.md`. Defer the `/clear` to PR 2's rollout.
 
+### From Plan 3 PR 1 → Plan 3 PR 2 (Levis behavior)
+
+> Prerequisite: PR 1 already applied (migration ran, planilha has 14 tabs + Plan 3 schema). If you skipped PR 1, run that first.
+
+1. `git pull` to get the latest skill templates.
+2. `cp .claude/skills/add-finance/system-prompt.md groups/finance/system-prompt.md` (full overwrite — Plan 3 PR 2 system prompt).
+3. In Telegram, send `/clear` to the finance bot so it reloads the updated `system-prompt.md` (and the `CLAUDE.md` from PR 1, if you haven't /clear'd since then).
+4. Smoke-test the four most-used intents:
+   - "gastei R$50 no Spotify" → card should ask `subcategoria` (e.g. IA & LLMs ou Workspace & Apple)
+   - "corta o {nome de algum recorrente real}" → confirma corte, pede motivo
+   - "onde economizar?" → resposta NÃO menciona Saúde, Educação, Dívidas como candidatos
+   - "exporta o doc" → confirma intent + gera diff resumido (não precisa confirmar a sobrescrita pra esse smoke-test — só ver o card)
+5. Se algum smoke-test falhar, faça `/clear` de novo (às vezes o bot precisa de 2 ciclos pra recarregar) e re-teste. Se ainda falhar, revise o diff entre seu `groups/finance/system-prompt.md` local e o template.
+
 Skip the whole "create agent group / bot / sheet" flow.
 
 ---
