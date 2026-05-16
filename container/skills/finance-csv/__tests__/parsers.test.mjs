@@ -89,3 +89,72 @@ test('btg_pf: categoria_hint captures BTG own Categoria column', () => {
 test('btg_pf: throws on empty/invalid buffer', () => {
   assert.throws(() => parseBtgPf(Buffer.from('')), /empty|invalid/i);
 });
+
+import { parseBtgPj } from '../lib/parsers/btg_pj.mjs';
+
+test('btg_pj: parses fixture into canonical schema', () => {
+  const raw = readFileSync(join(FIXTURES, 'btg-pj-sample.csv'), 'utf-8');
+  const result = parseBtgPj(raw);
+
+  assert.equal(result.banco, 'btg_pj');
+  assert.equal(result.escopo, 'PJ');
+  assert.equal(result.conta_inferida, 'BTG PJ');
+  assert.match(result.periodo.inicio, /^\d{4}-\d{2}-\d{2}$/);
+  assert.match(result.periodo.fim, /^\d{4}-\d{2}-\d{2}$/);
+  assert.ok(result.linhas.length > 0);
+});
+
+test('btg_pj: every linha has required fields with correct types', () => {
+  const raw = readFileSync(join(FIXTURES, 'btg-pj-sample.csv'), 'utf-8');
+  const { linhas } = parseBtgPj(raw);
+
+  for (const linha of linhas) {
+    assert.match(linha.linha_id, /^btg_pj-\d{4}-\d{2}-\d{2}-\d{3}$/);
+    assert.match(linha.data, /^\d{4}-\d{2}-\d{2}$/);
+    assert.equal(typeof linha.valor, 'number');
+    assert.ok(linha.valor >= 0, `valor must be non-negative, got ${linha.valor}`);
+    assert.ok(
+      ['despesa', 'receita', 'estorno', 'transferencia_interna'].includes(linha.tipo),
+    );
+    assert.equal(typeof linha.descricao_raw, 'string');
+    assert.equal(linha.banco_tx_id, null);
+    assert.equal(linha.categoria_hint, null);
+  }
+});
+
+test('btg_pj: BR number format parsed correctly', () => {
+  const raw = readFileSync(join(FIXTURES, 'btg-pj-sample.csv'), 'utf-8');
+  const { linhas } = parseBtgPj(raw);
+  // First data row: "-1.700,00" → 1700.00 (abs) → 1700 as number
+  assert.equal(linhas[0].valor, 1700);
+  assert.equal(linhas[0].tipo, 'despesa');
+});
+
+test('btg_pj: receita detected from positive Valor', () => {
+  const raw = readFileSync(join(FIXTURES, 'btg-pj-sample.csv'), 'utf-8');
+  const { linhas } = parseBtgPj(raw);
+  assert.ok(linhas.some((l) => l.tipo === 'receita'), 'expected at least one receita');
+});
+
+test('btg_pj: deterministic linha_id', () => {
+  const raw = readFileSync(join(FIXTURES, 'btg-pj-sample.csv'), 'utf-8');
+  const a = parseBtgPj(raw);
+  const b = parseBtgPj(raw);
+  assert.deepEqual(a.linhas.map((l) => l.linha_id), b.linhas.map((l) => l.linha_id));
+});
+
+test('btg_pj: meio_pagamento_hint derived from descricao', () => {
+  const raw = readFileSync(join(FIXTURES, 'btg-pj-sample.csv'), 'utf-8');
+  const { linhas } = parseBtgPj(raw);
+  assert.ok(linhas.some((l) => l.meio_pagamento_hint === 'PIX'));
+  assert.ok(linhas.some((l) => l.meio_pagamento_hint === 'Boleto'));
+  assert.ok(linhas.some((l) => l.meio_pagamento_hint === 'Saque'));
+});
+
+test('btg_pj: throws on empty CSV', () => {
+  assert.throws(() => parseBtgPj(''), /empty|header/i);
+});
+
+test('btg_pj: throws on header-only CSV', () => {
+  assert.throws(() => parseBtgPj('"Data","Descricao","Valor","Saldo"\n'), /no data|empty/i);
+});
