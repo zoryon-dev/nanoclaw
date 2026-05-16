@@ -95,6 +95,40 @@ Skip the whole "create agent group / bot / sheet" flow.
 
 ---
 
+## CSV import bootstrap
+
+When installing the finance agent (first time or upgrading to add CSV support), run these one-time setup steps:
+
+1. **Create the imports/ tree** (CSVs from Telegram land here):
+   ```bash
+   mkdir -p groups/finance/imports/inbox groups/finance/imports/processed groups/finance/imports/cancelled
+   touch groups/finance/imports/inbox/.gitkeep groups/finance/imports/processed/.gitkeep groups/finance/imports/cancelled/.gitkeep
+   ```
+
+2. **Seed the classification cache** (only if missing — never overwrite an existing operator-tuned cache):
+   ```bash
+   if [ ! -f groups/finance/classification-cache.json ]; then
+     cp .claude/skills/add-finance/classification-cache-seed.json groups/finance/classification-cache.json
+   fi
+   ```
+
+3. **Seed the Hotmart Categoria mapping**:
+   ```bash
+   if [ ! -f groups/finance/hotmart-categoria-map.json ]; then
+     cp .claude/skills/add-finance/hotmart-categoria-map-seed.json groups/finance/hotmart-categoria-map.json
+   fi
+   ```
+
+4. **Add `Tarifas Bancárias` subcategoria** if not yet in the `Subcategorias` sheet (Plan 3 schema). Required by the seeded cache + Hotmart map. Schema:
+   - nome: `Tarifas Bancárias`
+   - categoria_pai: `Empresarial`
+   - escopo: `global`
+   - codigo_prefixo: `TAR`
+   - sensibilidade: `nenhuma`
+   - nao_sugerir_corte: `FALSE`
+
+---
+
 ## Step 1 — Pick agent name (operator decides)
 
 Default: `finance`. If the operator wants a different name (e.g., `money`, `grana`), use that everywhere below — but the rest of this document assumes `finance`.
