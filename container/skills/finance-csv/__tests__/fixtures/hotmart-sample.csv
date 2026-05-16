@@ -1,0 +1,1213 @@
+﻿Data do lançamento;Data da efetivação;Status;Transação;Identificador de antecipação;Status da transação;Descrição;Parcela;Valor;Nome do produto;Saldo;Categoria
+14/05/2026;16/05/2026;Efetivado;;6a0655a165208247b13e63dd;;Tarifa de antecipação;;-24.12;;2418.90;Antecipação
+14/05/2026;16/05/2026;Efetivado;HP3885105953;6a0655a165208247b13e63dd;;Saldo antecipado;;136.52;;2443.02;Antecipação
+14/05/2026;16/05/2026;Efetivado;HP2580745885;6a0655a165208247b13e63dd;;Saldo antecipado;;151.69;;2306.50;Antecipação
+14/05/2026;16/05/2026;Efetivado;HP3418250651;6a0655a165208247b13e63dd;;Saldo antecipado;;151.69;;2154.81;Antecipação
+14/05/2026;16/05/2026;Efetivado;HP1241957630;6a0655a165208247b13e63dd;;Saldo antecipado;;151.69;;2003.12;Antecipação
+14/05/2026;16/05/2026;Efetivado;HP0566461155;6a0655a165208247b13e63dd;;Saldo antecipado;;151.69;;1851.43;Antecipação
+14/05/2026;16/05/2026;Efetivado;HP0613247279;6a0655a165208247b13e63dd;;Saldo antecipado;;151.69;;1699.74;Antecipação
+14/05/2026;16/05/2026;Efetivado;HP1908132229;;Aprovado;Comissão Co-Produtor;;7.29;PRODUTO_27;1548.05;Venda
+14/05/2026;16/05/2026;Efetivado;HP4087041871;;Aprovado;Comissão Co-Produtor;;7.29;PRODUTO_27;1540.76;Venda
+14/05/2026;16/05/2026;Efetivado;HP2563716995;;Aprovado;Comissão Co-Produtor;;151.69;PRODUTO_64;1533.47;Venda
+14/05/2026;16/05/2026;Efetivado;HP1085588342;;Aprovado;Comissão Co-Produtor;;151.69;PRODUTO_64;1381.78;Venda
+22/04/2026;16/05/2026;Efetivado;HP3474983360;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-5.01;PRODUTO_71;1230.09;Antecipação
+22/04/2026;16/05/2026;Efetivado;HP3480754593;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-7.29;PRODUTO_27;1235.10;Antecipação
+22/04/2026;16/05/2026;Efetivado;HP3967169148;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-136.52;PRODUTO_66;1242.39;Antecipação
+16/04/2026;16/05/2026;Efetivado;HP3480754593;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_27;1378.91;Venda
+16/04/2026;16/05/2026;Efetivado;HP3474983360;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;1371.62;Venda
+16/04/2026;16/05/2026;Efetivado;HP3967169148;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_66;1366.61;Venda
+15/05/2026;15/05/2026;Efetivado;;;;Lançamento de débito (EMPRESA_14);;-280.29;;1230.09;Compra com cartão ou saldo
+15/05/2026;15/05/2026;Efetivado;;;;Lançamento de débito (EMPRESA_41);;-24.48;;1510.38;Compra com cartão ou saldo
+15/05/2026;15/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_935);;-447.64;;1534.86;Compra com cartão ou saldo
+15/05/2026;15/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_94);;-44.25;;1982.50;Compra com cartão ou saldo
+15/05/2026;15/05/2026;Efetivado;;;;Lançamento de débito (CAPTIONS.AI);;-135.92;;2026.75;Compra com cartão ou saldo
+15/05/2026;15/05/2026;Efetivado;;;;Lançamento de débito (VERCEL INC.);;-10.39;;2162.67;Compra com cartão ou saldo
+15/05/2026;15/05/2026;Efetivado;;;;Lançamento de débito (APPLE.COM/BILL);;-12.90;;2173.06;Compra com cartão ou saldo
+14/05/2026;15/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_12);;-245.52;;2185.96;Compra com cartão ou saldo
+13/05/2026;15/05/2026;Efetivado;HP2690091194;6a05040cc1f8bb2decee8afe;Completo;Saldo antecipado;;5.01;PRODUTO_71;2431.48;Antecipação
+13/05/2026;15/05/2026;Efetivado;;6a05040cc1f8bb2decee8afe;;Tarifa de antecipação;;-10.35;;2426.47;Antecipação
+13/05/2026;15/05/2026;Efetivado;HP1826345237;6a05040cc1f8bb2decee8afe;;Saldo antecipado;;13.24;;2436.82;Antecipação
+13/05/2026;15/05/2026;Efetivado;HP0243765742;6a05040cc1f8bb2decee8afe;;Saldo antecipado;;13.24;;2423.58;Antecipação
+13/05/2026;15/05/2026;Efetivado;HP2823983811;6a05040cc1f8bb2decee8afe;;Saldo antecipado;;68.13;;2410.34;Antecipação
+13/05/2026;15/05/2026;Efetivado;HP2829017839;6a05040cc1f8bb2decee8afe;;Saldo antecipado;;136.52;;2342.21;Antecipação
+13/05/2026;15/05/2026;Efetivado;HP3743165902;6a05040cc1f8bb2decee8afe;;Saldo antecipado;;136.52;;2205.69;Antecipação
+13/05/2026;15/05/2026;Efetivado;HP2898569487;;Aprovado;Comissão Co-Produtor;;5.01;PRODUTO_71;2069.17;Venda
+13/05/2026;15/05/2026;Efetivado;HP4106104172C2;;Aprovado;Comissão Co-Produtor;;22.49;PRODUTO_79;2064.16;Venda
+13/05/2026;15/05/2026;Efetivado;HP4106104172C1;;Aprovado;Comissão Co-Produtor;;151.69;PRODUTO_64;2041.67;Venda
+12/05/2026;15/05/2026;Efetivado;HP2543386600;;Aprovado;Comissão Co-Produtor;;68.12;PRODUTO_66;1889.98;Venda
+14/05/2026;14/05/2026;Efetivado;;;;Lançamento de débito (EMPRESA_69);;-105.70;;1821.86;Compra com cartão ou saldo
+14/05/2026;14/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_94);;-44.25;;1927.56;Compra com cartão ou saldo
+12/05/2026;14/05/2026;Efetivado;HP1855895926;6a03b295c1f8bb2decdd8b19;Completo;Saldo antecipado;;5.01;PRODUTO_71;1971.81;Antecipação
+12/05/2026;14/05/2026;Efetivado;HP2296556010;6a03b295c1f8bb2decdd8b19;;Saldo antecipado;;6.57;;1966.80;Antecipação
+12/05/2026;14/05/2026;Efetivado;;6a03b295c1f8bb2decdd8b19;;Tarifa de antecipação;;-28.45;;1960.23;Antecipação
+12/05/2026;14/05/2026;Efetivado;HP2248077649;6a03b295c1f8bb2decdd8b19;;Saldo antecipado;;68.13;;1988.68;Antecipação
+12/05/2026;14/05/2026;Efetivado;HP2225145956;6a03b295c1f8bb2decdd8b19;;Saldo antecipado;;75.69;;1920.55;Antecipação
+12/05/2026;14/05/2026;Efetivado;HP1788672138;6a03b295c1f8bb2decdd8b19;;Saldo antecipado;;136.52;;1844.86;Antecipação
+12/05/2026;14/05/2026;Efetivado;HP3966396885;6a03b295c1f8bb2decdd8b19;;Saldo antecipado;;136.52;;1708.34;Antecipação
+12/05/2026;14/05/2026;Efetivado;HP1838474956;6a03b295c1f8bb2decdd8b19;;Saldo antecipado;;151.69;;1571.82;Antecipação
+12/05/2026;14/05/2026;Efetivado;HP2793837124;6a03b295c1f8bb2decdd8b19;;Saldo antecipado;;151.69;;1420.13;Antecipação
+12/05/2026;14/05/2026;Efetivado;HP0538624606;6a03b295c1f8bb2decdd8b19;;Saldo antecipado;;151.69;;1268.44;Antecipação
+12/05/2026;14/05/2026;Efetivado;HP0865942463;6a03b295c1f8bb2decdd8b19;;Saldo antecipado;;151.69;;1116.75;Antecipação
+12/05/2026;14/05/2026;Efetivado;HP0687259383C1;;Aprovado;Comissão Co-Produtor;;151.69;PRODUTO_64;965.06;Venda
+12/05/2026;14/05/2026;Efetivado;HP0687259383C2;;Aprovado;Comissão Co-Produtor;;22.49;PRODUTO_79;813.37;Venda
+12/05/2026;14/05/2026;Efetivado;HP4260037669;;Aprovado;Comissão Co-Produtor;;136.52;PRODUTO_64;790.88;Venda
+22/04/2026;14/05/2026;Efetivado;HP4246222135;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-5.61;PRODUTO_29;654.36;Antecipação
+22/04/2026;14/05/2026;Efetivado;HP3481325998;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-6.24;PRODUTO_29;659.97;Antecipação
+14/04/2026;14/05/2026;Efetivado;HP4246222135;;Completo;Comissão Co-Produtor;;5.61;PRODUTO_29;666.21;Venda
+14/04/2026;14/05/2026;Efetivado;HP3481325998;;Completo;Comissão Co-Produtor;;6.24;PRODUTO_29;660.60;Venda
+13/05/2026;13/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_92);;-100.00;;654.36;Compra com cartão ou saldo
+13/05/2026;13/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_239);;-12.00;;754.36;Compra com cartão ou saldo
+13/05/2026;13/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_852);;-66.00;;766.36;Compra com cartão ou saldo
+13/05/2026;13/05/2026;Efetivado;;;;Lançamento de débito (D-API);;-243.11;;832.36;Compra com cartão ou saldo
+12/05/2026;13/05/2026;Efetivado;;6a03da5351c246609994dca2;;Tarifa de Saque;;-1.99;;1075.47;Saque
+12/05/2026;13/05/2026;Efetivado;;6a03da5351c246609994dca2;;Saque;;-2000.00;;1077.46;Saque
+12/05/2026;13/05/2026;Efetivado;;;;Lançamento de débito (EMPRESA_41);;-37.88;;3077.46;Compra com cartão ou saldo
+11/05/2026;13/05/2026;Efetivado;;6a02610f51c24660997b085c;;Tarifa de antecipação;;-8.57;;3115.34;Antecipação
+11/05/2026;13/05/2026;Efetivado;HP0498754095;6a02610f51c24660997b085c;;Saldo antecipado;;151.69;;3123.91;Antecipação
+11/05/2026;13/05/2026;Efetivado;HP0275984482;6a02610f51c24660997b085c;;Saldo antecipado;;151.69;;2972.22;Antecipação
+11/05/2026;13/05/2026;Efetivado;HP2186423343;;Aprovado;Comissão Co-Produtor;;151.69;PRODUTO_64;2820.53;Venda
+11/05/2026;13/05/2026;Efetivado;HP0866673319;;Aprovado;Comissão Co-Produtor;;22.49;PRODUTO_55;2668.84;Venda
+11/05/2026;13/05/2026;Efetivado;HP0942313966;;Aprovado;Comissão Co-Produtor;;5.01;PRODUTO_71;2646.35;Venda
+11/05/2026;13/05/2026;Efetivado;HP3863281643;;Aprovado;Comissão Co-Produtor;;5.01;PRODUTO_71;2641.34;Venda
+10/05/2026;13/05/2026;Efetivado;HP0800048818;;Aprovado;Comissão Co-Produtor;;75.69;PRODUTO_66;2636.33;Venda
+10/05/2026;13/05/2026;Efetivado;HP4278578948;;Aprovado;Comissão Co-Produtor;;151.69;PRODUTO_64;2560.64;Venda
+10/05/2026;13/05/2026;Efetivado;HP0006665938C2;;Aprovado;Comissão Co-Produtor;;7.29;PRODUTO_27;2408.95;Venda
+10/05/2026;13/05/2026;Efetivado;HP0006665938C1;;Aprovado;Comissão Co-Produtor;;5.01;PRODUTO_71;2401.66;Venda
+22/04/2026;13/05/2026;Efetivado;HP2535584197;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-16.57;PRODUTO_66;2396.65;Antecipação
+13/04/2026;13/05/2026;Efetivado;HP2535584197;;Completo;Comissão Co-Produtor;;16.57;PRODUTO_66;2413.22;Venda
+12/05/2026;12/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_99);;-24.00;;2396.65;Compra com cartão ou saldo
+12/05/2026;12/05/2026;Efetivado;;;;Lançamento de débito (EMPRESA_17);;-108.64;;2420.65;Compra com cartão ou saldo
+12/05/2026;12/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_601);;-13.00;;2529.29;Compra com cartão ou saldo
+12/05/2026;12/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_455);;-15.90;;2542.29;Compra com cartão ou saldo
+12/05/2026;12/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_455);;-10.00;;2558.19;Compra com cartão ou saldo
+12/05/2026;12/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_455);;-87.80;;2568.19;Compra com cartão ou saldo
+12/05/2026;12/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_94);;-44.25;;2655.99;Compra com cartão ou saldo
+10/05/2026;12/05/2026;Efetivado;;6a010f4d104e31038cea07da;;Tarifa de antecipação;;-17.00;;2700.24;Antecipação
+10/05/2026;12/05/2026;Efetivado;HP1911515951;6a010f4d104e31038cea07da;;Saldo antecipado;;75.69;;2717.24;Antecipação
+10/05/2026;12/05/2026;Efetivado;HP3826087774;6a010f4d104e31038cea07da;;Saldo antecipado;;75.70;;2641.55;Antecipação
+10/05/2026;12/05/2026;Efetivado;HP2766904701;6a010f4d104e31038cea07da;;Saldo antecipado;;75.70;;2565.85;Antecipação
+10/05/2026;12/05/2026;Efetivado;HP2386250121;6a010f4d104e31038cea07da;;Saldo antecipado;;75.70;;2490.15;Antecipação
+10/05/2026;12/05/2026;Efetivado;HP4165775080;6a010f4d104e31038cea07da;;Saldo antecipado;;136.52;;2414.45;Antecipação
+10/05/2026;12/05/2026;Efetivado;HP0742956920;6a010f4d104e31038cea07da;;Saldo antecipado;;136.52;;2277.93;Antecipação
+10/05/2026;12/05/2026;Efetivado;HP0179528752;;Aprovado;Comissão Co-Produtor;;5.01;PRODUTO_71;2141.41;Venda
+10/05/2026;12/05/2026;Efetivado;HP0211216080;;Aprovado;Comissão Co-Produtor;;5.01;PRODUTO_71;2136.40;Venda
+10/05/2026;12/05/2026;Efetivado;HP2399390344;;Aprovado;Comissão Co-Produtor;;5.01;PRODUTO_71;2131.39;Venda
+10/05/2026;12/05/2026;Efetivado;HP3400461009;;Aprovado;Comissão Co-Produtor;;5.01;PRODUTO_71;2126.38;Venda
+22/04/2026;12/05/2026;Efetivado;HP3370772247;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-4.23;PRODUTO_33;2121.37;Antecipação
+22/04/2026;12/05/2026;Efetivado;HP3814366948;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-13.24;PRODUTO_77;2125.60;Antecipação
+22/04/2026;12/05/2026;Efetivado;HP3506429910;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2138.84;Antecipação
+12/04/2026;12/05/2026;Efetivado;HP3506429910;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;2176.53;Venda
+12/04/2026;12/05/2026;Efetivado;HP3814366948;;Completo;Comissão Co-Produtor;;13.24;PRODUTO_77;2138.84;Venda
+11/04/2026;12/05/2026;Efetivado;HP3370772247;;Completo;Comissão Co-Produtor;;4.23;PRODUTO_33;2125.60;Venda
+11/05/2026;11/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_12);;-341.58;;2121.37;Compra com cartão ou saldo
+11/05/2026;11/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_833);;-45.00;;2462.95;Compra com cartão ou saldo
+11/05/2026;11/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_150);;-140.44;;2507.95;Compra com cartão ou saldo
+11/05/2026;11/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_34);;-79.00;;2648.39;Compra com cartão ou saldo
+09/05/2026;11/05/2026;Efetivado;HP2274010711;69ffbdf584db8c4cd1366611;Completo;Saldo antecipado;;5.01;PRODUTO_71;2727.39;Antecipação
+09/05/2026;11/05/2026;Efetivado;HP2287107498;69ffbdf584db8c4cd1366611;;Saldo antecipado;;7.30;;2722.38;Antecipação
+09/05/2026;11/05/2026;Efetivado;HP0391681174;69ffbdf584db8c4cd1366611;;Saldo antecipado;;13.24;;2715.08;Antecipação
+09/05/2026;11/05/2026;Efetivado;HP3813668540;69ffbdf584db8c4cd1366611;;Saldo antecipado;;13.24;;2701.84;Antecipação
+09/05/2026;11/05/2026;Efetivado;;69ffbdf584db8c4cd1366611;;Tarifa de antecipação;;-24.64;;2688.60;Antecipação
+09/05/2026;11/05/2026;Efetivado;HP2570698086;69ffbdf584db8c4cd1366611;;Saldo antecipado;;68.12;;2713.24;Antecipação
+09/05/2026;11/05/2026;Efetivado;HP0460951300;69ffbdf584db8c4cd1366611;;Saldo antecipado;;68.13;;2645.12;Antecipação
+09/05/2026;11/05/2026;Efetivado;HP2033287595;69ffbdf584db8c4cd1366611;;Saldo antecipado;;75.69;;2576.99;Antecipação
+09/05/2026;11/05/2026;Efetivado;HP1805068556;69ffbdf584db8c4cd1366611;;Saldo antecipado;;136.52;;2501.30;Antecipação
+09/05/2026;11/05/2026;Efetivado;HP0195726848;69ffbdf584db8c4cd1366611;;Saldo antecipado;;136.52;;2364.78;Antecipação
+09/05/2026;11/05/2026;Efetivado;HP2686991300;69ffbdf584db8c4cd1366611;;Saldo antecipado;;151.69;;2228.26;Antecipação
+09/05/2026;11/05/2026;Efetivado;HP1900087854;69ffbdf584db8c4cd1366611;;Saldo antecipado;;151.69;;2076.57;Antecipação
+09/05/2026;11/05/2026;Efetivado;HP0982790866;;Aprovado;Comissão Co-Produtor;;151.69;PRODUTO_64;1924.88;Venda
+09/05/2026;11/05/2026;Efetivado;HP2633348323C2;;Aprovado;Comissão Co-Produtor;;7.29;PRODUTO_27;1773.19;Venda
+09/05/2026;11/05/2026;Efetivado;HP2633348323C1;;Aprovado;Comissão Co-Produtor;;5.01;PRODUTO_71;1765.90;Venda
+09/05/2026;11/05/2026;Efetivado;HP1711089886;;Aprovado;Comissão Co-Produtor;;5.01;PRODUTO_71;1760.89;Venda
+09/05/2026;11/05/2026;Efetivado;HP3523475033;;Aprovado;Comissão Co-Produtor;;5.01;PRODUTO_71;1755.88;Venda
+09/05/2026;11/05/2026;Efetivado;HP1704843603;;Aprovado;Comissão Co-Produtor;;68.12;PRODUTO_66;1750.87;Venda
+09/05/2026;11/05/2026;Efetivado;HP1207544768;;Aprovado;Comissão Co-Produtor;;136.52;PRODUTO_64;1682.75;Venda
+22/04/2026;11/05/2026;Efetivado;HP0770453646;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-19.90;PRODUTO_70;1546.23;Antecipação
+11/04/2026;11/05/2026;Efetivado;HP0770453646;;Completo;Comissão Co-Produtor;;19.90;PRODUTO_70;1566.13;Venda
+10/05/2026;10/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_526);;-195.37;;1546.23;Compra com cartão ou saldo
+10/05/2026;10/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_76);;-34.70;;1741.60;Compra com cartão ou saldo
+10/05/2026;10/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_76);;-11.90;;1776.30;Compra com cartão ou saldo
+10/05/2026;10/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_998);;-272.31;;1788.20;Compra com cartão ou saldo
+10/05/2026;10/05/2026;Efetivado;;;;Lançamento de débito (RAY I P890 I MANAIRA S);;-1542.00;;2060.51;Compra com cartão ou saldo
+10/05/2026;10/05/2026;Efetivado;;;;Lançamento de débito (PAO DE ACUCAR-1284);;-206.01;;3602.51;Compra com cartão ou saldo
+10/05/2026;10/05/2026;Efetivado;;6a006dd684db8c4cd13961cf;;Tarifa de Saque;;-1.99;;3808.52;Saque
+10/05/2026;10/05/2026;Efetivado;;6a006dd684db8c4cd13961cf;;Saque;;-2500.00;;3810.51;Saque
+10/05/2026;10/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_356);;-6.00;;6310.51;Compra com cartão ou saldo
+09/05/2026;10/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_881);;-36.47;;6316.51;Compra com cartão ou saldo
+09/05/2026;10/05/2026;Efetivado;;;;Lançamento de débito (ZENY);;-24.63;;6352.98;Compra com cartão ou saldo
+09/05/2026;10/05/2026;Efetivado;;;;Lançamento de débito (PIZZA HUT);;-71.80;;6377.61;Compra com cartão ou saldo
+08/05/2026;10/05/2026;Efetivado;HP3776584861;69fe6d09d2592b1c4341f75a;Completo;Saldo antecipado;;22.50;PRODUTO_79;6449.41;Antecipação
+08/05/2026;10/05/2026;Efetivado;;69fe6d09d2592b1c4341f75a;;Tarifa de antecipação;;-22.60;;6426.91;Antecipação
+08/05/2026;10/05/2026;Efetivado;HP2162117180;69fe6d09d2592b1c4341f75a;;Saldo antecipado;;136.52;;6449.51;Antecipação
+08/05/2026;10/05/2026;Efetivado;HP3783895090;69fe6d09d2592b1c4341f75a;;Saldo antecipado;;151.69;;6312.99;Antecipação
+08/05/2026;10/05/2026;Efetivado;HP2122058966;69fe6d09d2592b1c4341f75a;;Saldo antecipado;;151.69;;6161.30;Antecipação
+08/05/2026;10/05/2026;Efetivado;HP1233040531;69fe6d09d2592b1c4341f75a;;Saldo antecipado;;151.69;;6009.61;Antecipação
+08/05/2026;10/05/2026;Efetivado;HP2301411606;69fe6d09d2592b1c4341f75a;;Saldo antecipado;;151.69;;5857.92;Antecipação
+08/05/2026;10/05/2026;Efetivado;HP1087105435C2;;Aprovado;Comissão Co-Produtor;;22.49;PRODUTO_79;5706.23;Venda
+08/05/2026;10/05/2026;Efetivado;HP1087105435C1;;Aprovado;Comissão Co-Produtor;;151.69;PRODUTO_64;5683.74;Venda
+08/05/2026;10/05/2026;Efetivado;HP1380638198;;Aprovado;Comissão Co-Produtor;;5.01;PRODUTO_71;5532.05;Venda
+08/05/2026;10/05/2026;Efetivado;HP1721233811;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;5527.04;Venda
+22/04/2026;10/05/2026;Efetivado;HP1321756136;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-5.61;PRODUTO_29;5390.52;Antecipação
+22/04/2026;10/05/2026;Efetivado;HP0281716918;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-7.29;PRODUTO_95;5396.13;Antecipação
+22/04/2026;10/05/2026;Efetivado;HP2690859644;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-14.71;PRODUTO_77;5403.42;Antecipação
+22/04/2026;10/05/2026;Efetivado;HP3164485540;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-14.71;PRODUTO_77;5418.13;Antecipação
+22/04/2026;10/05/2026;Efetivado;HP2297031657;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;5432.84;Antecipação
+22/04/2026;10/05/2026;Efetivado;HP0272482944;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;5466.76;Antecipação
+10/04/2026;10/05/2026;Efetivado;HP0281716918;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_95;5504.45;Venda
+10/04/2026;10/05/2026;Efetivado;HP0272482944;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;5497.16;Venda
+10/04/2026;10/05/2026;Efetivado;HP2297031657;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;5459.47;Venda
+10/04/2026;10/05/2026;Efetivado;HP3164485540;;Completo;Comissão Co-Produtor;;14.71;PRODUTO_77;5425.55;Venda
+10/04/2026;10/05/2026;Efetivado;HP2690859644;;Completo;Comissão Co-Produtor;;14.71;PRODUTO_77;5410.84;Venda
+10/04/2026;10/05/2026;Efetivado;HP1321756136;;Completo;Comissão Co-Produtor;;5.61;PRODUTO_29;5396.13;Venda
+09/05/2026;09/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_741);;-10.00;;5390.52;Compra com cartão ou saldo
+09/05/2026;09/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_88);;-22.95;;5400.52;Compra com cartão ou saldo
+09/05/2026;09/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_88);;-74.85;;5423.47;Compra com cartão ou saldo
+09/05/2026;09/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_815);;-74.70;;5498.32;Compra com cartão ou saldo
+09/05/2026;09/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_689);;-10.90;;5573.02;Compra com cartão ou saldo
+09/05/2026;09/05/2026;Efetivado;;;;Lançamento de débito (EMPRESA_22);;-151.20;;5583.92;Compra com cartão ou saldo
+09/05/2026;09/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_93);;-23.00;;5735.12;Compra com cartão ou saldo
+09/05/2026;09/05/2026;Efetivado;;;;Lançamento de débito (JIM.COM* MERCHANT_20);;-40.00;;5758.12;Compra com cartão ou saldo
+09/05/2026;09/05/2026;Efetivado;;;;Lançamento de débito (JIM.COM* MERCHANT_60);;-29.79;;5798.12;Compra com cartão ou saldo
+09/05/2026;09/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_52);;-33.00;;5827.91;Compra com cartão ou saldo
+09/05/2026;09/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_7);;-25.00;;5860.91;Compra com cartão ou saldo
+09/05/2026;09/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_95);;-46.48;;5885.91;Compra com cartão ou saldo
+07/05/2026;09/05/2026;Efetivado;HP3478882802;69fd1b36c295125534402b89;Completo;Saldo antecipado;;3.24;PRODUTO_33;5932.39;Antecipação
+07/05/2026;09/05/2026;Efetivado;HP3108939895;69fd1b36c295125534402b89;;Saldo antecipado;;5.01;;5929.15;Antecipação
+07/05/2026;09/05/2026;Efetivado;HP0078546999;69fd1b36c295125534402b89;;Saldo antecipado;;14.71;;5924.14;Antecipação
+07/05/2026;09/05/2026;Efetivado;;69fd1b36c295125534402b89;;Tarifa de antecipação;;-31.27;;5909.43;Antecipação
+07/05/2026;09/05/2026;Efetivado;HP0111962146;69fd1b36c295125534402b89;;Saldo antecipado;;151.69;;5940.70;Antecipação
+07/05/2026;09/05/2026;Efetivado;HP0734656077;69fd1b36c295125534402b89;;Saldo antecipado;;151.69;;5789.01;Antecipação
+07/05/2026;09/05/2026;Efetivado;HP2331902003;69fd1b36c295125534402b89;;Saldo antecipado;;151.69;;5637.32;Antecipação
+07/05/2026;09/05/2026;Efetivado;HP2704601094;69fd1b36c295125534402b89;;Saldo antecipado;;151.69;;5485.63;Antecipação
+07/05/2026;09/05/2026;Efetivado;HP3307162199;69fd1b36c295125534402b89;;Saldo antecipado;;151.69;;5333.94;Antecipação
+07/05/2026;09/05/2026;Efetivado;HP1679289603;69fd1b36c295125534402b89;;Saldo antecipado;;151.69;;5182.25;Antecipação
+07/05/2026;09/05/2026;Efetivado;HP1219037973;69fd1b36c295125534402b89;;Saldo antecipado;;151.69;;5030.56;Antecipação
+07/05/2026;09/05/2026;Efetivado;HP1666643795;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;4878.87;Venda
+07/05/2026;09/05/2026;Efetivado;HP0433877671C1;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;4873.86;Venda
+07/05/2026;09/05/2026;Efetivado;HP3193281458;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;4868.85;Venda
+07/05/2026;09/05/2026;Efetivado;HP3346934187;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_55;4717.16;Venda
+06/05/2026;09/05/2026;Efetivado;HP1907144151;;Completo;Comissão Co-Produtor;;68.12;PRODUTO_66;4679.47;Venda
+06/05/2026;09/05/2026;Efetivado;HP4187566206;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;4611.35;Venda
+22/04/2026;09/05/2026;Efetivado;HP3685685671;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-6.24;PRODUTO_29;4474.83;Antecipação
+22/04/2026;09/05/2026;Efetivado;HP2183210568;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-14.89;PRODUTO_74;4481.07;Antecipação
+22/04/2026;09/05/2026;Efetivado;HP1041767851;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;4495.96;Antecipação
+09/04/2026;09/05/2026;Efetivado;HP3685685671;;Completo;Comissão Co-Produtor;;6.24;PRODUTO_29;4529.88;Venda
+09/04/2026;09/05/2026;Efetivado;HP2183210568;;Completo;Comissão Co-Produtor;;14.89;PRODUTO_74;4523.64;Venda
+09/04/2026;09/05/2026;Efetivado;HP1041767851;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;4508.75;Venda
+08/05/2026;08/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_67);;-13.00;;4474.83;Compra com cartão ou saldo
+08/05/2026;08/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_27);;-48.50;;4487.83;Compra com cartão ou saldo
+08/05/2026;08/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_87);;-31.37;;4536.33;Compra com cartão ou saldo
+07/05/2026;08/05/2026;Efetivado;;;;Lançamento de débito (UPSTASH);;-96.41;;4567.70;Compra com cartão ou saldo
+06/05/2026;08/05/2026;Efetivado;;69fbc98a07b4646c32d550d9;;Tarifa de antecipação;;-12.98;;4664.11;Antecipação
+06/05/2026;08/05/2026;Efetivado;HP0288607864;69fbc98a07b4646c32d550d9;;Saldo antecipado;;136.52;;4677.09;Antecipação
+06/05/2026;08/05/2026;Efetivado;HP0869486758;69fbc98a07b4646c32d550d9;;Saldo antecipado;;151.69;;4540.57;Antecipação
+06/05/2026;08/05/2026;Efetivado;HP3700484489;69fbc98a07b4646c32d550d9;;Saldo antecipado;;151.69;;4388.88;Antecipação
+22/04/2026;08/05/2026;Efetivado;HP0691090869;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-14.89;PRODUTO_74;4237.19;Antecipação
+22/04/2026;08/05/2026;Efetivado;HP2466923749;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-14.89;PRODUTO_74;4252.08;Antecipação
+22/04/2026;08/05/2026;Efetivado;HP0935668576;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;4266.97;Antecipação
+22/04/2026;08/05/2026;Efetivado;HP1668783796;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;4300.89;Antecipação
+08/04/2026;08/05/2026;Efetivado;HP2135376943;;Reembolsado;Reclamada - Estorno de Comissão Co-Produtor;;-7.29;PRODUTO_95;4338.58;Venda
+08/04/2026;08/05/2026;Efetivado;HP2139224432;;Reembolsado;Reclamada - Estorno de Comissão Co-Produtor;;-37.69;PRODUTO_33;4345.87;Venda
+08/04/2026;08/05/2026;Efetivado;HP2466923749;;Completo;Comissão Co-Produtor;;14.89;PRODUTO_74;4383.56;Venda
+08/04/2026;08/05/2026;Efetivado;HP2562695053;;Completo;Comissão Co-Produtor;;13.35;PRODUTO_77;4368.67;Venda
+08/04/2026;08/05/2026;Efetivado;HP0935668576;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;4355.32;Venda
+08/04/2026;08/05/2026;Efetivado;HP0691090869;;Completo;Comissão Co-Produtor;;14.89;PRODUTO_74;4321.40;Venda
+08/04/2026;08/05/2026;Efetivado;HP2135376943;;Reembolsado;Comissão Co-Produtor;;7.29;PRODUTO_95;4306.51;Venda
+08/04/2026;08/05/2026;Efetivado;HP2139224432;;Reembolsado;Comissão Co-Produtor;;37.69;PRODUTO_33;4299.22;Venda
+07/04/2026;08/05/2026;Efetivado;HP1668783796;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;4261.53;Venda
+07/05/2026;07/05/2026;Efetivado;;;;Lançamento de débito (AIRBNB * HM3BMM3FFB);;-539.00;;4223.84;Compra com cartão ou saldo
+07/05/2026;07/05/2026;Efetivado;;;;Lançamento de débito (PADDLE.NET* SETAPP);;-63.81;;4762.84;Compra com cartão ou saldo
+07/05/2026;07/05/2026;Efetivado;;;;Lançamento de débito (CLOUDFLARE);;-27.08;;4826.65;Compra com cartão ou saldo
+07/05/2026;07/05/2026;Efetivado;;;;Lançamento de débito (APPLE.COM/BILL);;-179.90;;4853.73;Compra com cartão ou saldo
+05/05/2026;07/05/2026;Efetivado;HP4121476406;69fa781180565b4110295c98;Completo;Saldo antecipado;;4.23;PRODUTO_33;5033.63;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP1863693240;69fa781180565b4110295c98;;Saldo antecipado;;5.01;;5029.40;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP0286607498;69fa781180565b4110295c98;;Saldo antecipado;;5.01;;5024.39;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP0530230173;69fa781180565b4110295c98;;Saldo antecipado;;6.78;;5019.38;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP1465631370;69fa781180565b4110295c98;;Saldo antecipado;;13.24;;5012.60;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP2582404185;69fa781180565b4110295c98;;Saldo antecipado;;14.71;;4999.36;Antecipação
+05/05/2026;07/05/2026;Efetivado;;69fa781180565b4110295c98;;Tarifa de antecipação;;-54.34;;4984.65;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP1481574117;69fa781180565b4110295c98;;Saldo antecipado;;136.52;;5038.99;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP0549189615;69fa781180565b4110295c98;;Saldo antecipado;;136.52;;4902.47;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP2171231325;69fa781180565b4110295c98;;Saldo antecipado;;151.69;;4765.95;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP3763722347;69fa781180565b4110295c98;;Saldo antecipado;;151.69;;4614.26;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP1809952108;69fa781180565b4110295c98;;Saldo antecipado;;151.69;;4462.57;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP3404720975;69fa781180565b4110295c98;;Saldo antecipado;;151.69;;4310.88;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP1778372050;69fa781180565b4110295c98;;Saldo antecipado;;151.69;;4159.19;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP3595187004;69fa781180565b4110295c98;;Saldo antecipado;;151.69;;4007.50;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP2436292669;69fa781180565b4110295c98;;Saldo antecipado;;151.69;;3855.81;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP3412031204;69fa781180565b4110295c98;;Saldo antecipado;;151.69;;3704.12;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP1943444652;69fa781180565b4110295c98;;Saldo antecipado;;151.69;;3552.43;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP2968815795;69fa781180565b4110295c98;;Saldo antecipado;;151.69;;3400.74;Antecipação
+05/05/2026;07/05/2026;Efetivado;HP3196393387;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;3249.05;Venda
+05/05/2026;07/05/2026;Efetivado;HP2325951813;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;3097.36;Venda
+05/05/2026;07/05/2026;Efetivado;HP2520988857C1;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;3092.35;Venda
+22/04/2026;07/05/2026;Efetivado;HP3802080174;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-7.29;PRODUTO_95;3087.34;Antecipação
+22/04/2026;07/05/2026;Efetivado;HP0179224879;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-7.29;PRODUTO_95;3094.63;Antecipação
+22/04/2026;07/05/2026;Efetivado;HP0012228532;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-7.29;PRODUTO_95;3101.92;Antecipação
+22/04/2026;07/05/2026;Efetivado;HP0562879184;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-13.24;PRODUTO_66;3109.21;Antecipação
+22/04/2026;07/05/2026;Efetivado;HP1424272319;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;3122.45;Antecipação
+22/04/2026;07/05/2026;Efetivado;HP3495435301;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;3156.37;Antecipação
+22/04/2026;07/05/2026;Efetivado;HP4221012074;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3190.29;Antecipação
+22/04/2026;07/05/2026;Efetivado;HP3844742974;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3227.98;Antecipação
+22/04/2026;07/05/2026;Efetivado;HP3818624377;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3265.67;Antecipação
+22/04/2026;07/05/2026;Efetivado;HP3964413562;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3303.36;Antecipação
+22/04/2026;07/05/2026;Efetivado;HP0187304606;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-37.70;PRODUTO_33;3341.05;Antecipação
+07/04/2026;07/05/2026;Efetivado;HP0562879184;;Completo;Comissão Co-Produtor;;13.24;PRODUTO_66;3378.75;Venda
+07/04/2026;07/05/2026;Efetivado;HP3495435301;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;3365.51;Venda
+07/04/2026;07/05/2026;Efetivado;HP3802080174;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_95;3331.59;Venda
+07/04/2026;07/05/2026;Efetivado;HP3818624377;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3324.30;Venda
+07/04/2026;07/05/2026;Efetivado;HP3964413562;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3286.61;Venda
+06/04/2026;07/05/2026;Efetivado;HP1424272319;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;3248.92;Venda
+06/04/2026;07/05/2026;Efetivado;HP0179224879;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_95;3215.00;Venda
+06/04/2026;07/05/2026;Efetivado;HP0187304606;;Completo;Comissão Co-Produtor;;37.70;PRODUTO_33;3207.71;Venda
+06/04/2026;07/05/2026;Efetivado;HP3844742974;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3170.01;Venda
+06/04/2026;07/05/2026;Efetivado;HP0012228532;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_95;3132.32;Venda
+06/04/2026;07/05/2026;Efetivado;HP4221012074;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3125.03;Venda
+06/05/2026;06/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_92);;-1960.00;;3087.34;Compra com cartão ou saldo
+06/05/2026;06/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_150);;-69.87;;5047.34;Compra com cartão ou saldo
+05/05/2026;06/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_8);;-59.80;;5117.21;Compra com cartão ou saldo
+05/05/2026;06/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_8);;-59.80;;5177.01;Compra com cartão ou saldo
+04/05/2026;06/05/2026;Efetivado;;69f926aa6454a42610033a88;;Tarifa de antecipação;;-27.34;;5236.81;Antecipação
+04/05/2026;06/05/2026;Efetivado;HP1941520908;69f926aa6454a42610033a88;;Saldo antecipado;;68.33;;5264.15;Antecipação
+04/05/2026;06/05/2026;Efetivado;HP2259767900;69f926aa6454a42610033a88;;Saldo antecipado;;68.33;;5195.82;Antecipação
+04/05/2026;06/05/2026;Efetivado;HP2248487589;69f926aa6454a42610033a88;;Saldo antecipado;;68.33;;5127.49;Antecipação
+04/05/2026;06/05/2026;Efetivado;HP1435976177;69f926aa6454a42610033a88;;Saldo antecipado;;136.52;;5059.16;Antecipação
+04/05/2026;06/05/2026;Efetivado;HP2388243384;69f926aa6454a42610033a88;;Saldo antecipado;;136.52;;4922.64;Antecipação
+04/05/2026;06/05/2026;Efetivado;HP0337192971;69f926aa6454a42610033a88;;Saldo antecipado;;136.52;;4786.12;Antecipação
+04/05/2026;06/05/2026;Efetivado;HP2916874694;69f926aa6454a42610033a88;;Saldo antecipado;;136.52;;4649.60;Antecipação
+04/05/2026;06/05/2026;Efetivado;HP3469079666;69f926aa6454a42610033a88;;Saldo antecipado;;136.52;;4513.08;Antecipação
+04/05/2026;06/05/2026;Efetivado;HP3112937336;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;4376.56;Venda
+04/05/2026;06/05/2026;Efetivado;HP3534591483C2;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_79;4224.87;Venda
+04/05/2026;06/05/2026;Efetivado;HP3534591483C1;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;4202.38;Venda
+22/04/2026;06/05/2026;Efetivado;HP1012127982;69e954aa4c3ef46416135693;Completo;Débito de Saque antecipado;;-136.52;PRODUTO_66;4050.69;Antecipação
+16/04/2026;06/05/2026;Efetivado;HP3595917705;69e16b7d4c3ef46416ca4e98;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;4187.21;Antecipação
+16/04/2026;06/05/2026;Efetivado;HP2267674201;69e16b7d4c3ef46416ca4e98;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;4221.13;Antecipação
+16/04/2026;06/05/2026;Efetivado;HP3733242414;69e16b7d4c3ef46416ca4e98;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;4258.82;Antecipação
+06/04/2026;06/05/2026;Efetivado;HP3595917705;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;4296.51;Venda
+06/04/2026;06/05/2026;Efetivado;HP3733242414;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;4262.59;Venda
+06/04/2026;06/05/2026;Efetivado;HP1012127982;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_66;4224.90;Venda
+06/04/2026;06/05/2026;Efetivado;HP2267674201;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;4088.38;Venda
+05/05/2026;05/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_150);;-30.38;;4050.69;Compra com cartão ou saldo
+05/05/2026;05/05/2026;Efetivado;;;;Lançamento de débito (CROOKS SV);;-53.90;;4081.07;Compra com cartão ou saldo
+05/05/2026;05/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_94);;-44.25;;4134.97;Compra com cartão ou saldo
+05/05/2026;05/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_17);;-287.05;;4179.22;Compra com cartão ou saldo
+03/05/2026;05/05/2026;Efetivado;HP1547719159;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;4466.27;Venda
+03/05/2026;05/05/2026;Efetivado;HP3993077019;69f7d4f96454a42610f62645;Completo;Saldo antecipado;;5.01;PRODUTO_71;4461.26;Antecipação
+03/05/2026;05/05/2026;Efetivado;HP0187140900;69f7d4f96454a42610f62645;;Saldo antecipado;;6.57;;4456.25;Antecipação
+03/05/2026;05/05/2026;Efetivado;;69f7d4f96454a42610f62645;;Tarifa de antecipação;;-8.85;;4449.68;Antecipação
+03/05/2026;05/05/2026;Efetivado;HP1723135130;69f7d4f96454a42610f62645;;Saldo antecipado;;13.24;;4458.53;Antecipação
+03/05/2026;05/05/2026;Efetivado;HP3697914961;69f7d4f96454a42610f62645;;Saldo antecipado;;17.25;;4445.29;Antecipação
+03/05/2026;05/05/2026;Efetivado;HP0371375970;69f7d4f96454a42610f62645;;Saldo antecipado;;20.24;;4428.04;Antecipação
+03/05/2026;05/05/2026;Efetivado;HP4287055827;69f7d4f96454a42610f62645;;Saldo antecipado;;68.12;;4407.80;Antecipação
+03/05/2026;05/05/2026;Efetivado;HP1451641968;69f7d4f96454a42610f62645;;Saldo antecipado;;151.69;;4339.68;Antecipação
+03/05/2026;05/05/2026;Efetivado;HP1024152526C1;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;4187.99;Venda
+03/05/2026;05/05/2026;Efetivado;HP0088691677;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;4182.98;Venda
+02/05/2026;05/05/2026;Efetivado;HP3845749363;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;4031.29;Venda
+16/04/2026;05/05/2026;Efetivado;HP0072080794;69e16b7d4c3ef46416ca4e98;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;4026.28;Antecipação
+05/04/2026;05/05/2026;Efetivado;HP0072080794;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;4060.20;Venda
+04/05/2026;04/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_97);;-97.50;;4026.28;Compra com cartão ou saldo
+04/05/2026;04/05/2026;Efetivado;;;;Lançamento de débito (EMPRESA_80);;-83.26;;4123.78;Compra com cartão ou saldo
+04/05/2026;04/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_579);;-81.95;;4207.04;Compra com cartão ou saldo
+04/05/2026;04/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_77);;-422.10;;4288.99;Compra com cartão ou saldo
+03/05/2026;04/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_18);;-145.00;;4711.09;Compra com cartão ou saldo
+03/05/2026;04/05/2026;Efetivado;;;;Lançamento de débito (FIREFLIES.AI);;-92.92;;4856.09;Compra com cartão ou saldo
+02/05/2026;04/05/2026;Efetivado;;69f6837324b4d53d9aece569;;Tarifa de antecipação;;-9.73;;4949.01;Antecipação
+02/05/2026;04/05/2026;Efetivado;HP3389560881;69f6837324b4d53d9aece569;;Saldo antecipado;;151.69;;4958.74;Antecipação
+02/05/2026;04/05/2026;Efetivado;HP2979265312;69f6837324b4d53d9aece569;;Saldo antecipado;;151.69;;4807.05;Antecipação
+02/05/2026;04/05/2026;Efetivado;HP0532475725;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;4655.36;Venda
+03/05/2026;03/05/2026;Efetivado;;;;Lançamento de débito (APPLE.COM/BILL.);;-20.00;;4650.35;Compra com cartão ou saldo
+03/05/2026;03/05/2026;Efetivado;;;;Lançamento de débito (MIDWEST);;-14.00;;4670.35;Compra com cartão ou saldo
+03/05/2026;03/05/2026;Efetivado;;;;Lançamento de débito (CEA NAM 765 ECPC);;-487.91;;4684.35;Compra com cartão ou saldo
+03/05/2026;03/05/2026;Efetivado;;;;Lançamento de débito (VX CASE);;-250.00;;5172.26;Compra com cartão ou saldo
+03/05/2026;03/05/2026;Efetivado;;;;Lançamento de débito (BROOKSFIELD 116);;-1241.73;;5422.26;Compra com cartão ou saldo
+03/05/2026;03/05/2026;Efetivado;;;;Lançamento de débito (BROOKSFIELD 116);;-639.60;;6663.99;Compra com cartão ou saldo
+03/05/2026;03/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_42);;-100.00;;7303.59;Compra com cartão ou saldo
+03/05/2026;03/05/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_66);;-370.04;;7403.59;Compra com cartão ou saldo
+03/05/2026;03/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_7);;-50.00;;7773.63;Compra com cartão ou saldo
+03/05/2026;03/05/2026;Efetivado;;;;Lançamento de crédito (MOVIDA VC);;1.29;;7823.63;Reembolso cartão hotmart
+03/05/2026;03/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_579);;-72.62;;7822.34;Compra com cartão ou saldo
+03/05/2026;03/05/2026;Efetivado;;;;Lançamento de débito (MOVIDA VC);;-1.29;;7894.96;Compra com cartão ou saldo
+02/05/2026;03/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_61);;-516.48;;7896.25;Compra com cartão ou saldo
+02/05/2026;03/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_579);;-9.97;;8412.73;Compra com cartão ou saldo
+02/05/2026;03/05/2026;Efetivado;;;;Lançamento de débito (BURGER KING);;-68.00;;8422.70;Compra com cartão ou saldo
+01/05/2026;03/05/2026;Efetivado;;69f5321224b4d53d9ae45036;;Tarifa de antecipação;;-30.37;;8490.70;Antecipação
+01/05/2026;03/05/2026;Efetivado;HP0172506762;69f5321224b4d53d9ae45036;;Saldo antecipado;;151.69;;8521.07;Antecipação
+01/05/2026;03/05/2026;Efetivado;HP3865018577;69f5321224b4d53d9ae45036;;Saldo antecipado;;151.69;;8369.38;Antecipação
+01/05/2026;03/05/2026;Efetivado;HP1056736355;69f5321224b4d53d9ae45036;;Saldo antecipado;;151.69;;8217.69;Antecipação
+01/05/2026;03/05/2026;Efetivado;HP4262186711;69f5321224b4d53d9ae45036;;Saldo antecipado;;151.69;;8066.00;Antecipação
+01/05/2026;03/05/2026;Efetivado;HP3164052053;69f5321224b4d53d9ae45036;;Saldo antecipado;;151.69;;7914.31;Antecipação
+01/05/2026;03/05/2026;Efetivado;HP1189966744;69f5321224b4d53d9ae45036;;Saldo antecipado;;151.69;;7762.62;Antecipação
+01/05/2026;03/05/2026;Efetivado;HP0975738751;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;7610.93;Venda
+01/05/2026;03/05/2026;Efetivado;HP1044255824;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;7605.92;Venda
+15/04/2026;03/05/2026;Efetivado;HP0201857189;69e01a1624b4d53d9a130d59;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;7454.23;Antecipação
+14/04/2026;03/05/2026;Efetivado;HP1250449539;69dec8bddc25786ea1851db4;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;7491.92;Antecipação
+13/04/2026;03/05/2026;Efetivado;HP0211475912;69dd7742c2576e6ada66ac3d;Completo;Débito de Saque antecipado;;-7.29;PRODUTO_95;7525.84;Antecipação
+03/04/2026;03/05/2026;Efetivado;HP1250449539;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;7533.13;Venda
+03/04/2026;03/05/2026;Efetivado;HP0211475912;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_95;7499.21;Venda
+03/04/2026;03/05/2026;Efetivado;HP0201857189;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;7491.92;Venda
+02/05/2026;02/05/2026;Efetivado;;;;Lançamento de débito (SHOPPING NAT*Kalunga 0);;-399.90;;7454.23;Compra com cartão ou saldo
+02/05/2026;02/05/2026;Efetivado;;;;Lançamento de débito (VX CASE);;-228.00;;7854.13;Compra com cartão ou saldo
+02/05/2026;02/05/2026;Efetivado;;;;Lançamento de débito (APPLE.COM/BILL.);;-149.90;;8082.13;Compra com cartão ou saldo
+02/05/2026;02/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_579);;-40.99;;8232.03;Compra com cartão ou saldo
+02/05/2026;02/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_27);;-41.00;;8273.02;Compra com cartão ou saldo
+02/05/2026;02/05/2026;Efetivado;;;;Lançamento de débito (ASAAS*Utmify);;-107.91;;8314.02;Compra com cartão ou saldo
+30/04/2026;02/05/2026;Efetivado;HP3023725974;69f3e23a0e9e941042592e86;Completo;Saldo antecipado;;5.01;PRODUTO_71;8421.93;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP0937848945;69f3e23a0e9e941042592e86;;Saldo antecipado;;5.61;;8416.92;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP1986213077;69f3e23a0e9e941042592e86;;Saldo antecipado;;13.24;;8411.31;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP4257693962;69f3e23a0e9e941042592e86;;Saldo antecipado;;13.24;;8398.07;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP2217108389;69f3e23a0e9e941042592e86;;Saldo antecipado;;13.24;;8384.83;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP4246796755;69f3e23a0e9e941042592e86;;Saldo antecipado;;22.50;;8371.59;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP1432019774;69f3e23a0e9e941042592e86;;Saldo antecipado;;22.50;;8349.09;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP1244863243;69f3e23a0e9e941042592e86;;Saldo antecipado;;68.13;;8326.59;Antecipação
+30/04/2026;02/05/2026;Efetivado;;69f3e23a0e9e941042592e86;;Tarifa de antecipação;;-94.77;;8258.46;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP3986938006;69f3e23a0e9e941042592e86;;Saldo antecipado;;136.52;;8353.23;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP2182188184;69f3e23a0e9e941042592e86;;Saldo antecipado;;136.52;;8216.71;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP1379217230;69f3e23a0e9e941042592e86;;Saldo antecipado;;136.52;;8080.19;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP3256715242;69f3e23a0e9e941042592e86;;Saldo antecipado;;136.52;;7943.67;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP1706946672;69f3e23a0e9e941042592e86;;Saldo antecipado;;136.52;;7807.15;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP1760457417;69f3e23a0e9e941042592e86;;Saldo antecipado;;136.52;;7670.63;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP2895619914;69f3e23a0e9e941042592e86;;Saldo antecipado;;136.52;;7534.11;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP3621887920;69f3e23a0e9e941042592e86;;Saldo antecipado;;136.52;;7397.59;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP1374508298;69f3e23a0e9e941042592e86;;Saldo antecipado;;136.52;;7261.07;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP0667603620;69f3e23a0e9e941042592e86;;Saldo antecipado;;151.69;;7124.55;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP1605669055;69f3e23a0e9e941042592e86;;Saldo antecipado;;151.69;;6972.86;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP4198874997;69f3e23a0e9e941042592e86;;Saldo antecipado;;151.69;;6821.17;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP0731487261;69f3e23a0e9e941042592e86;;Saldo antecipado;;151.69;;6669.48;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP3288848615;69f3e23a0e9e941042592e86;;Saldo antecipado;;151.69;;6517.79;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP2927724284;69f3e23a0e9e941042592e86;;Saldo antecipado;;151.69;;6366.10;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP0965382300;69f3e23a0e9e941042592e86;;Saldo antecipado;;151.69;;6214.41;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP3901169649;69f3e23a0e9e941042592e86;;Saldo antecipado;;151.69;;6062.72;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP0601394516;69f3e23a0e9e941042592e86;;Saldo antecipado;;151.69;;5911.03;Antecipação
+30/04/2026;02/05/2026;Efetivado;HP2809589403;;Completo;Comissão Co-Produtor;;68.33;PRODUTO_64;5759.34;Venda
+30/04/2026;02/05/2026;Efetivado;HP2946944760;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;5691.01;Venda
+30/04/2026;02/05/2026;Efetivado;HP1043375768;;Completo;Comissão Co-Produtor;;75.69;PRODUTO_79;5554.49;Venda
+30/04/2026;02/05/2026;Efetivado;HP0485322942;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;5478.80;Venda
+30/04/2026;02/05/2026;Efetivado;HP3524839252;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;5327.11;Venda
+30/04/2026;02/05/2026;Efetivado;HP2938512577;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;5190.59;Venda
+30/04/2026;02/05/2026;Efetivado;HP3751456355;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;5054.07;Venda
+30/04/2026;02/05/2026;Efetivado;HP3452460487;;Completo;Comissão Co-Produtor;;20.24;PRODUTO_79;4917.55;Venda
+13/04/2026;02/05/2026;Efetivado;HP2447359039;69dd7742c2576e6ada66ac3d;Completo;Débito de Saque antecipado;;-136.53;PRODUTO_66;4897.31;Antecipação
+12/04/2026;02/05/2026;Efetivado;HP1416111038;69dc259ca536655d71485b13;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;5033.84;Antecipação
+10/04/2026;02/05/2026;Efetivado;HP4226037880;69d982bba536655d71325c8a;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;5071.53;Antecipação
+10/04/2026;02/05/2026;Efetivado;HP4196737312;69d982bba536655d71325c8a;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;5109.22;Antecipação
+10/04/2026;02/05/2026;Efetivado;HP1803183756;69d982bba536655d71325c8a;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;5146.91;Antecipação
+09/04/2026;02/05/2026;Efetivado;HP0455423683;69d8311adc25786ea1466be8;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;5184.60;Antecipação
+09/04/2026;02/05/2026;Efetivado;HP0932527643;69d8311adc25786ea1466be8;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;5218.52;Antecipação
+09/04/2026;02/05/2026;Efetivado;HP0215631529;69d8311adc25786ea1466be8;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;5252.44;Antecipação
+09/04/2026;02/05/2026;Efetivado;HP2898979272;69d8311adc25786ea1466be8;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;5286.36;Antecipação
+08/04/2026;02/05/2026;Efetivado;HP2074447054;69d6dfb11a381a75a14b0c51;Completo;Débito de Saque antecipado;;-3.24;PRODUTO_33;5324.05;Antecipação
+08/04/2026;02/05/2026;Efetivado;HP4221420893;69d6dfb11a381a75a14b0c51;Completo;Débito de Saque antecipado;;-7.29;PRODUTO_95;5327.29;Antecipação
+02/04/2026;02/05/2026;Efetivado;HP0215631529;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;5334.58;Venda
+02/04/2026;02/05/2026;Efetivado;HP4221420893;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_95;5300.66;Venda
+02/04/2026;02/05/2026;Efetivado;HP4226037880;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;5293.37;Venda
+02/04/2026;02/05/2026;Efetivado;HP2447359039;;Completo;Comissão Co-Produtor;;136.53;PRODUTO_66;5255.68;Venda
+02/04/2026;02/05/2026;Efetivado;HP2898979272;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;5119.15;Venda
+02/04/2026;02/05/2026;Efetivado;HP0932527643;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;5081.46;Venda
+01/04/2026;02/05/2026;Efetivado;HP0455423683;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;5047.54;Venda
+01/04/2026;02/05/2026;Efetivado;HP4196737312;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;5013.62;Venda
+01/04/2026;02/05/2026;Efetivado;HP2074447054;;Completo;Comissão Co-Produtor;;3.24;PRODUTO_33;4975.93;Venda
+01/04/2026;02/05/2026;Efetivado;HP1803183756;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;4972.69;Venda
+01/04/2026;02/05/2026;Efetivado;HP1416111038;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;4935.00;Venda
+01/05/2026;01/05/2026;Efetivado;;;;Lançamento de débito (GRUPO MADERO);;-262.90;;4897.31;Compra com cartão ou saldo
+01/05/2026;01/05/2026;Efetivado;;;;Lançamento de débito (VIVO EASY*VIVO EASY);;-55.00;;5160.21;Compra com cartão ou saldo
+01/05/2026;01/05/2026;Efetivado;;;;Lançamento de débito (EMPRESA_80);;-276.21;;5215.21;Compra com cartão ou saldo
+01/05/2026;01/05/2026;Efetivado;;;;Lançamento de débito (MERCHANT_36);;-174.00;;5491.42;Compra com cartão ou saldo
+01/05/2026;01/05/2026;Efetivado;;;;Lançamento de débito (CHATVOLT-PLUS);;-359.00;;5665.42;Compra com cartão ou saldo
+01/05/2026;01/05/2026;Efetivado;;;;Lançamento de débito (NEON.TECH);;-84.07;;6024.42;Compra com cartão ou saldo
+29/04/2026;01/05/2026;Efetivado;HP2320197548;69f28f0486eb6e5f3ea794ed;Completo;Saldo antecipado;;4.51;PRODUTO_71;6108.49;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP1076673779;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;5.01;;6103.98;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP1626537441;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;7.29;;6098.97;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP0337909918;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;13.24;;6091.68;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP1963068491;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;13.24;;6078.44;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP0581840720;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;14.71;;6065.20;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP1623941601;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;22.49;;6050.49;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP0044419315;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;68.12;;6028.00;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP0846281996;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;68.13;;5959.88;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP2029245301;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;68.33;;5891.75;Antecipação
+29/04/2026;01/05/2026;Efetivado;;69f28f0486eb6e5f3ea794ed;;Tarifa de antecipação;;-112.10;;5823.42;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP2199064585;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;136.52;;5935.52;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP1218502748;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;136.52;;5799.00;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP0543113542;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;136.52;;5662.48;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP1486919563;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;136.52;;5525.96;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP1266427795;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;136.52;;5389.44;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP3863758705;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;136.52;;5252.92;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP1497898848;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;5116.40;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP2500047139;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;4964.71;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP3573002908;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;4813.02;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP0527839601;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;4661.33;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP2788854001;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;4509.64;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP3956934693;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;4357.95;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP1218108132;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;4206.26;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP0887593503;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;4054.57;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP1628173839;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;3902.88;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP3337305074;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;3751.19;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP1638357387;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;3599.50;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP2327995982;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;3447.81;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP0257476616;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;3296.12;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP3983322024;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;3144.43;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP2207290453;69f28f0486eb6e5f3ea794ed;;Saldo antecipado;;151.69;;2992.74;Antecipação
+29/04/2026;01/05/2026;Efetivado;HP4193563489;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;2841.05;Venda
+29/04/2026;01/05/2026;Efetivado;HP3123607446;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;2704.53;Venda
+29/04/2026;01/05/2026;Efetivado;HP1532594123;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;2568.01;Venda
+29/04/2026;01/05/2026;Efetivado;HP3415170492;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;2563.00;Venda
+29/04/2026;01/05/2026;Efetivado;HP0189588955;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_27;2557.99;Venda
+29/04/2026;01/05/2026;Efetivado;HP0373052884;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;2550.70;Venda
+29/04/2026;01/05/2026;Efetivado;HP0534385266;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;2545.69;Venda
+29/04/2026;01/05/2026;Efetivado;HP2077568776C2;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_79;2409.17;Venda
+29/04/2026;01/05/2026;Efetivado;HP2077568776C1;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;2386.68;Venda
+08/04/2026;01/05/2026;Efetivado;HP3568765810;69d6dfb11a381a75a14b0c51;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2234.99;Antecipação
+08/04/2026;01/05/2026;Efetivado;HP4027460952;69d6dfb11a381a75a14b0c51;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2272.68;Antecipação
+08/04/2026;01/05/2026;Efetivado;HP4031308441;69d6dfb11a381a75a14b0c51;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2310.37;Antecipação
+08/04/2026;01/05/2026;Efetivado;HP3116775629;69d6dfb11a381a75a14b0c51;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2348.06;Antecipação
+08/04/2026;01/05/2026;Efetivado;HP4093637762;69d6dfb11a381a75a14b0c51;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2385.75;Antecipação
+08/04/2026;01/05/2026;Efetivado;HP4068921888;69d6dfb11a381a75a14b0c51;Completo;Débito de Saque antecipado;;-136.52;PRODUTO_66;2423.44;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP3940892449;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2559.96;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP3735821285;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2597.65;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP3552621680;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2635.34;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP0071088012;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_61;2673.03;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP2618035954;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2710.72;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP3077456789;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2748.41;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP0191514418;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2786.10;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP4000528529;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2823.79;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP3110145121;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2861.48;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP3927810986;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2899.17;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP4070168080;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2936.86;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP0292550137;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;2974.55;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP2981344016;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3012.24;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP3992833551;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3049.93;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP0258460726;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3087.62;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP0592422772;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3125.31;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP4097870000;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3163.00;Antecipação
+07/04/2026;01/05/2026;Efetivado;HP3944602021;69d58e3152aff54d019b8f1d;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3200.69;Antecipação
+06/04/2026;01/05/2026;Efetivado;HP2585052649;69d43c9457d8c93045ead447;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3238.38;Antecipação
+06/04/2026;01/05/2026;Efetivado;HP1717476696;69d43c9457d8c93045ead447;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3276.07;Antecipação
+06/04/2026;01/05/2026;Efetivado;HP0303091599;69d43c9457d8c93045ead447;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3313.76;Antecipação
+06/04/2026;01/05/2026;Efetivado;HP2406824132;69d43c9457d8c93045ead447;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3351.45;Antecipação
+06/04/2026;01/05/2026;Efetivado;HP2673160147;69d43c9457d8c93045ead447;Completo;Débito de Saque antecipado;;-37.69;PRODUTO_33;3389.14;Antecipação
+01/04/2026;01/05/2026;Efetivado;HP0620172833;;Reembolsado;Reclamada - Estorno de Comissão Co-Produtor;;-37.69;PRODUTO_33;3426.83;Venda
+05/04/2026;01/05/2026;Efetivado;HP3079454986;69d2eae98ec4e83f4ec153c1;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_61;3464.52;Antecipação
+04/04/2026;01/05/2026;Efetivado;HP3071760008;69d19969f1039777a1a71e66;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_61;3498.44;Antecipação
+03/04/2026;01/05/2026;Efetivado;HP3802398169;69d048188f29105f9055bda2;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;3532.36;Antecipação
+03/04/2026;01/05/2026;Efetivado;HP2789879150;69d048188f29105f9055bda2;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;3566.28;Antecipação
+03/04/2026;01/05/2026;Efetivado;HP3767755444;69d048188f29105f9055bda2;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;3600.20;Antecipação
+03/04/2026;01/05/2026;Efetivado;HP4267760448;69d048188f29105f9055bda2;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;3634.12;Antecipação
+03/04/2026;01/05/2026;Efetivado;HP0815747868;69d048188f29105f9055bda2;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_61;3668.04;Antecipação
+03/04/2026;01/05/2026;Efetivado;HP3802767594;69d048188f29105f9055bda2;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;3701.96;Antecipação
+02/04/2026;01/05/2026;Efetivado;HP0933157055;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-4.23;PRODUTO_33;3735.88;Antecipação
+02/04/2026;01/05/2026;Efetivado;HP3809308325;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-6.56;PRODUTO_95;3740.11;Antecipação
+02/04/2026;01/05/2026;Efetivado;HP4148012119;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-6.78;PRODUTO_33;3746.67;Antecipação
+02/04/2026;01/05/2026;Efetivado;HP4017072731;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-7.29;PRODUTO_95;3753.45;Antecipação
+02/04/2026;01/05/2026;Efetivado;HP2399513903;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-7.29;PRODUTO_95;3760.74;Antecipação
+02/04/2026;01/05/2026;Efetivado;HP3000196713;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;3768.03;Antecipação
+02/04/2026;01/05/2026;Efetivado;HP4205615017;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_61;3801.95;Antecipação
+02/04/2026;01/05/2026;Efetivado;HP3284526150;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;3835.87;Antecipação
+02/04/2026;01/05/2026;Efetivado;HP4089790273;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;3869.79;Antecipação
+02/04/2026;01/05/2026;Efetivado;HP2316390648;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;3903.71;Antecipação
+02/04/2026;01/05/2026;Efetivado;HP1778759040;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_33;3937.63;Antecipação
+01/04/2026;01/05/2026;Efetivado;HP3077456789;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3971.55;Venda
+01/04/2026;01/05/2026;Efetivado;HP3552621680;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3933.86;Venda
+01/04/2026;01/05/2026;Efetivado;HP3568765810;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3896.17;Venda
+01/04/2026;01/05/2026;Efetivado;HP3110145121;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3858.48;Venda
+01/04/2026;01/05/2026;Efetivado;HP2399513903;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_95;3820.79;Venda
+01/04/2026;01/05/2026;Efetivado;HP2406824132;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3813.50;Venda
+01/04/2026;01/05/2026;Efetivado;HP2618035954;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3775.81;Venda
+01/04/2026;01/05/2026;Efetivado;HP0620172833;;Reembolsado;Comissão Co-Produtor;;37.69;PRODUTO_33;3738.12;Venda
+01/04/2026;01/05/2026;Efetivado;HP1717476696;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3700.43;Venda
+01/04/2026;01/05/2026;Efetivado;HP2789879150;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;3662.74;Venda
+01/04/2026;01/05/2026;Efetivado;HP1778759040;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;3628.82;Venda
+01/04/2026;01/05/2026;Efetivado;HP4148012119;;Completo;Comissão Co-Produtor;;6.78;PRODUTO_33;3594.90;Venda
+01/04/2026;01/05/2026;Efetivado;HP0815747868;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_61;3588.12;Venda
+01/04/2026;01/05/2026;Efetivado;HP4267760448;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;3554.20;Venda
+01/04/2026;01/05/2026;Efetivado;HP2316390648;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;3520.28;Venda
+01/04/2026;01/05/2026;Efetivado;HP4068921888;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_66;3486.36;Venda
+31/03/2026;01/05/2026;Efetivado;HP0292550137;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3349.84;Venda
+31/03/2026;01/05/2026;Efetivado;HP0933157055;;Completo;Comissão Co-Produtor;;4.23;PRODUTO_33;3312.15;Venda
+31/03/2026;01/05/2026;Efetivado;HP3944602021;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3307.92;Venda
+31/03/2026;01/05/2026;Efetivado;HP0592422772;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3270.23;Venda
+31/03/2026;01/05/2026;Efetivado;HP4205615017;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_61;3232.54;Venda
+31/03/2026;01/05/2026;Efetivado;HP0071088012;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_61;3198.62;Venda
+31/03/2026;01/05/2026;Efetivado;HP0303091599;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3160.93;Venda
+31/03/2026;01/05/2026;Efetivado;HP0258460726;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3123.24;Venda
+31/03/2026;01/05/2026;Efetivado;HP0191514418;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3085.55;Venda
+31/03/2026;01/05/2026;Efetivado;HP3802398169;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;3047.86;Venda
+31/03/2026;01/05/2026;Efetivado;HP2673160147;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;3013.94;Venda
+31/03/2026;01/05/2026;Efetivado;HP2585052649;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;2976.25;Venda
+31/03/2026;01/05/2026;Efetivado;HP3071760008;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_61;2938.56;Venda
+31/03/2026;01/05/2026;Efetivado;HP3079454986;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_61;2904.64;Venda
+31/03/2026;01/05/2026;Efetivado;HP3000196713;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;2870.72;Venda
+31/03/2026;01/05/2026;Efetivado;HP2981344016;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;2836.80;Venda
+31/03/2026;01/05/2026;Efetivado;HP3284526150;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;2799.11;Venda
+31/03/2026;01/05/2026;Efetivado;HP3116775629;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;2765.19;Venda
+31/03/2026;01/05/2026;Efetivado;HP3809308325;;Completo;Comissão Co-Produtor;;6.56;PRODUTO_95;2727.50;Venda
+31/03/2026;01/05/2026;Efetivado;HP3802767594;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;2720.94;Venda
+31/03/2026;01/05/2026;Efetivado;HP3735821285;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;2687.02;Venda
+31/03/2026;01/05/2026;Efetivado;HP3767755444;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;2649.33;Venda
+31/03/2026;01/05/2026;Efetivado;HP4093637762;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;2615.41;Venda
+31/03/2026;01/05/2026;Efetivado;HP4089790273;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_33;2577.72;Venda
+31/03/2026;01/05/2026;Efetivado;HP4097870000;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;2543.80;Venda
+31/03/2026;01/05/2026;Efetivado;HP4031308441;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;2506.11;Venda
+31/03/2026;01/05/2026;Efetivado;HP4027460952;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;2468.42;Venda
+31/03/2026;01/05/2026;Efetivado;HP4070168080;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;2430.73;Venda
+31/03/2026;01/05/2026;Efetivado;HP3992833551;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;2393.04;Venda
+31/03/2026;01/05/2026;Efetivado;HP4000528529;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;2355.35;Venda
+31/03/2026;01/05/2026;Efetivado;HP4017072731;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_95;2317.66;Venda
+31/03/2026;01/05/2026;Efetivado;HP3927810986;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;2310.37;Venda
+31/03/2026;01/05/2026;Efetivado;HP3940892449;;Completo;Comissão Co-Produtor;;37.69;PRODUTO_33;2272.68;Venda
+30/04/2026;30/04/2026;Efetivado;;;;Lançamento de débito (1PASSWORD);;-25.90;;2234.99;Compra com cartão ou saldo
+30/04/2026;30/04/2026;Efetivado;;;;Lançamento de débito (CHILLI BEANS);;-329.96;;2260.89;Compra com cartão ou saldo
+30/04/2026;30/04/2026;Efetivado;;;;Lançamento de débito (99*);;-9.20;;2590.85;Compra com cartão ou saldo
+29/04/2026;30/04/2026;Efetivado;;;;Lançamento de débito (AIRBNB * HMZBT2KHBH);;-200.00;;2600.05;Compra com cartão ou saldo
+29/04/2026;30/04/2026;Efetivado;;;;Lançamento de débito (AIRBNB * HMZBT2KHBH);;-1075.00;;2800.05;Compra com cartão ou saldo
+28/04/2026;30/04/2026;Efetivado;HP4067885227;69f13da00e9e9410423bf626;Completo;Saldo antecipado;;1.18;PRODUTO_79;3875.05;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP3528436621;69f13da00e9e9410423bf626;;Saldo antecipado;;1.31;;3873.87;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP1400775204;69f13da00e9e9410423bf626;;Saldo antecipado;;3.96;;3872.56;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP3952060484;69f13da00e9e9410423bf626;;Saldo antecipado;;3.97;;3868.60;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP0529349593;69f13da00e9e9410423bf626;;Saldo antecipado;;3.97;;3864.63;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP0134844053;69f13da00e9e9410423bf626;;Saldo antecipado;;3.97;;3860.66;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP3092286255;69f13da00e9e9410423bf626;;Saldo antecipado;;3.97;;3856.69;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP3453456558;69f13da00e9e9410423bf626;;Saldo antecipado;;4.45;;3852.72;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP0458938900;69f13da00e9e9410423bf626;;Saldo antecipado;;5.01;;3848.27;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP0793656763;69f13da00e9e9410423bf626;;Saldo antecipado;;5.05;;3843.26;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP2858728348;69f13da00e9e9410423bf626;;Saldo antecipado;;5.64;;3838.21;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP2120994496;69f13da00e9e9410423bf626;;Saldo antecipado;;6.60;;3832.57;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP3921649997;69f13da00e9e9410423bf626;;Saldo antecipado;;7.55;;3825.97;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP4062883492;69f13da00e9e9410423bf626;;Saldo antecipado;;7.92;;3818.42;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP1542793520;69f13da00e9e9410423bf626;;Saldo antecipado;;7.92;;3810.50;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP2114978076;69f13da00e9e9410423bf626;;Saldo antecipado;;7.92;;3802.58;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP1440605199;69f13da00e9e9410423bf626;;Saldo antecipado;;7.92;;3794.66;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP0944493656;69f13da00e9e9410423bf626;;Saldo antecipado;;7.92;;3786.74;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP3544211326;69f13da00e9e9410423bf626;;Saldo antecipado;;8.80;;3778.82;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP0959837640;69f13da00e9e9410423bf626;;Saldo antecipado;;8.80;;3770.02;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP3027878302;69f13da00e9e9410423bf626;;Saldo antecipado;;8.80;;3761.22;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP0854031692;69f13da00e9e9410423bf626;;Saldo antecipado;;8.80;;3752.42;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP3519263944;69f13da00e9e9410423bf626;;Saldo antecipado;;8.80;;3743.62;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP0440842022;69f13da00e9e9410423bf626;;Saldo antecipado;;8.80;;3734.82;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP3318314460;69f13da00e9e9410423bf626;;Saldo antecipado;;13.24;;3726.02;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP0464710133;69f13da00e9e9410423bf626;;Saldo antecipado;;14.71;;3712.78;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP0447011684;69f13da00e9e9410423bf626;;Saldo antecipado;;22.50;;3698.07;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP3564153683;69f13da00e9e9410423bf626;;Saldo antecipado;;22.50;;3675.57;Antecipação
+28/04/2026;30/04/2026;Efetivado;;69f13da00e9e9410423bf626;;Tarifa de antecipação;;-56.09;;3653.07;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP3323534023;69f13da00e9e9410423bf626;;Saldo antecipado;;136.52;;3709.16;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP4114729359;69f13da00e9e9410423bf626;;Saldo antecipado;;136.52;;3572.64;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP4035149278;69f13da00e9e9410423bf626;;Saldo antecipado;;136.52;;3436.12;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP1529601499;69f13da00e9e9410423bf626;;Saldo antecipado;;136.52;;3299.60;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP1233945778;69f13da00e9e9410423bf626;;Saldo antecipado;;136.52;;3163.08;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP0038747128;69f13da00e9e9410423bf626;;Saldo antecipado;;151.69;;3026.56;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP2289683080;69f13da00e9e9410423bf626;;Saldo antecipado;;151.69;;2874.87;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP1826014683;69f13da00e9e9410423bf626;;Saldo antecipado;;151.69;;2723.18;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP0305008692;69f13da00e9e9410423bf626;;Saldo antecipado;;151.69;;2571.49;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP0552002161;69f13da00e9e9410423bf626;;Saldo antecipado;;151.69;;2419.80;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP1160198227;69f13da00e9e9410423bf626;;Saldo antecipado;;151.69;;2268.11;Antecipação
+28/04/2026;30/04/2026;Efetivado;HP4270268082C1;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;2116.42;Venda
+28/04/2026;30/04/2026;Efetivado;HP4270268082C2;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_79;1964.73;Venda
+28/04/2026;30/04/2026;Efetivado;HP0030658655C1;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;1942.24;Venda
+28/04/2026;30/04/2026;Efetivado;HP0030658655C2;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_79;1790.55;Venda
+28/04/2026;30/04/2026;Efetivado;HP1887473816;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;1768.06;Venda
+28/04/2026;30/04/2026;Efetivado;HP0433861823;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;1616.37;Venda
+27/04/2026;30/04/2026;Efetivado;HP2230331058;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;1611.36;Venda
+27/04/2026;30/04/2026;Efetivado;HP0104855541;;Completo;Comissão Co-Produtor;;68.33;PRODUTO_64;1474.84;Venda
+02/04/2026;30/04/2026;Efetivado;HP2109457036;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_61;1406.51;Antecipação
+31/03/2026;30/04/2026;Efetivado;HP2109457036;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_61;1440.43;Venda
+31/03/2026;30/04/2026;Efetivado;HP0777291067;;Completo;Comissão Co-Produtor;;12.01;PRODUTO_66;1406.51;Venda
+29/04/2026;29/04/2026;Efetivado;;;;Lançamento de débito (CLAUDE.AI SUBSCRIPTION);;-1138.50;;1394.50;Compra com cartão ou saldo
+29/04/2026;29/04/2026;Efetivado;;69f1dbd186eb6e5f3e9fdec8;;Tarifa de Saque;;-1.99;;2533.00;Saque
+29/04/2026;29/04/2026;Efetivado;;69f1dbd186eb6e5f3e9fdec8;;Saque;;-5000.00;;2534.99;Saque
+27/04/2026;29/04/2026;Efetivado;HP4041305260;69efec130e9e9410422ff81c;Completo;Saldo antecipado;;20.25;PRODUTO_79;7534.99;Antecipação
+27/04/2026;29/04/2026;Efetivado;;69efec130e9e9410422ff81c;;Tarifa de antecipação;;-21.80;;7514.74;Antecipação
+27/04/2026;29/04/2026;Efetivado;HP0652436948;69efec130e9e9410422ff81c;;Saldo antecipado;;22.49;;7536.54;Antecipação
+27/04/2026;29/04/2026;Efetivado;HP1139421787;69efec130e9e9410422ff81c;;Saldo antecipado;;22.50;;7514.05;Antecipação
+27/04/2026;29/04/2026;Efetivado;HP2658626627;69efec130e9e9410422ff81c;;Saldo antecipado;;68.13;;7491.55;Antecipação
+27/04/2026;29/04/2026;Efetivado;HP3059904406;69efec130e9e9410422ff81c;;Saldo antecipado;;68.13;;7423.42;Antecipação
+27/04/2026;29/04/2026;Efetivado;HP0853107308;69efec130e9e9410422ff81c;;Saldo antecipado;;68.13;;7355.29;Antecipação
+27/04/2026;29/04/2026;Efetivado;HP2839473934;69efec130e9e9410422ff81c;;Saldo antecipado;;68.33;;7287.16;Antecipação
+27/04/2026;29/04/2026;Efetivado;HP0547109339;69efec130e9e9410422ff81c;;Saldo antecipado;;68.33;;7218.83;Antecipação
+27/04/2026;29/04/2026;Efetivado;HP1625991228;69efec130e9e9410422ff81c;;Saldo antecipado;;68.33;;7150.50;Antecipação
+27/04/2026;29/04/2026;Efetivado;HP3864029607;69efec130e9e9410422ff81c;;Saldo antecipado;;68.33;;7082.17;Antecipação
+27/04/2026;29/04/2026;Efetivado;HP4174598590;69efec130e9e9410422ff81c;;Saldo antecipado;;136.52;;7013.84;Antecipação
+27/04/2026;29/04/2026;Efetivado;HP0078415136;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;6877.32;Venda
+27/04/2026;29/04/2026;Efetivado;HP0998072277;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;6872.31;Venda
+27/04/2026;29/04/2026;Efetivado;HP2031852056;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;6867.30;Venda
+27/04/2026;29/04/2026;Efetivado;HP0028003163C2;;Completo;Comissão Co-Produtor;;20.24;PRODUTO_79;6862.29;Venda
+27/04/2026;29/04/2026;Efetivado;HP0028003163C1;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;6842.05;Venda
+26/04/2026;29/04/2026;Efetivado;HP2735481173;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;6705.53;Venda
+28/04/2026;28/04/2026;Efetivado;;;;Lançamento de débito (MERCADO*MERCADOLIVRE);;-565.89;;6569.01;Compra com cartão ou saldo
+27/04/2026;28/04/2026;Efetivado;;;;Lançamento de débito (APPLE.COM/BILL.);;-199.90;;7134.90;Compra com cartão ou saldo
+26/04/2026;28/04/2026;Efetivado;HP2453305343;;Reembolsado;Reclamada - Estorno de Comissão Co-Produtor;;-4.51;PRODUTO_71;7334.80;Venda
+26/04/2026;28/04/2026;Efetivado;HP1302448051;69ee9a612cc05c34ea4aa382;Completo;Saldo antecipado;;5.61;PRODUTO_29;7339.31;Antecipação
+26/04/2026;28/04/2026;Efetivado;HP3943209615;69ee9a612cc05c34ea4aa382;;Saldo antecipado;;7.29;;7333.70;Antecipação
+26/04/2026;28/04/2026;Efetivado;;69ee9a612cc05c34ea4aa382;;Tarifa de antecipação;;-15.03;;7326.41;Antecipação
+26/04/2026;28/04/2026;Efetivado;HP1689445792;69ee9a612cc05c34ea4aa382;;Saldo antecipado;;151.69;;7341.44;Antecipação
+26/04/2026;28/04/2026;Efetivado;HP0220135715;69ee9a612cc05c34ea4aa382;;Saldo antecipado;;151.69;;7189.75;Antecipação
+26/04/2026;28/04/2026;Efetivado;HP0269181071;69ee9a612cc05c34ea4aa382;;Saldo antecipado;;151.69;;7038.06;Antecipação
+26/04/2026;28/04/2026;Efetivado;HP2222364058;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;6886.37;Venda
+26/04/2026;28/04/2026;Efetivado;HP2453305343;;Reembolsado;Comissão Co-Produtor;;4.51;PRODUTO_71;6734.68;Venda
+26/04/2026;28/04/2026;Efetivado;HP3660693364;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;6730.17;Venda
+26/04/2026;28/04/2026;Efetivado;HP0442071245;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;6725.16;Venda
+02/04/2026;28/04/2026;Efetivado;HP1757770827;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-22.49;PRODUTO_55;6720.15;Antecipação
+02/04/2026;28/04/2026;Efetivado;HP2835483144;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;6742.64;Antecipação
+28/03/2026;28/04/2026;Efetivado;HP2835483144;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;6894.33;Venda
+28/03/2026;28/04/2026;Efetivado;HP1757770827;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_55;6742.64;Venda
+27/04/2026;27/04/2026;Efetivado;;;;Lançamento de débito (VIVO CONTROLE);;-43.00;;6720.15;Compra com cartão ou saldo
+27/04/2026;27/04/2026;Efetivado;;;;Lançamento de crédito (VIVO CONTROLE);;3.63;;6763.15;Reembolso cartão hotmart
+27/04/2026;27/04/2026;Efetivado;;;;Lançamento de débito (VIVO CONTROLE);;-3.63;;6759.52;Compra com cartão ou saldo
+27/04/2026;27/04/2026;Efetivado;;;;Lançamento de débito (OPENAI);;-52.04;;6763.15;Compra com cartão ou saldo
+27/04/2026;27/04/2026;Efetivado;;;;Lançamento de débito (MERCADOLIVRE*3PRODUTOS);;-105.29;;6815.19;Compra com cartão ou saldo
+27/04/2026;27/04/2026;Efetivado;;69ef24a524b4d53d9aae387f;;Tarifa de Saque;;-1.99;;6920.48;Saque
+27/04/2026;27/04/2026;Efetivado;;69ef24a524b4d53d9aae387f;;Saque;;-5000.00;;6922.47;Saque
+25/04/2026;27/04/2026;Efetivado;HP0478976491;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;11922.47;Venda
+25/04/2026;27/04/2026;Efetivado;;69ed48f624b4d53d9aa3ad18;;Tarifa de antecipação;;-40.63;;11917.46;Antecipação
+25/04/2026;27/04/2026;Efetivado;HP4062883492;69ed48f624b4d53d9aa3ad18;;Saldo antecipado;;128.60;;11958.09;Antecipação
+25/04/2026;27/04/2026;Efetivado;HP0393548556;69ed48f624b4d53d9aa3ad18;;Saldo antecipado;;128.60;;11829.49;Antecipação
+25/04/2026;27/04/2026;Efetivado;HP0944493656;69ed48f624b4d53d9aa3ad18;;Saldo antecipado;;128.60;;11700.89;Antecipação
+25/04/2026;27/04/2026;Efetivado;HP2858728348;69ed48f624b4d53d9aa3ad18;;Saldo antecipado;;130.88;;11572.29;Antecipação
+25/04/2026;27/04/2026;Efetivado;HP0793656763;69ed48f624b4d53d9aa3ad18;;Saldo antecipado;;131.47;;11441.41;Antecipação
+25/04/2026;27/04/2026;Efetivado;HP3453456558;69ed48f624b4d53d9aa3ad18;;Saldo antecipado;;132.07;;11309.94;Antecipação
+25/04/2026;27/04/2026;Efetivado;HP3519263944;69ed48f624b4d53d9aa3ad18;;Saldo antecipado;;142.89;;11177.87;Antecipação
+25/04/2026;27/04/2026;Efetivado;HP0440842022;69ed48f624b4d53d9aa3ad18;;Saldo antecipado;;142.89;;11034.98;Antecipação
+25/04/2026;27/04/2026;Efetivado;HP1880909538;69ed48f624b4d53d9aa3ad18;;Saldo antecipado;;151.69;;10892.09;Antecipação
+25/04/2026;27/04/2026;Efetivado;HP2994987466;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;10740.40;Venda
+25/04/2026;27/04/2026;Efetivado;HP0223733084;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;10735.39;Venda
+25/04/2026;27/04/2026;Efetivado;HP1858131087;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;10583.70;Venda
+25/04/2026;27/04/2026;Efetivado;HP4153267190;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;10578.69;Venda
+25/04/2026;27/04/2026;Efetivado;HP2177137187;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;10442.17;Venda
+02/04/2026;27/04/2026;Efetivado;HP1592143265;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-68.13;PRODUTO_29;10290.48;Antecipação
+02/04/2026;27/04/2026;Efetivado;HP1351983331;69cef6aa2898b57014b64b3c;Completo;Débito de Saque antecipado;;-75.70;PRODUTO_29;10358.61;Antecipação
+01/04/2026;27/04/2026;Efetivado;HP0748671864;69cda51d2898b57014a2a603;Completo;Débito de Saque antecipado;;-5.61;PRODUTO_29;10434.31;Antecipação
+01/04/2026;27/04/2026;Efetivado;HP2785224413;69cda51d2898b57014a2a603;Completo;Débito de Saque antecipado;;-5.61;PRODUTO_29;10439.92;Antecipação
+01/04/2026;27/04/2026;Efetivado;HP0446797219;69cda51d2898b57014a2a603;Completo;Débito de Saque antecipado;;-33.92;PRODUTO_61;10445.53;Antecipação
+28/03/2026;27/04/2026;Efetivado;HP1351983331;;Completo;Comissão Co-Produtor;;75.70;PRODUTO_29;10479.45;Venda
+28/03/2026;27/04/2026;Efetivado;HP1592143265;;Completo;Comissão Co-Produtor;;68.13;PRODUTO_29;10403.75;Venda
+28/03/2026;27/04/2026;Efetivado;HP2785224413;;Completo;Comissão Co-Produtor;;5.61;PRODUTO_29;10335.62;Venda
+28/03/2026;27/04/2026;Efetivado;HP0748671864;;Completo;Comissão Co-Produtor;;5.61;PRODUTO_29;10330.01;Venda
+28/03/2026;27/04/2026;Efetivado;HP0446797219;;Completo;Comissão Co-Produtor;;33.92;PRODUTO_61;10324.40;Venda
+28/03/2026;27/04/2026;Efetivado;HP1585085324;;Completo;Comissão Co-Produtor;;12.01;PRODUTO_66;10290.48;Venda
+26/04/2026;26/04/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_92);;-3000.00;;10278.47;Compra com cartão ou saldo
+26/04/2026;26/04/2026;Efetivado;;;;Lançamento de débito (CHILLI BEANS);;-29.98;;13278.47;Compra com cartão ou saldo
+26/04/2026;26/04/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_52);;-405.90;;13308.45;Compra com cartão ou saldo
+26/04/2026;26/04/2026;Efetivado;;;;Lançamento de débito (Disney Plus);;-17.90;;13714.35;Compra com cartão ou saldo
+26/04/2026;26/04/2026;Efetivado;;;;Lançamento de crédito (MERCADOLIVRE*8PRODUTOS);;2640.00;;13732.25;Compra com cartão ou saldo
+25/04/2026;26/04/2026;Efetivado;;;;Lançamento de débito (MERCADOLIVRE*9PRODUTOS);;-791.07;;11092.25;Compra com cartão ou saldo
+24/04/2026;26/04/2026;Efetivado;HP2089506383;69ebf774429e200f613eb483;Completo;Saldo antecipado;;6.86;PRODUTO_27;11883.32;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP0491259452;69ebf774429e200f613eb483;;Saldo antecipado;;6.86;;11876.46;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP2675325716;69ebf774429e200f613eb483;;Saldo antecipado;;6.86;;11869.60;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP1827247195;69ebf774429e200f613eb483;;Saldo antecipado;;13.24;;11862.74;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP4277203953;69ebf774429e200f613eb483;;Saldo antecipado;;13.24;;11849.50;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP1322517935;69ebf774429e200f613eb483;;Saldo antecipado;;14.71;;11836.26;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP4235943876;69ebf774429e200f613eb483;;Saldo antecipado;;14.71;;11821.55;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP4067885227;69ebf774429e200f613eb483;Completo;Saldo antecipado;;19.07;PRODUTO_79;11806.84;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP0217057724;69ebf774429e200f613eb483;;Saldo antecipado;;22.50;;11787.77;Antecipação
+24/04/2026;26/04/2026;Efetivado;;69ebf774429e200f613eb483;;Tarifa de antecipação;;-56.74;;11765.27;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP1400775204;69ebf774429e200f613eb483;;Saldo antecipado;;64.17;;11822.01;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP3092286255;69ebf774429e200f613eb483;;Saldo antecipado;;64.36;;11757.84;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP0529349593;69ebf774429e200f613eb483;;Saldo antecipado;;64.36;;11693.48;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP0134844053;69ebf774429e200f613eb483;;Saldo antecipado;;64.36;;11629.12;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP1542793520;69ebf774429e200f613eb483;;Saldo antecipado;;128.60;;11564.76;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP2114978076;69ebf774429e200f613eb483;;Saldo antecipado;;128.60;;11436.16;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP1440605199;69ebf774429e200f613eb483;;Saldo antecipado;;128.60;;11307.56;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP0932395706;69ebf774429e200f613eb483;;Saldo antecipado;;151.69;;11178.96;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP0872374878;69ebf774429e200f613eb483;;Saldo antecipado;;151.69;;11027.27;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP3169356460;69ebf774429e200f613eb483;;Saldo antecipado;;151.69;;10875.58;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP1122846412;69ebf774429e200f613eb483;;Saldo antecipado;;151.69;;10723.89;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP0677307186;69ebf774429e200f613eb483;;Saldo antecipado;;151.69;;10572.20;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP1917768288;69ebf774429e200f613eb483;;Saldo antecipado;;151.70;;10420.51;Antecipação
+24/04/2026;26/04/2026;Efetivado;HP3557460831;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;10268.81;Venda
+24/04/2026;26/04/2026;Efetivado;HP2495799577C2;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_79;10117.12;Venda
+24/04/2026;26/04/2026;Efetivado;HP2495799577C1;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;10094.63;Venda
+01/04/2026;26/04/2026;Efetivado;HP0549926893;69cda51d2898b57014a2a603;Completo;Débito de Saque antecipado;;-136.52;PRODUTO_66;9942.94;Antecipação
+01/04/2026;26/04/2026;Efetivado;HP4002430371;69cda51d2898b57014a2a603;Completo;Débito de Saque antecipado;;-136.52;PRODUTO_66;10079.46;Antecipação
+01/04/2026;26/04/2026;Efetivado;HP2067112755;69cda51d2898b57014a2a603;Completo;Débito de Saque antecipado;;-136.52;PRODUTO_66;10215.98;Antecipação
+01/04/2026;26/04/2026;Efetivado;HP2514070028;69cda51d2898b57014a2a603;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;10352.50;Antecipação
+01/04/2026;26/04/2026;Efetivado;HP0814326008;69cda51d2898b57014a2a603;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;10504.19;Antecipação
+27/03/2026;26/04/2026;Efetivado;HP4002430371;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_66;10655.88;Venda
+27/03/2026;26/04/2026;Efetivado;HP2067112755;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_66;10519.36;Venda
+27/03/2026;26/04/2026;Efetivado;HP0549926893;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_66;10382.84;Venda
+27/03/2026;26/04/2026;Efetivado;HP2514070028;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;10246.32;Venda
+26/03/2026;26/04/2026;Efetivado;HP0814326008;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;10094.63;Venda
+25/04/2026;25/04/2026;Efetivado;;;;Lançamento de débito (MERCHANT_98);;-3100.00;;9942.94;Compra com cartão ou saldo
+25/04/2026;25/04/2026;Efetivado;;;;Lançamento de débito (WISPR);;-294.81;;13042.94;Compra com cartão ou saldo
+24/04/2026;25/04/2026;Efetivado;;;;Lançamento de débito (MERCHANT_601);;-13.00;;13337.75;Compra com cartão ou saldo
+23/04/2026;25/04/2026;Efetivado;HP3633873144;69eaa5fe411321168becd6da;Completo;Saldo antecipado;;6.86;PRODUTO_27;13350.75;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP3528436621;69eaa5fe411321168becd6da;;Saldo antecipado;;21.19;;13343.89;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP3952060484;69eaa5fe411321168becd6da;;Saldo antecipado;;64.36;;13322.70;Antecipação
+23/04/2026;25/04/2026;Efetivado;;69eaa5fe411321168becd6da;;Tarifa de antecipação;;-96.94;;13258.34;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP3027878302;69eaa5fe411321168becd6da;;Saldo antecipado;;142.89;;13355.28;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP3544211326;69eaa5fe411321168becd6da;;Saldo antecipado;;142.89;;13212.39;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP3921649997;69eaa5fe411321168becd6da;;Saldo antecipado;;144.14;;13069.50;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP1621496311;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;12925.36;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP0875837618;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;12773.67;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP3366072585;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;12621.98;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP1629960786;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;12470.29;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP4196144005;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;12318.60;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP0869681636;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;12166.91;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP0586891194;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;12015.22;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP1264834080;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;11863.53;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP0726170296;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;11711.84;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP3566802074;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;11560.15;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP0883917345;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;11408.46;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP0968808934;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;11256.77;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP0088271944;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;11105.08;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP0866988393;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;10953.39;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP0765414684;69eaa5fe411321168becd6da;;Saldo antecipado;;151.69;;10801.70;Antecipação
+23/04/2026;25/04/2026;Efetivado;HP2497261952;;Completo;Comissão Co-Produtor;;68.12;PRODUTO_66;10650.01;Venda
+23/04/2026;25/04/2026;Efetivado;HP1021167601;;Completo;Comissão Co-Produtor;;20.24;PRODUTO_79;10581.89;Venda
+23/04/2026;25/04/2026;Efetivado;HP0389132428;;Completo;Comissão Co-Produtor;;20.24;PRODUTO_79;10561.65;Venda
+23/04/2026;25/04/2026;Efetivado;HP2479103777;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;10541.41;Venda
+23/04/2026;25/04/2026;Efetivado;HP0664688737;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;10404.89;Venda
+23/04/2026;25/04/2026;Efetivado;HP1697508027;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;10268.37;Venda
+23/04/2026;25/04/2026;Efetivado;HP3983100384C2;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_79;10116.68;Venda
+23/04/2026;25/04/2026;Efetivado;HP3983100384C1;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;10094.19;Venda
+23/04/2026;25/04/2026;Efetivado;HP0924700728C2;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_79;9942.50;Venda
+23/04/2026;25/04/2026;Efetivado;HP0924700728C1;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;9920.01;Venda
+23/04/2026;25/04/2026;Efetivado;HP0918159997C2;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_79;9768.32;Venda
+23/04/2026;25/04/2026;Efetivado;HP0918159997C1;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;9745.83;Venda
+23/04/2026;25/04/2026;Efetivado;HP0907771777;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;9594.14;Venda
+23/04/2026;25/04/2026;Efetivado;HP4265506076;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;9442.45;Venda
+23/04/2026;25/04/2026;Efetivado;HP1031676247;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;9290.76;Venda
+23/04/2026;25/04/2026;Efetivado;HP0762336693;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;9139.07;Venda
+22/04/2026;25/04/2026;Efetivado;HP3611588356;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;8987.38;Venda
+22/04/2026;25/04/2026;Efetivado;HP3277226238;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;8850.86;Venda
+22/04/2026;25/04/2026;Efetivado;HP1271884322;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_27;8699.17;Venda
+01/04/2026;25/04/2026;Efetivado;HP0857697009;69cda51d2898b57014a2a603;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;8691.88;Antecipação
+01/04/2026;25/04/2026;Efetivado;HP3409889705;69cda51d2898b57014a2a603;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;8843.57;Antecipação
+01/04/2026;25/04/2026;Efetivado;HP4136295629;69cda51d2898b57014a2a603;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;8995.26;Antecipação
+01/04/2026;25/04/2026;Efetivado;HP0128997917;69cda51d2898b57014a2a603;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;9146.95;Antecipação
+01/04/2026;25/04/2026;Efetivado;HP3440284869;69cda51d2898b57014a2a603;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;9298.64;Antecipação
+29/03/2026;25/04/2026;Efetivado;HP0113298188;69c9b0aa7711065eb2a775b5;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;9450.33;Antecipação
+28/03/2026;25/04/2026;Efetivado;HP0287589440;69c85f20d96e6402a87870d1;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;9602.02;Antecipação
+27/03/2026;25/04/2026;Efetivado;HP2785886642;69c70d9e7711065eb293cf2c;Completo;Débito de Saque antecipado;;-13.24;PRODUTO_77;9753.71;Antecipação
+27/03/2026;25/04/2026;Efetivado;HP2464701220;69c70d9e7711065eb293cf2c;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;9766.95;Antecipação
+26/03/2026;25/04/2026;Efetivado;HP0287589440;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;9918.64;Venda
+26/03/2026;25/04/2026;Efetivado;HP0113298188;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;9766.95;Venda
+26/03/2026;25/04/2026;Efetivado;HP2785886642;;Completo;Comissão Co-Produtor;;13.24;PRODUTO_77;9615.26;Venda
+26/03/2026;25/04/2026;Efetivado;HP3756703351;;Completo;Comissão Co-Produtor;;12.01;PRODUTO_66;9602.02;Venda
+26/03/2026;25/04/2026;Efetivado;HP2464701220;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;9590.01;Venda
+26/03/2026;25/04/2026;Efetivado;HP0128997917;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;9438.32;Venda
+25/03/2026;25/04/2026;Efetivado;HP0857697009;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;9286.63;Venda
+25/03/2026;25/04/2026;Efetivado;HP4136295629;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;9134.94;Venda
+25/03/2026;25/04/2026;Efetivado;HP3440284869;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;8983.25;Venda
+25/03/2026;25/04/2026;Efetivado;HP3409889705;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;8831.56;Venda
+24/04/2026;24/04/2026;Efetivado;;;;Lançamento de débito (MERCHANT_56);;-1930.00;;8679.87;Compra com cartão ou saldo
+24/04/2026;24/04/2026;Efetivado;;;;Lançamento de débito (GAME STATION);;-177.00;;10609.87;Compra com cartão ou saldo
+24/04/2026;24/04/2026;Efetivado;;;;Lançamento de débito (VERCEL INC.);;-103.03;;10786.87;Compra com cartão ou saldo
+24/04/2026;24/04/2026;Efetivado;;;;Lançamento de débito (MERCHANT_28);;-254.60;;10889.90;Compra com cartão ou saldo
+24/04/2026;24/04/2026;Efetivado;;;;Lançamento de crédito (VERCEL INC.);;2.58;;11144.50;Reembolso cartão hotmart
+23/04/2026;24/04/2026;Efetivado;;;;Lançamento de débito (MERCHANT_82);;-350.00;;11141.92;Compra com cartão ou saldo
+23/04/2026;24/04/2026;Efetivado;;;;Lançamento de débito (EMPRESA_41);;-37.99;;11491.92;Compra com cartão ou saldo
+23/04/2026;24/04/2026;Efetivado;;;;Lançamento de débito (EMPRESA_14);;-231.44;;11529.91;Compra com cartão ou saldo
+23/04/2026;24/04/2026;Efetivado;;69eab3fd411321168bedcc78;;Tarifa de Saque;;-1.99;;11761.35;Saque
+23/04/2026;24/04/2026;Efetivado;;69eab3fd411321168bedcc78;;Saque;;-10000.00;;11763.34;Saque
+23/04/2026;24/04/2026;Efetivado;;;;Lançamento de débito (MERCADOLIVRE*8PRODUTOS);;-3230.79;;21763.34;Compra com cartão ou saldo
+23/04/2026;24/04/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_13);;-546.94;;24994.13;Compra com cartão ou saldo
+22/04/2026;24/04/2026;Efetivado;HP3936270455;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;25541.07;Venda
+22/04/2026;24/04/2026;Efetivado;HP2809725676;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;25389.38;Venda
+22/04/2026;24/04/2026;Efetivado;HP1200196265;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;1.91;PRODUTO_79;25237.69;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0277616020;69e954aa4c3ef46416135693;;Saldo antecipado;;2.12;;25235.78;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0943553424;69e954aa4c3ef46416135693;;Saldo antecipado;;2.12;;25233.66;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0736943265;69e954aa4c3ef46416135693;;Saldo antecipado;;2.12;;25231.54;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0549970624;69e954aa4c3ef46416135693;;Saldo antecipado;;2.12;;25229.42;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3370772247;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;4.23;PRODUTO_33;25227.30;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3474983360;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;5.01;PRODUTO_71;25223.07;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3422378385;69e954aa4c3ef46416135693;;Saldo antecipado;;5.01;;25218.06;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1321756136;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;5.61;PRODUTO_29;25213.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4246222135;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;5.61;PRODUTO_29;25207.44;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1577846185;69e954aa4c3ef46416135693;;Saldo antecipado;;5.61;;25201.83;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3685685671;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;6.24;PRODUTO_29;25196.22;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3481325998;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;6.24;PRODUTO_29;25189.98;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1388307829;69e954aa4c3ef46416135693;;Saldo antecipado;;6.56;;25183.74;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4138248304;69e954aa4c3ef46416135693;;Saldo antecipado;;6.57;;25177.18;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3802080174;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;7.29;PRODUTO_95;25170.61;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0179224879;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;7.29;PRODUTO_95;25163.32;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0012228532;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;7.29;PRODUTO_95;25156.03;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0281716918;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;7.29;PRODUTO_95;25148.74;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3480754593;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;7.29;PRODUTO_27;25141.45;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0926719707;69e954aa4c3ef46416135693;;Saldo antecipado;;7.29;;25134.16;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0562879184;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;13.24;PRODUTO_66;25126.87;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3814366948;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;13.24;PRODUTO_77;25113.63;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3510752972;69e954aa4c3ef46416135693;;Saldo antecipado;;13.24;;25100.39;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0417725916;69e954aa4c3ef46416135693;;Saldo antecipado;;13.24;;25087.15;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1704002786;69e954aa4c3ef46416135693;;Saldo antecipado;;13.24;;25073.91;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3915847591;69e954aa4c3ef46416135693;;Saldo antecipado;;13.24;;25060.67;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3064398276;69e954aa4c3ef46416135693;;Saldo antecipado;;13.24;;25047.43;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1488466781;69e954aa4c3ef46416135693;;Saldo antecipado;;13.24;;25034.19;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2982462084;69e954aa4c3ef46416135693;;Saldo antecipado;;13.24;;25020.95;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0603050648;69e954aa4c3ef46416135693;;Saldo antecipado;;13.24;;25007.71;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1202889507;69e954aa4c3ef46416135693;;Saldo antecipado;;13.24;;24994.47;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2690859644;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;14.71;PRODUTO_77;24981.23;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3164485540;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;14.71;PRODUTO_77;24966.52;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0780035142;69e954aa4c3ef46416135693;;Saldo antecipado;;14.71;;24951.81;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2501956680;69e954aa4c3ef46416135693;;Saldo antecipado;;14.71;;24937.10;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0823511768;69e954aa4c3ef46416135693;;Saldo antecipado;;14.71;;24922.39;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0957019636;69e954aa4c3ef46416135693;;Saldo antecipado;;14.71;;24907.68;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0059800525;69e954aa4c3ef46416135693;;Saldo antecipado;;14.71;;24892.97;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0788114869;69e954aa4c3ef46416135693;;Saldo antecipado;;14.71;;24878.26;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0841210217;69e954aa4c3ef46416135693;;Saldo antecipado;;14.71;;24863.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0715782076;69e954aa4c3ef46416135693;;Saldo antecipado;;14.71;;24848.84;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0967023107;69e954aa4c3ef46416135693;;Saldo antecipado;;14.71;;24834.13;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0290312733;69e954aa4c3ef46416135693;;Saldo antecipado;;14.71;;24819.42;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0320353796;69e954aa4c3ef46416135693;;Saldo antecipado;;14.71;;24804.71;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0561513091;69e954aa4c3ef46416135693;;Saldo antecipado;;14.71;;24790.00;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3901533617;69e954aa4c3ef46416135693;;Saldo antecipado;;14.71;;24775.29;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0722338131;69e954aa4c3ef46416135693;;Saldo antecipado;;14.71;;24760.58;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0691090869;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;14.89;PRODUTO_74;24745.87;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2466923749;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;14.89;PRODUTO_74;24730.98;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2183210568;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;14.89;PRODUTO_74;24716.09;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2535584197;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;16.57;PRODUTO_66;24701.20;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4066590895;69e954aa4c3ef46416135693;;Saldo antecipado;;17.25;;24684.63;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0770453646;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;19.90;PRODUTO_70;24667.38;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1063240981;69e954aa4c3ef46416135693;;Saldo antecipado;;20.25;;24647.48;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1603413112;69e954aa4c3ef46416135693;;Saldo antecipado;;20.25;;24627.23;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4070608594;69e954aa4c3ef46416135693;;Saldo antecipado;;22.49;;24606.98;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1244072964;69e954aa4c3ef46416135693;;Saldo antecipado;;22.49;;24584.49;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2550680229;69e954aa4c3ef46416135693;;Saldo antecipado;;22.49;;24562.00;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0616132110;69e954aa4c3ef46416135693;;Saldo antecipado;;22.49;;24539.51;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0750794226;69e954aa4c3ef46416135693;;Saldo antecipado;;22.49;;24517.02;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3402946659;69e954aa4c3ef46416135693;;Saldo antecipado;;22.49;;24494.53;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2887551699;69e954aa4c3ef46416135693;;Saldo antecipado;;22.49;;24472.04;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4250116120;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24449.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0713473582;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24427.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2332897027;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24404.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0614593115;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24382.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0712319336;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24359.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4080826604;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24337.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0840055970;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24314.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3037603770;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24292.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4213949724;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24269.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0765029935;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24247.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0771570666;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24224.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0578426718;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24202.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0774263908;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24179.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0863525653;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24157.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0795425098;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24134.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0871220631;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24112.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0935858446;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24089.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4076379828;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24067.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4260119592;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24044.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3061626768;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;24022.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0928548217;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;23999.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0017862895;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;23977.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0789269116;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;23954.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0930856711;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;23932.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0065956508;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;23909.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2548587918;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;23887.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0638832296;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;23864.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0882378349;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;23842.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0910080270;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;23819.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0784652129;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;23797.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0876607116;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;23774.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0593816674;69e954aa4c3ef46416135693;;Saldo antecipado;;22.50;;23752.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1424272319;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;33.92;PRODUTO_33;23729.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3495435301;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;33.92;PRODUTO_33;23695.63;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0935668576;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;33.92;PRODUTO_33;23661.71;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1041767851;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;33.92;PRODUTO_33;23627.79;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2297031657;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;33.92;PRODUTO_33;23593.87;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4221012074;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;37.69;PRODUTO_33;23559.95;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3844742974;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;37.69;PRODUTO_33;23522.26;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3818624377;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;37.69;PRODUTO_33;23484.57;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3964413562;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;37.69;PRODUTO_33;23446.88;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1668783796;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;37.69;PRODUTO_33;23409.19;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0272482944;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;37.69;PRODUTO_33;23371.50;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3506429910;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;37.69;PRODUTO_33;23333.81;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0187304606;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;37.70;PRODUTO_33;23296.12;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1718068285;69e954aa4c3ef46416135693;;Saldo antecipado;;40.25;;23258.42;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4002892788;69e954aa4c3ef46416135693;;Saldo antecipado;;53.05;;23218.17;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3818628713;69e954aa4c3ef46416135693;;Saldo antecipado;;68.12;;23165.12;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2501032296;69e954aa4c3ef46416135693;;Saldo antecipado;;68.12;;23097.00;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1927002261;69e954aa4c3ef46416135693;;Saldo antecipado;;68.13;;23028.88;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1061780251;69e954aa4c3ef46416135693;;Saldo antecipado;;68.13;;22960.75;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1735782058;69e954aa4c3ef46416135693;;Saldo antecipado;;68.13;;22892.62;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0274306521;69e954aa4c3ef46416135693;;Saldo antecipado;;68.13;;22824.49;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1916983466;69e954aa4c3ef46416135693;;Saldo antecipado;;68.13;;22756.36;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0953956969;69e954aa4c3ef46416135693;;Saldo antecipado;;68.13;;22688.23;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2120994496;69e954aa4c3ef46416135693;;Saldo antecipado;;107.19;;22620.10;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1012127982;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;136.52;PRODUTO_66;22512.91;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3967169148;69e954aa4c3ef46416135693;Completo;Saldo antecipado;;136.52;PRODUTO_66;22376.39;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2109757989;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;22239.87;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2910175263;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;22103.35;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0855076502;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;21966.83;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1725087354;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;21830.31;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1970310321;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;21693.79;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0953064878;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;21557.27;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1604276200;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;21420.75;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0875068120;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;21284.23;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1597257130;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;21147.71;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0085578701;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;21011.19;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3574297837;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;20874.67;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0791962358;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;20738.15;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1291875417;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;20601.63;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0968946852;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;20465.11;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0793116605;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;20328.59;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0401258334;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;20192.07;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1618511909;69e954aa4c3ef46416135693;;Saldo antecipado;;136.52;;20055.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0959837640;69e954aa4c3ef46416135693;;Saldo antecipado;;142.89;;19919.03;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0854031692;69e954aa4c3ef46416135693;;Saldo antecipado;;142.89;;19776.14;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0924315979;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;19633.25;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2825283674;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;19481.56;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1045142458;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;19329.87;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4244729636;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;19178.18;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0947400913;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;19026.49;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2226321582;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;18874.80;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0878530860;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;18723.11;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2698808555;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;18571.42;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4225876940;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;18419.73;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4087537546;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;18268.04;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0950094156;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;18116.35;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2807139179;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;17964.66;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0785036878;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;17812.97;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0655761247;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;17661.28;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0599972657;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;17509.59;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0893920816;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;17357.90;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0829667750;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;17206.21;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0721199209;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;17054.52;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0692697142;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;16902.83;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3750327299;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;16751.14;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3738231517;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;16599.45;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0747731558;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;16447.76;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0922392235;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;16296.07;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3041066510;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;16144.38;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0859293415;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;15992.69;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2538584447;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;15841.00;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0857754420;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;15689.31;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0740036580;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;15537.62;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0855445926;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;15385.93;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0610745626;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;15234.24;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1204428503;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;15082.55;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0583043705;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;14930.86;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0891612323;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;14779.17;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0934566282;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;14627.48;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1724101674;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;14475.79;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0646927347;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;14324.10;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0669227459;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;14172.41;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3711222473;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;14020.72;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0039024085;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;13869.03;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1264449331;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;13717.34;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0852367935;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;13565.65;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0781958886;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;13413.96;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1140160112;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;13262.27;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0701946439;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;13110.58;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0833130490;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;12958.89;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0075959979;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;12807.20;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0102122904;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;12655.51;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3968864674;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;12503.82;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0766568930;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;12352.13;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0708471847;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;12200.44;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1119768421;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;12048.75;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1237532232;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;11897.06;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0683847917;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;11745.37;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0860447662;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;11593.68;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3976559652;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;11441.99;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4272816305;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;11290.30;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0761951944;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;11138.61;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4265121327;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;10986.92;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0628828824;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;10835.23;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0631906815;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;10683.54;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0576887723;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;10531.85;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0774648657;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;10380.16;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0752717970;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;10228.47;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0915082006;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;10076.78;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2756214407;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;9925.09;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0682324245;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;9773.40;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0608052384;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;9621.71;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0750024728;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;9470.02;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0893151319;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;9318.33;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4255887354;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;9166.64;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0808891309;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;9014.95;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0477637831;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;8863.26;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3063935261;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;8711.57;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0923161733;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;8559.88;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2343285247;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;8408.19;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0873913874;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;8256.50;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3476602265;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;8104.81;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3843051784;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;7953.12;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1012823551;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;7801.43;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3058380211;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;7649.74;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3947318736;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;7498.05;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1563014478;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;7346.36;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0824666014;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;7194.67;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4247807627;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;7042.98;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0063263265;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;6891.29;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0985906452;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;6739.60;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0716166825;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;6587.91;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2113452236;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;6436.22;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0917390499;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;6284.53;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0599203159;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;6132.84;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3951935723;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;5981.15;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2066729053;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;5829.46;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0818510032;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;5677.77;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0892766570;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;5526.08;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0779127727;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;5374.39;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3985024128;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;5222.70;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP2552603973;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;5071.01;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0654222252;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;4919.32;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3687228479;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;4767.63;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3889221652;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;4615.94;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1761391668;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;4464.25;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0885071592;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;4312.56;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3784954700;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;4160.87;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP1819641994;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;4009.18;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0783497882;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;3857.49;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0611515124;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;3705.80;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3937700013;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;3554.11;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0886995336;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;3402.42;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP0801581080;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;3250.73;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP3397175426;69e954aa4c3ef46416135693;;Saldo antecipado;;151.69;;3099.04;Antecipação
+22/04/2026;24/04/2026;Efetivado;;69e954aa4c3ef46416135693;;Tarifa de antecipação;;-785.50;;2947.35;Antecipação
+22/04/2026;24/04/2026;Efetivado;HP4155177255;;Completo;Comissão Co-Produtor;;68.12;PRODUTO_66;3732.85;Venda
+22/04/2026;24/04/2026;Efetivado;HP1075246462;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;3664.73;Venda
+22/04/2026;24/04/2026;Efetivado;HP3474663196;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;3513.04;Venda
+21/04/2026;24/04/2026;Efetivado;HP2452400693;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;3376.52;Venda
+21/04/2026;24/04/2026;Efetivado;HP3527942435;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;3371.51;Venda
+21/04/2026;24/04/2026;Efetivado;HP1846589741C2;;Completo;Comissão Co-Produtor;;20.24;PRODUTO_79;3219.82;Venda
+21/04/2026;24/04/2026;Efetivado;HP1846589741C1;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;3199.58;Venda
+21/04/2026;24/04/2026;Efetivado;HP1824274305;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;3063.06;Venda
+21/04/2026;24/04/2026;Efetivado;HP1204043754;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;2911.37;Venda
+21/04/2026;24/04/2026;Efetivado;HP4016573538C1;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;2759.68;Venda
+21/04/2026;24/04/2026;Efetivado;HP4016573538C2;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_79;2607.99;Venda
+21/04/2026;24/04/2026;Efetivado;HP3990795362;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;2585.50;Venda
+21/04/2026;24/04/2026;Efetivado;HP3864982471C1;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;2433.81;Venda
+21/04/2026;24/04/2026;Efetivado;HP3864982471C2;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_79;2282.12;Venda
+21/04/2026;24/04/2026;Efetivado;HP4213180226;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;2259.63;Venda
+21/04/2026;24/04/2026;Efetivado;HP0861601909;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;2107.94;Venda
+21/04/2026;24/04/2026;Efetivado;HP4264736578;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;1971.42;Venda
+21/04/2026;24/04/2026;Efetivado;HP4272046808;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;1819.73;Venda
+21/04/2026;24/04/2026;Efetivado;HP0003242437;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;1668.04;Venda
+21/04/2026;24/04/2026;Efetivado;HP0641140789C2;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_79;1516.35;Venda
+21/04/2026;24/04/2026;Efetivado;HP0641140789C1;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;1493.86;Venda
+21/04/2026;24/04/2026;Efetivado;HP0865449398;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;1342.17;Venda
+21/04/2026;24/04/2026;Efetivado;HP0663456225;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;1190.48;Venda
+21/04/2026;24/04/2026;Efetivado;HP0901231045C1;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;1038.79;Venda
+21/04/2026;24/04/2026;Efetivado;HP0901231045C2;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_79;887.10;Venda
+21/04/2026;24/04/2026;Efetivado;HP0962790869C1;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;864.61;Venda
+21/04/2026;24/04/2026;Efetivado;HP0962790869C2;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_79;712.92;Venda
+21/04/2026;24/04/2026;Efetivado;HP1129387143C1;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;690.43;Venda
+21/04/2026;24/04/2026;Efetivado;HP1129387143C2;;Completo;Comissão Co-Produtor;;22.49;PRODUTO_79;538.74;Venda
+21/04/2026;24/04/2026;Efetivado;HP0793501353;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_64;516.25;Venda
+21/04/2026;24/04/2026;Efetivado;HP0799657336;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_64;364.56;Venda
+25/03/2026;24/04/2026;Efetivado;HP2031567548;;Reembolsado;Reclamada - Estorno de Comissão Co-Produtor;;-151.69;PRODUTO_66;228.04;Venda
+27/03/2026;24/04/2026;Efetivado;HP2813438610;69c70d9e7711065eb293cf2c;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;379.73;Antecipação
+27/03/2026;24/04/2026;Efetivado;HP2203747876;69c70d9e7711065eb293cf2c;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;531.42;Antecipação
+27/03/2026;24/04/2026;Efetivado;HP2170907947;69c70d9e7711065eb293cf2c;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;683.11;Antecipação
+27/03/2026;24/04/2026;Efetivado;HP4280176393;69c70d9e7711065eb293cf2c;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;834.80;Antecipação
+27/03/2026;24/04/2026;Efetivado;HP1019677941;69c70d9e7711065eb293cf2c;Completo;Débito de Saque antecipado;;-151.70;PRODUTO_66;986.49;Antecipação
+26/03/2026;24/04/2026;Efetivado;HP1175177793;69c5bc64d6f00148b4fd4d40;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;1138.19;Antecipação
+26/03/2026;24/04/2026;Efetivado;HP0879365541;69c5bc64d6f00148b4fd4d40;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;1289.88;Antecipação
+26/03/2026;24/04/2026;Efetivado;HP3990845220;69c5bc64d6f00148b4fd4d40;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;1441.57;Antecipação
+26/03/2026;24/04/2026;Efetivado;HP2611227610;69c5bc64d6f00148b4fd4d40;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;1593.26;Antecipação
+26/03/2026;24/04/2026;Efetivado;HP4050866049;69c5bc64d6f00148b4fd4d40;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;1744.95;Antecipação
+26/03/2026;24/04/2026;Efetivado;HP1207278873;69c5bc64d6f00148b4fd4d40;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;1896.64;Antecipação
+26/03/2026;24/04/2026;Efetivado;HP1526468863;69c5bc64d6f00148b4fd4d40;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;2048.33;Antecipação
+26/03/2026;24/04/2026;Efetivado;HP0840121153;69c5bc64d6f00148b4fd4d40;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;2200.02;Antecipação
+26/03/2026;24/04/2026;Efetivado;HP2031567548;69c5bc64d6f00148b4fd4d40;Reembolsado;Débito de Saque antecipado;;-151.69;PRODUTO_66;2351.71;Antecipação
+26/03/2026;24/04/2026;Efetivado;HP1249878732;69c5bc64d6f00148b4fd4d40;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;2503.40;Antecipação
+25/03/2026;24/04/2026;Efetivado;HP3151292472;;Reembolsado;Reclamada - Estorno de Comissão Co-Produtor;;-151.69;PRODUTO_66;2655.09;Venda
+25/03/2026;24/04/2026;Efetivado;HP0879365541;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;2806.78;Venda
+25/03/2026;24/04/2026;Efetivado;HP0840121153;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;2655.09;Venda
+25/03/2026;24/04/2026;Efetivado;HP1249878732;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;2503.40;Venda
+25/03/2026;24/04/2026;Efetivado;HP4050866049;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;2351.71;Venda
+25/03/2026;24/04/2026;Efetivado;HP3990845220;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;2200.02;Venda
+25/03/2026;24/04/2026;Efetivado;HP4280176393;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;2048.33;Venda
+25/03/2026;24/04/2026;Efetivado;HP2392290161;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-136.52;PRODUTO_66;1896.64;Antecipação
+25/03/2026;24/04/2026;Efetivado;HP3295557985;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-136.52;PRODUTO_66;2033.16;Antecipação
+25/03/2026;24/04/2026;Efetivado;HP0734563682;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-136.52;PRODUTO_66;2169.68;Antecipação
+25/03/2026;24/04/2026;Efetivado;HP2563396153;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-136.52;PRODUTO_66;2306.20;Antecipação
+25/03/2026;24/04/2026;Efetivado;HP2001262685;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-136.52;PRODUTO_66;2442.72;Antecipação
+25/03/2026;24/04/2026;Efetivado;HP1942488049;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;2579.24;Antecipação
+25/03/2026;24/04/2026;Efetivado;HP2895774874;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-151.69;PRODUTO_66;2730.93;Antecipação
+25/03/2026;24/04/2026;Efetivado;HP3151292472;;Reembolsado;Comissão Co-Produtor;;151.69;PRODUTO_66;2882.62;Venda
+25/03/2026;24/04/2026;Efetivado;HP2563396153;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_66;2730.93;Venda
+25/03/2026;24/04/2026;Efetivado;HP1452626078;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_66;2594.41;Venda
+25/03/2026;24/04/2026;Efetivado;HP2001262685;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_66;2457.89;Venda
+25/03/2026;24/04/2026;Efetivado;HP3295557985;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_66;2321.37;Venda
+25/03/2026;24/04/2026;Efetivado;HP2611227610;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;2184.85;Venda
+25/03/2026;24/04/2026;Efetivado;HP1207278873;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;2033.16;Venda
+25/03/2026;24/04/2026;Efetivado;HP2392290161;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_66;1881.47;Venda
+25/03/2026;24/04/2026;Efetivado;HP2203747876;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;1744.95;Venda
+25/03/2026;24/04/2026;Efetivado;HP2597715426;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_66;1593.26;Venda
+25/03/2026;24/04/2026;Efetivado;HP1942488049;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;1456.74;Venda
+25/03/2026;24/04/2026;Efetivado;HP2031567548;;Reembolsado;Comissão Co-Produtor;;151.69;PRODUTO_66;1305.05;Venda
+25/03/2026;24/04/2026;Efetivado;HP1019677941;;Completo;Comissão Co-Produtor;;151.70;PRODUTO_66;1153.36;Venda
+25/03/2026;24/04/2026;Efetivado;HP0734563682;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_66;1001.66;Venda
+25/03/2026;24/04/2026;Efetivado;HP1526468863;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;865.14;Venda
+25/03/2026;24/04/2026;Efetivado;HP2895774874;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;713.45;Venda
+25/03/2026;24/04/2026;Efetivado;HP2813438610;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;561.76;Venda
+25/03/2026;24/04/2026;Efetivado;HP2170907947;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;410.07;Venda
+25/03/2026;24/04/2026;Efetivado;HP1175177793;;Completo;Comissão Co-Produtor;;151.69;PRODUTO_66;258.38;Venda
+23/04/2026;23/04/2026;Efetivado;;;;Lançamento de débito (PDV*SULAVIT);;-57.50;;106.69;Compra com cartão ou saldo
+21/04/2026;23/04/2026;Efetivado;HP2061020761;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_27;164.19;Venda
+20/04/2026;23/04/2026;Efetivado;HP2619536602;;Completo;Comissão Co-Produtor;;13.24;PRODUTO_77;156.90;Venda
+20/04/2026;23/04/2026;Efetivado;HP3156571090;;Completo;Comissão Co-Produtor;;33.25;PRODUTO_66;143.66;Venda
+23/03/2026;23/04/2026;Efetivado;HP2200485471;;Reembolsado;Reclamada - Estorno de Comissão Co-Produtor;;-33.92;PRODUTO_55;110.41;Venda
+23/03/2026;23/04/2026;Efetivado;HP2200485471;;Reembolsado;Comissão Co-Produtor;;33.92;PRODUTO_55;144.33;Venda
+25/03/2026;23/04/2026;Efetivado;HP0340978713;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-5.61;PRODUTO_29;110.41;Antecipação
+25/03/2026;23/04/2026;Efetivado;HP2920151449;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-136.52;PRODUTO_77;116.02;Antecipação
+24/03/2026;23/04/2026;Efetivado;HP2920151449;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_77;252.54;Venda
+24/03/2026;23/04/2026;Efetivado;HP3954004036;;Completo;Comissão Co-Produtor;;14.30;PRODUTO_77;116.02;Venda
+23/03/2026;23/04/2026;Efetivado;HP2200485471;;Reembolsado;Reclamada - Estorno de Comissão Co-Produtor;;-33.92;PRODUTO_55;101.72;Venda
+23/03/2026;23/04/2026;Efetivado;HP2200485471;;Reembolsado;Comissão Co-Produtor;;33.92;PRODUTO_55;135.64;Venda
+23/03/2026;23/04/2026;Efetivado;HP0340978713;;Completo;Comissão Co-Produtor;;5.61;PRODUTO_29;101.72;Venda
+22/04/2026;22/04/2026;Efetivado;;;;Lançamento de débito (VERCEL INC.);;-2.58;;96.11;Compra com cartão ou saldo
+22/04/2026;22/04/2026;Efetivado;;;;Lançamento de débito (VERCEL INC.);;-154.88;;98.69;Compra com cartão ou saldo
+21/04/2026;22/04/2026;Efetivado;;;;Lançamento de débito (EMPRESA_41);;-48.95;;253.57;Compra com cartão ou saldo
+25/03/2026;22/04/2026;Efetivado;HP1949305736;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-273.53;PRODUTO_66;302.52;Antecipação
+23/03/2026;22/04/2026;Efetivado;HP1949305736;;Completo;Comissão Co-Produtor;;273.53;PRODUTO_66;576.05;Venda
+21/04/2026;21/04/2026;Efetivado;;;;Lançamento de débito (99*);;-25.40;;302.52;Compra com cartão ou saldo
+21/04/2026;21/04/2026;Efetivado;;;;Lançamento de débito (APPLE.COM/BILL.);;-66.90;;327.92;Compra com cartão ou saldo
+20/04/2026;20/04/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_12);;-446.85;;394.82;Compra com cartão ou saldo
+20/04/2026;20/04/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_97);;-32.00;;841.67;Compra com cartão ou saldo
+20/04/2026;20/04/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_88);;-140.84;;873.67;Compra com cartão ou saldo
+19/04/2026;20/04/2026;Efetivado;;;;Lançamento de débito (FORMAGGIO 43);;-313.50;;1014.51;Compra com cartão ou saldo
+18/04/2026;20/04/2026;Efetivado;HP4123343264;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_95;1328.01;Venda
+18/04/2026;20/04/2026;Efetivado;HP2173405190C2;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_27;1320.72;Venda
+18/04/2026;20/04/2026;Efetivado;HP2173405190C1;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;1313.43;Venda
+19/04/2026;19/04/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_19);;-99.00;;1308.42;Compra com cartão ou saldo
+19/04/2026;19/04/2026;Efetivado;;;;Lançamento de débito (MERCHANT_123);;-32.00;;1407.42;Compra com cartão ou saldo
+19/04/2026;19/04/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_89);;-25.00;;1439.42;Compra com cartão ou saldo
+19/04/2026;19/04/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_89);;-25.00;;1464.42;Compra com cartão ou saldo
+19/04/2026;19/04/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_9);;-50.00;;1489.42;Compra com cartão ou saldo
+18/04/2026;19/04/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_96);;-234.74;;1539.42;Compra com cartão ou saldo
+17/04/2026;19/04/2026;Efetivado;HP2291662664;;Reembolsado;Reclamada - Estorno de Comissão Co-Produtor;;-5.01;PRODUTO_71;1774.16;Venda
+17/04/2026;19/04/2026;Efetivado;HP2291662664;;Reembolsado;Comissão Co-Produtor;;5.01;PRODUTO_71;1779.17;Venda
+18/04/2026;18/04/2026;Efetivado;;;;Lançamento de débito (MERCHANT_45);;-35.98;;1774.16;Compra com cartão ou saldo
+18/04/2026;18/04/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_27);;-61.50;;1810.14;Compra com cartão ou saldo
+16/04/2026;18/04/2026;Efetivado;;69e16b7d4c3ef46416ca4e98;;Tarifa de antecipação;;-3.26;;1871.64;Antecipação
+16/04/2026;18/04/2026;Efetivado;HP0072080794;69e16b7d4c3ef46416ca4e98;Completo;Saldo antecipado;;33.92;PRODUTO_33;1874.90;Antecipação
+16/04/2026;18/04/2026;Efetivado;HP3595917705;69e16b7d4c3ef46416ca4e98;Completo;Saldo antecipado;;33.92;PRODUTO_33;1840.98;Antecipação
+16/04/2026;18/04/2026;Efetivado;HP2267674201;69e16b7d4c3ef46416ca4e98;Completo;Saldo antecipado;;37.69;PRODUTO_33;1807.06;Antecipação
+16/04/2026;18/04/2026;Efetivado;HP3733242414;69e16b7d4c3ef46416ca4e98;Completo;Saldo antecipado;;37.69;PRODUTO_33;1769.37;Antecipação
+16/04/2026;18/04/2026;Efetivado;HP2080406514;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;1731.68;Venda
+15/04/2026;18/04/2026;Efetivado;HP0543521838;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;1726.67;Venda
+25/03/2026;18/04/2026;Efetivado;HP2321167454;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-13.24;PRODUTO_77;1721.66;Antecipação
+25/03/2026;18/04/2026;Efetivado;HP1068871081;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-170.72;PRODUTO_66;1734.90;Antecipação
+19/03/2026;18/04/2026;Efetivado;HP2321167454;;Completo;Comissão Co-Produtor;;13.24;PRODUTO_77;1905.62;Venda
+19/03/2026;18/04/2026;Efetivado;HP1068871081;;Completo;Comissão Co-Produtor;;170.72;PRODUTO_66;1892.38;Venda
+16/04/2026;17/04/2026;Efetivado;;;;Lançamento de débito (EMPRESA_47);;-128.70;;1721.66;Compra com cartão ou saldo
+15/04/2026;17/04/2026;Efetivado;;69e01a1624b4d53d9a130d59;;Tarifa de antecipação;;-0.77;;1850.36;Antecipação
+15/04/2026;17/04/2026;Efetivado;HP0201857189;69e01a1624b4d53d9a130d59;Completo;Saldo antecipado;;37.69;PRODUTO_33;1851.13;Antecipação
+15/04/2026;17/04/2026;Efetivado;HP0519359278C1;;Completo;Comissão Co-Produtor;;5.01;PRODUTO_71;1813.44;Venda
+15/04/2026;17/04/2026;Efetivado;HP0519359278C2;;Completo;Comissão Co-Produtor;;7.29;PRODUTO_27;1808.43;Venda
+25/03/2026;17/04/2026;Efetivado;HP1425814080;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-75.70;PRODUTO_29;1801.14;Antecipação
+25/03/2026;17/04/2026;Efetivado;HP3180313393;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-75.70;PRODUTO_29;1876.84;Antecipação
+25/03/2026;17/04/2026;Efetivado;HP0771031105;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-136.52;PRODUTO_77;1952.54;Antecipação
+25/03/2026;17/04/2026;Efetivado;HP1820764022;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-170.72;PRODUTO_66;2089.06;Antecipação
+18/03/2026;17/04/2026;Efetivado;HP0771031105;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_77;2259.78;Venda
+18/03/2026;17/04/2026;Efetivado;HP3180313393;;Completo;Comissão Co-Produtor;;75.70;PRODUTO_29;2123.26;Venda
+18/03/2026;17/04/2026;Efetivado;HP1820764022;;Completo;Comissão Co-Produtor;;170.72;PRODUTO_66;2047.56;Venda
+17/03/2026;17/04/2026;Efetivado;HP1425814080;;Completo;Comissão Co-Produtor;;75.70;PRODUTO_29;1876.84;Venda
+16/04/2026;16/04/2026;Efetivado;;;;Lançamento de débito (BENEFICIARIO_80);;-25.00;;1801.14;Compra com cartão ou saldo
+16/04/2026;16/04/2026;Efetivado;;;;Lançamento de débito (CLOUDFLARE);;-63.18;;1826.14;Compra com cartão ou saldo
+14/04/2026;16/04/2026;Efetivado;;69dec8bddc25786ea1851db4;;Tarifa de antecipação;;-0.74;;1889.32;Antecipação
+14/04/2026;16/04/2026;Efetivado;HP1250449539;69dec8bddc25786ea1851db4;Completo;Saldo antecipado;;33.92;PRODUTO_33;1890.06;Antecipação
+13/04/2026;16/04/2026;Efetivado;HP1089987346;;Completo;Comissão Co-Produtor;;13.24;PRODUTO_77;1856.14;Venda
+25/03/2026;16/04/2026;Efetivado;HP1456641609;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-75.70;PRODUTO_29;1842.90;Antecipação
+25/03/2026;16/04/2026;Efetivado;HP4247610131;69c46a99bac44e2fba8c1bfd;Completo;Débito de Saque antecipado;;-136.52;PRODUTO_77;1918.60;Antecipação
+24/03/2026;16/04/2026;Efetivado;HP2680956938;69c31917cb377b1283ea829f;Completo;Débito de Saque antecipado;;-68.13;PRODUTO_29;2055.12;Antecipação
+24/03/2026;16/04/2026;Efetivado;HP2192543662;69c31917cb377b1283ea829f;Completo;Débito de Saque antecipado;;-68.13;PRODUTO_29;2123.25;Antecipação
+23/03/2026;16/04/2026;Efetivado;HP3546521014;69c1c78e94b6c40084a6a853;Completo;Débito de Saque antecipado;;-5.61;PRODUTO_29;2191.38;Antecipação
+23/03/2026;16/04/2026;Efetivado;HP2839691312;69c1c78e94b6c40084a6a853;Completo;Débito de Saque antecipado;;-33.25;PRODUTO_66;2196.99;Antecipação
+23/03/2026;16/04/2026;Efetivado;HP3449685240;69c1c78e94b6c40084a6a853;Completo;Débito de Saque antecipado;;-68.12;PRODUTO_29;2230.24;Antecipação
+17/03/2026;16/04/2026;Efetivado;HP3449685240;;Completo;Comissão Co-Produtor;;68.12;PRODUTO_29;2298.36;Venda
+17/03/2026;16/04/2026;Efetivado;HP2680956938;;Completo;Comissão Co-Produtor;;68.13;PRODUTO_29;2230.24;Venda
+17/03/2026;16/04/2026;Efetivado;HP3546521014;;Completo;Comissão Co-Produtor;;5.61;PRODUTO_29;2162.11;Venda
+17/03/2026;16/04/2026;Efetivado;HP2839691312;;Completo;Comissão Co-Produtor;;33.25;PRODUTO_66;2156.50;Venda
+17/03/2026;16/04/2026;Efetivado;HP2192543662;;Completo;Comissão Co-Produtor;;68.13;PRODUTO_29;2123.25;Venda
+17/03/2026;16/04/2026;Efetivado;HP4247610131;;Completo;Comissão Co-Produtor;;136.52;PRODUTO_77;2055.12;Venda
+17/03/2026;16/04/2026;Efetivado;HP1456641609;;Completo;Comissão Co-Produtor;;75.70;PRODUTO_29;1918.60;Venda
