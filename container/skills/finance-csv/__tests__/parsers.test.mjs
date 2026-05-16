@@ -158,3 +158,75 @@ test('btg_pj: throws on empty CSV', () => {
 test('btg_pj: throws on header-only CSV', () => {
   assert.throws(() => parseBtgPj('"Data","Descricao","Valor","Saldo"\n'), /no data|empty/i);
 });
+
+import { parseInter } from '../lib/parsers/inter.mjs';
+
+test('inter: skips preamble and parses fixture', () => {
+  const raw = readFileSync(join(FIXTURES, 'inter-pf-sample.csv'), 'utf-8');
+  const result = parseInter(raw);
+
+  assert.equal(result.banco, 'inter');
+  assert.equal(result.escopo, 'PF');
+  assert.equal(result.conta_inferida, 'Inter PF');
+  assert.match(result.periodo.inicio, /^\d{4}-\d{2}-\d{2}$/);
+  assert.match(result.periodo.fim, /^\d{4}-\d{2}-\d{2}$/);
+  assert.ok(result.linhas.length > 0);
+  // Should have skipped the 5 preamble rows + header + blank
+  // and emitted only actual transaction rows
+  assert.ok(result.linhas.length < 50, 'expected fewer rows than total file rows');
+});
+
+test('inter: every linha has required fields', () => {
+  const raw = readFileSync(join(FIXTURES, 'inter-pf-sample.csv'), 'utf-8');
+  const { linhas } = parseInter(raw);
+  for (const linha of linhas) {
+    assert.match(linha.linha_id, /^inter-\d{4}-\d{2}-\d{2}-\d{3}$/);
+    assert.match(linha.data, /^\d{4}-\d{2}-\d{2}$/);
+    assert.equal(typeof linha.valor, 'number');
+    assert.ok(linha.valor >= 0);
+    assert.ok(['despesa', 'receita', 'estorno', 'transferencia_interna'].includes(linha.tipo));
+    assert.equal(typeof linha.descricao_raw, 'string');
+    assert.equal(linha.banco_tx_id, null);
+    assert.equal(linha.categoria_hint, null);
+  }
+});
+
+test('inter: descricao_raw combines Histórico and Descrição', () => {
+  const raw = readFileSync(join(FIXTURES, 'inter-pf-sample.csv'), 'utf-8');
+  const { linhas } = parseInter(raw);
+  // At least one row should have the " | " separator showing both fields combined
+  assert.ok(linhas.some((l) => l.descricao_raw.includes(' | ')), 'expected at least one combined descricao');
+});
+
+test('inter: sign on Valor maps to despesa/receita', () => {
+  const raw = readFileSync(join(FIXTURES, 'inter-pf-sample.csv'), 'utf-8');
+  const { linhas } = parseInter(raw);
+  // First data row in fixture: "-0,73" → despesa
+  // Find rows by date+value pattern
+  assert.ok(linhas.some((l) => l.tipo === 'despesa'));
+});
+
+test('inter: PIX meio_pagamento_hint detected', () => {
+  const raw = readFileSync(join(FIXTURES, 'inter-pf-sample.csv'), 'utf-8');
+  const { linhas } = parseInter(raw);
+  assert.ok(linhas.some((l) => l.meio_pagamento_hint === 'PIX'));
+});
+
+test('inter: deterministic linha_id', () => {
+  const raw = readFileSync(join(FIXTURES, 'inter-pf-sample.csv'), 'utf-8');
+  const a = parseInter(raw);
+  const b = parseInter(raw);
+  assert.deepEqual(a.linhas.map((l) => l.linha_id), b.linhas.map((l) => l.linha_id));
+});
+
+test('inter: throws on empty CSV', () => {
+  assert.throws(() => parseInter(''), /empty/i);
+});
+
+test('inter: throws when header row not found', () => {
+  // CSV with preamble but no real header
+  assert.throws(
+    () => parseInter('Extrato\nConta;123\nPeríodo;...\n'),
+    /header not found|invalid/i,
+  );
+});
