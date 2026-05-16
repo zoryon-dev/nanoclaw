@@ -230,3 +230,85 @@ test('inter: throws when header row not found', () => {
     /header not found|invalid/i,
   );
 });
+
+import { parseHotmart } from '../lib/parsers/hotmart.mjs';
+
+test('hotmart: parses fixture with BOM and PT-BR headers', () => {
+  const raw = readFileSync(join(FIXTURES, 'hotmart-sample.csv'), 'utf-8');
+  const result = parseHotmart(raw);
+
+  assert.equal(result.banco, 'hotmart');
+  assert.equal(result.escopo, 'PJ');
+  assert.equal(result.conta_inferida, 'Hotmart');
+  assert.match(result.periodo.inicio, /^\d{4}-\d{2}-\d{2}$/);
+  assert.match(result.periodo.fim, /^\d{4}-\d{2}-\d{2}$/);
+  assert.ok(result.linhas.length > 0);
+});
+
+test('hotmart: every linha has required fields', () => {
+  const raw = readFileSync(join(FIXTURES, 'hotmart-sample.csv'), 'utf-8');
+  const { linhas } = parseHotmart(raw);
+  for (const linha of linhas) {
+    assert.match(linha.linha_id, /^hotmart-\d{4}-\d{2}-\d{2}-\d{3}$/);
+    assert.match(linha.data, /^\d{4}-\d{2}-\d{2}$/);
+    assert.equal(typeof linha.valor, 'number');
+    assert.ok(linha.valor >= 0);
+    assert.ok(['despesa', 'receita', 'estorno'].includes(linha.tipo));
+    assert.equal(typeof linha.descricao_raw, 'string');
+    assert.equal(linha.meio_pagamento_hint, null);
+    // categoria_hint always set for Hotmart
+    assert.equal(typeof linha.categoria_hint, 'string');
+    assert.ok(linha.categoria_hint.length > 0);
+  }
+});
+
+test('hotmart: banco_tx_id falls back through Transação and Identificador', () => {
+  const raw = readFileSync(join(FIXTURES, 'hotmart-sample.csv'), 'utf-8');
+  const { linhas } = parseHotmart(raw);
+  // Most rows should have a tx_id (HP-prefix or hash); few may have null
+  const withHpTxId = linhas.filter((l) => /^HP/.test(l.banco_tx_id ?? ''));
+  assert.ok(withHpTxId.length > 0, 'expected at least some HP-prefix Transação ids');
+  const withHashTxId = linhas.filter((l) => /^[0-9a-f]{20,}$/.test(l.banco_tx_id ?? ''));
+  assert.ok(withHashTxId.length > 0, 'expected at least some hash-style Identificador ids');
+});
+
+test('hotmart: categoria_hint set from Categoria column', () => {
+  const raw = readFileSync(join(FIXTURES, 'hotmart-sample.csv'), 'utf-8');
+  const { linhas } = parseHotmart(raw);
+  const categorias = new Set(linhas.map((l) => l.categoria_hint));
+  // Known values from fixture
+  assert.ok(categorias.has('Antecipação'));
+  assert.ok(categorias.has('Venda') || categorias.has('Compra com cartão ou saldo'));
+});
+
+test('hotmart: tipo derivation handles reembolso as estorno', () => {
+  const raw = readFileSync(join(FIXTURES, 'hotmart-sample.csv'), 'utf-8');
+  const { linhas } = parseHotmart(raw);
+  // If any "Reembolso cartão hotmart" rows exist in fixture, they should be estorno
+  const reembolsos = linhas.filter((l) => l.categoria_hint === 'Reembolso cartão hotmart');
+  if (reembolsos.length > 0) {
+    for (const r of reembolsos) assert.equal(r.tipo, 'estorno');
+  }
+});
+
+test('hotmart: descricao_raw combines Descrição and Nome do produto', () => {
+  const raw = readFileSync(join(FIXTURES, 'hotmart-sample.csv'), 'utf-8');
+  const { linhas } = parseHotmart(raw);
+  // Rows with PRODUTO_* in Nome do produto should have " | " in descricao_raw
+  const withProduto = linhas.filter((l) => l.descricao_raw.includes('PRODUTO_'));
+  assert.ok(withProduto.length > 0, 'expected some rows with product name embedded');
+  for (const l of withProduto) {
+    assert.ok(l.descricao_raw.includes(' | '), 'product rows should use " | " separator');
+  }
+});
+
+test('hotmart: deterministic linha_id', () => {
+  const raw = readFileSync(join(FIXTURES, 'hotmart-sample.csv'), 'utf-8');
+  const a = parseHotmart(raw);
+  const b = parseHotmart(raw);
+  assert.deepEqual(a.linhas.map((l) => l.linha_id), b.linhas.map((l) => l.linha_id));
+});
+
+test('hotmart: throws on empty CSV', () => {
+  assert.throws(() => parseHotmart(''), /empty/i);
+});
