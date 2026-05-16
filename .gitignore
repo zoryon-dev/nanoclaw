@@ -9,6 +9,9 @@ store/
 data/
 logs/
 
+# Real bank statements (PII) — never commit; fixtures must be anonymized
+extratos/
+
 # Groups - only track base structure and specific CLAUDE.md files
 groups/*
 !groups/main/

@@ -14,7 +14,7 @@ import type Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
 
-import { DATA_DIR } from './config.js';
+import { DATA_DIR, GROUPS_DIR } from './config.js';
 import { getAgentGroup } from './db/agent-groups.js';
 import { getDestinations } from './db/agent-destinations.js';
 import { getMessagingGroup } from './db/messaging-groups.js';
@@ -281,8 +281,38 @@ export function writeSessionMessage(
 }
 
 /**
- * If message content has attachments with base64 `data`, save them to
- * the session's inbox directory and replace with `localPath`.
+ * MIME types and file extensions that identify spreadsheet/CSV documents.
+ * These are routed to the group's persistent imports/inbox/ instead of the
+ * ephemeral session inbox so the finance-csv agent can reliably find them.
+ */
+const CSV_XLS_MIMES = new Set([
+  'text/csv',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+]);
+const CSV_XLS_EXTS = /\.(csv|xls|xlsx)$/i;
+
+/** Return true if the attachment looks like a CSV or Excel file. */
+function isCsvOrXls(att: Record<string, unknown>): boolean {
+  const mime = typeof att.mimeType === 'string' ? att.mimeType : '';
+  const name = typeof att.name === 'string' ? att.name : '';
+  return CSV_XLS_MIMES.has(mime) || CSV_XLS_EXTS.test(name);
+}
+
+/** Sanitize a filename: keep only word chars, dots, and hyphens. */
+function sanitizeFilename(raw: string): string {
+  return path.basename(raw).replace(/[^\w.\-]/g, '_') || `attachment-${Date.now()}`;
+}
+
+/**
+ * If message content has attachments with base64 `data`, save them to disk
+ * and replace with `localPath`.
+ *
+ * - CSV/XLS/XLSX attachments → <groupFolder>/imports/inbox/<safeFilename>
+ *   localPath = agent/imports/inbox/<safeFilename>  (agent/ is the mount point
+ *   for the group folder inside the container at /workspace/agent)
+ * - All other attachments → session inbox/<messageId>/<filename>
+ *   localPath = inbox/<messageId>/<filename>
  */
 function extractAttachmentFiles(
   agentGroupId: string,
@@ -303,15 +333,43 @@ function extractAttachmentFiles(
   let changed = false;
   for (const att of attachments) {
     if (typeof att.data === 'string') {
+      const rawName = (att.name as string) || `attachment-${Date.now()}`;
+
+      if (isCsvOrXls(att)) {
+        // Route to the agent group's persistent imports/inbox/ directory
+        const agentGroup = getAgentGroup(agentGroupId);
+        if (agentGroup) {
+          const safeFilename = sanitizeFilename(rawName);
+          const groupInboxDir = path.join(GROUPS_DIR, agentGroup.folder, 'imports', 'inbox');
+          fs.mkdirSync(groupInboxDir, { recursive: true });
+          const filePath = path.join(groupInboxDir, safeFilename);
+          fs.writeFileSync(filePath, Buffer.from(att.data as string, 'base64'));
+          att.localPath = `agent/imports/inbox/${safeFilename}`;
+          delete att.data;
+          changed = true;
+          log.info('Saved CSV/XLS attachment to group imports inbox', {
+            messageId,
+            filename: safeFilename,
+            folder: agentGroup.folder,
+            size: att.size,
+          });
+          continue;
+        }
+        // Fall through to session inbox if agent group not found
+        log.warn('CSV/XLS attachment: agent group not found, falling back to session inbox', {
+          agentGroupId,
+          messageId,
+        });
+      }
+
       const inboxDir = path.join(sessionDir(agentGroupId, sessionId), 'inbox', messageId);
       fs.mkdirSync(inboxDir, { recursive: true });
-      const filename = (att.name as string) || `attachment-${Date.now()}`;
-      const filePath = path.join(inboxDir, filename);
+      const filePath = path.join(inboxDir, rawName);
       fs.writeFileSync(filePath, Buffer.from(att.data as string, 'base64'));
-      att.localPath = `inbox/${messageId}/${filename}`;
+      att.localPath = `inbox/${messageId}/${rawName}`;
       delete att.data;
       changed = true;
-      log.debug('Saved attachment to inbox', { messageId, filename, size: att.size });
+      log.debug('Saved attachment to inbox', { messageId, filename: rawName, size: att.size });
     }
   }
 
