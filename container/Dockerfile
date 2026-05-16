@@ -58,6 +58,13 @@ RUN chmod +x /usr/local/bin/pdf-reader
 COPY skills/image-gen/image-gen /usr/local/bin/image-gen
 RUN chmod +x /usr/local/bin/image-gen
 
+# Install finance-csv CLI (Node-based, multi-file with xlsx dep)
+COPY skills/finance-csv/lib /usr/local/lib/finance-csv
+COPY skills/finance-csv/package.json /usr/local/lib/finance-csv/package.json
+COPY skills/finance-csv/finance-csv /usr/local/bin/finance-csv
+RUN cd /usr/local/lib/finance-csv && npm install --omit=dev --no-audit --no-fund \
+    && chmod +x /usr/local/bin/finance-csv
+
 # Create workspace directories
 RUN mkdir -p /workspace/group /workspace/global /workspace/extra
 
