@@ -312,3 +312,45 @@ test('hotmart: deterministic linha_id', () => {
 test('hotmart: throws on empty CSV', () => {
   assert.throws(() => parseHotmart(''), /empty/i);
 });
+
+import { detectBank } from '../lib/parsers/detect.mjs';
+
+test('detect: identifies each source from its fixture', () => {
+  const btgPf = readFileSync(join(FIXTURES, 'btg-pf-sample.xls'));     // Buffer
+  const btgPj = readFileSync(join(FIXTURES, 'btg-pj-sample.csv'), 'utf-8');
+  const inter = readFileSync(join(FIXTURES, 'inter-pf-sample.csv'), 'utf-8');
+  const hotmart = readFileSync(join(FIXTURES, 'hotmart-sample.csv'), 'utf-8');
+
+  assert.equal(detectBank(btgPf), 'btg_pf');
+  assert.equal(detectBank(btgPj), 'btg_pj');
+  assert.equal(detectBank(inter), 'inter');
+  assert.equal(detectBank(hotmart), 'hotmart');
+});
+
+test('detect: BTG PF from raw Buffer (OLE2 magic)', () => {
+  // Synthetic OLE2 magic header buffer
+  const buf = Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1, 0, 0]);
+  assert.equal(detectBank(buf), 'btg_pf');
+});
+
+test('detect: BTG PJ quoted-CSV signature', () => {
+  assert.equal(detectBank('"Data","Descricao","Valor","Saldo"\n"01/01/2026","x","1,00","100,00"'), 'btg_pj');
+});
+
+test('detect: Inter PF preamble signature', () => {
+  assert.equal(detectBank(' Extrato Conta Corrente \nConta ;X\n'), 'inter');
+});
+
+test('detect: Hotmart BOM + PT-BR header signature', () => {
+  const bomHeader = '﻿Data do lançamento;Data da efetivação;Status;Transação;Identificador de antecipação;Status da transação;Descrição;Parcela;Valor;Nome do produto;Saldo;Categoria';
+  assert.equal(detectBank(bomHeader), 'hotmart');
+});
+
+test('detect: returns null for unknown header', () => {
+  assert.equal(detectBank('Foo,Bar,Baz\n1,2,3\n'), null);
+});
+
+test('detect: returns null for empty input', () => {
+  assert.equal(detectBank(''), null);
+  assert.equal(detectBank(Buffer.alloc(0)), null);
+});
