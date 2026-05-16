@@ -1,0 +1,14 @@
+{
+  "name": "finance-csv",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "CLI for parsing, classifying, and reconciling bank statement files (BTG, Inter, Hotmart) for the Levis finance agent",
+  "bin": { "finance-csv": "./lib/cli.mjs" },
+  "scripts": {
+    "test": "node --test __tests__/"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
+}
