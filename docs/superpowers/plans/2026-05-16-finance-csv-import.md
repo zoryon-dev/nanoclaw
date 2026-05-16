@@ -12,6 +12,21 @@
 
 ---
 
+## Editorial deltas (applied 2026-05-16 after inspecting real exports)
+
+Real bank exports in `/root/nanoclaw/extratos/` (gitignored) revealed format diversity beyond the original assumptions. The spec has been updated; this plan's task structure adapts as follows:
+
+1. **4 parsers, not 3.** BTG has two export channels (PF = XLS-only, PJ = CSV quoted), Inter PF + Hotmart are CSV with their own quirks. Task 4 splits into Task 4a (BTG PF XLS) and Task 4b (BTG PJ CSV). Task 5 (Inter) gains preamble-row handling. Task 6 (Hotmart) gains `categoria_hint` extraction.
+2. **`xlsx` npm package required** for BTG PF. Task 1 now also creates a `package.json` declaring `xlsx` as a dependency. Task 11 (Dockerfile) runs `npm install --prefix /usr/local/lib/finance-csv` so the package lands in the container.
+3. **Canonical schema adds `categoria_hint` field** (string | null). Hotmart sets it from its `Categoria` column; other parsers set null. Task 8 (classify) treats `categoria_hint` as the highest-priority lookup (confidence 0.90, fonte `'source'`) via a separate `hotmart-categoria-map.json` colocated with the cache.
+4. **`linha_id` prefix** uses snake-case 4-banks: `btg_pf-…`, `btg_pj-…`, `inter-…`, `hotmart-…` (not the original 3-bank `btg-…`).
+5. **`conta_inferida` values:** `BTG D` (PF), `BTG PJ`, `Inter PF`, `Hotmart`.
+6. **Telegram plumbing** (Task 15) also accepts `.xls` / `.xlsx` mime types and extensions, not just `.csv`.
+
+When dispatching subagents per task, the controller provides task text + the relevant deltas above. The spec is the source of truth for canonical schema; this plan is the source of truth for sequencing and TDD discipline.
+
+---
+
 ## File structure
 
 ```
@@ -65,44 +80,97 @@ src/channels/telegram.ts              route .csv documents to imports/inbox/
 
 ---
 
-## Task 0: Gather real anonymized CSV samples
+## Task 0: Build anonymized fixtures from real exports
 
 **Files:**
-- Create: `container/skills/finance-csv/__tests__/fixtures/btg-sample.csv`
-- Create: `container/skills/finance-csv/__tests__/fixtures/inter-sample.csv`
-- Create: `container/skills/finance-csv/__tests__/fixtures/hotmart-sample.csv`
+- Source (already exists, gitignored, never commit): `/root/nanoclaw/extratos/`
+  - `PF_Extrato_2026-04-16_a_2026-05-15_06763872500.xls` → BTG PF
+  - `pj_50_008024331.csv` → BTG PJ
+  - `pf_Extrato-15-04-2026-a-15-05-2026-CSV.csv` → Inter PF
+  - `detailed_statement_BRL_20260516101213_3D663B6A13109588542062033378.csv` → Hotmart
+- Create (anonymized, safe to commit):
+  - `container/skills/finance-csv/__tests__/fixtures/btg-pf-sample.xls`
+  - `container/skills/finance-csv/__tests__/fixtures/btg-pj-sample.csv`
+  - `container/skills/finance-csv/__tests__/fixtures/inter-pf-sample.csv`
+  - `container/skills/finance-csv/__tests__/fixtures/hotmart-sample.csv`
 
-- [ ] **Step 1: Ask user for one anonymized CSV per bank**
+> **PII rule:** real exports stay in `extratos/` (gitignored). Fixtures committed to repo must have merchant names, full account numbers, and CPF/CNPJ redacted. Dates and amounts stay (needed for tests).
 
-Send this exact message to the user (or operator running this plan):
+- [ ] **Step 1: Verify the source files exist**
 
-> Pra escrever os parsers com base na realidade, preciso de 1 CSV de cada banco (BTG, Inter, Hotmart) — pode ser de qualquer mês, com mínimo 10 linhas, com nomes/valores que você não se importa de versionar no repo (anonimize merchant e valor se quiser, mantendo o formato exato do banco — headers, encoding, separador).
->
-> Salve em:
-> - `container/skills/finance-csv/__tests__/fixtures/btg-sample.csv`
-> - `container/skills/finance-csv/__tests__/fixtures/inter-sample.csv`
-> - `container/skills/finance-csv/__tests__/fixtures/hotmart-sample.csv`
+Run: `ls -la /root/nanoclaw/extratos/`
+Expected: at least the 4 files listed above (XLS + 3 CSVs).
 
-- [ ] **Step 2: Verify all three files exist**
+If any missing, **stop and report blocker**.
+
+- [ ] **Step 2: Inspect each source to ground parser assumptions**
+
+```bash
+# BTG PF — XLS (binary, will need xlsx package to read)
+head -c 8 /root/nanoclaw/extratos/PF_Extrato_2026-04-16_a_2026-05-15_06763872500.xls | xxd
+# Expected: D0CF 11E0 A1B1 1AE1 (OLE2 magic)
+
+# BTG PJ — CSV with quoted fields, comma separator
+head -3 /root/nanoclaw/extratos/pj_50_008024331.csv
+# Expected: "Data","Descricao","Valor","Saldo" header + rows
+
+# Inter PF — CSV with preamble (metadata rows BEFORE the real header)
+head -10 /root/nanoclaw/extratos/pf_Extrato-15-04-2026-a-15-05-2026-CSV.csv
+# Expected: "Extrato Conta Corrente", "Conta;...", "Período;..." then blank/header on row 4-5
+
+# Hotmart — CSV with BOM + PT-BR headers + Categoria column
+head -3 /root/nanoclaw/extratos/detailed_statement_BRL_*.csv
+# Expected: BOM + "Data do lançamento;Data da efetivação;Status;Transação;...;Categoria"
+```
+
+Record observed: exact column names, separator, encoding, sign convention, date format. This grounds Tasks 4a–7.
+
+- [ ] **Step 3: Build anonymized fixtures**
+
+For each source, copy to fixtures and redact PII. Keep dates, amounts, transaction structure intact — only redact: merchant names (e.g. "Jadiel Ricardo..." → "BENEFICIARIO_1"), full account numbers in filenames, CPF/CNPJ.
+
+For CSVs (use `sed` or Python):
+
+```bash
+# Example for BTG PJ (adapt patterns to actual file content)
+python3 <<'PY'
+import re, pathlib
+src = pathlib.Path('/root/nanoclaw/extratos/pj_50_008024331.csv')
+dst = pathlib.Path('container/skills/finance-csv/__tests__/fixtures/btg-pj-sample.csv')
+content = src.read_text(encoding='utf-8')
+# Redact proper names after "para" / "de"
+content = re.sub(r'(para|de)\s+([A-ZÀ-Ÿ][a-zà-ÿ]+(\s+[A-ZÀ-Ÿ][a-zà-ÿ]+)+)', r'\1 BENEFICIARIO', content)
+dst.parent.mkdir(parents=True, exist_ok=True)
+dst.write_text(content, encoding='utf-8')
+print(f"wrote {dst}")
+PY
+```
+
+Repeat the pattern for Inter PF and Hotmart. Adapt the redaction regex to each file's name patterns.
+
+For the **BTG PF XLS**: since it's binary, the simplest anonymization is to:
+1. Read with `xlsx` package (or first install: `cd container/skills/finance-csv && npm install xlsx`)
+2. Replace descricao column values with `MERCHANT_<n>` style
+3. Re-emit as XLS
+
+OR, if XLS anonymization feels heavy: skip XLS fixture for now, mark BTG PF parser tests as skipped with `test.skip`, and rely on the real XLS in `extratos/` (via env var pointing to it) during manual testing. Document this in the BTG PF test file.
+
+- [ ] **Step 4: Verify fixtures**
 
 Run: `ls -la container/skills/finance-csv/__tests__/fixtures/`
-Expected: 3 `.csv` files present, each >500 bytes.
+Expected: 3 CSVs (+ optionally the anonymized XLS). All > 500 bytes.
 
-If any are missing, **stop and report blocker** — parsers cannot be written without real samples.
+Run: `grep -c "MERCHANT\|BENEFICIARIO" container/skills/finance-csv/__tests__/fixtures/*.csv`
+Expected: non-zero count per CSV (confirms anonymization actually happened).
 
-- [ ] **Step 3: Inspect headers and a few rows of each**
+Run: `grep -E "[A-ZÀ-Ÿ][a-zà-ÿ]+\s+[A-ZÀ-Ÿ][a-zà-ÿ]+\s+[A-ZÀ-Ÿ][a-zà-ÿ]+" container/skills/finance-csv/__tests__/fixtures/*.csv | head`
+Expected: empty (no full names remaining). If any leak, iterate redaction.
 
-Run: `head -5 container/skills/finance-csv/__tests__/fixtures/btg-sample.csv`
-Run: `head -5 container/skills/finance-csv/__tests__/fixtures/inter-sample.csv`
-Run: `head -5 container/skills/finance-csv/__tests__/fixtures/hotmart-sample.csv`
-
-Note encoding (`file <path>`), separator (comma/semicolon), date format, sign convention. This grounds Tasks 5–8.
-
-- [ ] **Step 4: Commit fixtures**
+- [ ] **Step 5: Commit fixtures**
 
 ```bash
 git add container/skills/finance-csv/__tests__/fixtures/
-git commit -m "test(finance-csv): add anonymized CSV fixtures from BTG, Inter, Hotmart"
+git commit -m "test(finance-csv): add anonymized fixtures (BTG PF/PJ, Inter PF, Hotmart)"
 ```
 
 ---
