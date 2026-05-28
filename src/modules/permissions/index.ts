@@ -64,6 +64,18 @@ interface PendingNameInput {
 }
 const awaitingNameInput = new Map<string, PendingNameInput>();
 
+/**
+ * Swarm-secondary Telegram bots route under channel_type 'telegram-<folder>',
+ * but their senders belong to the shared 'telegram' identity namespace. Without
+ * this, the same person (e.g. owner telegram:123) is seen as a different,
+ * unregistered user (telegram-finance:123) and dropped by the strict
+ * unknown-sender policy. Normalize the identity prefix to the base platform for
+ * telegram swarm channels; leave every other channel type untouched.
+ */
+function baseChannelPlatform(channelType: string): string {
+  return channelType.startsWith('telegram-') ? 'telegram' : channelType;
+}
+
 function extractAndUpsertUser(event: InboundEvent): string | null {
   let content: Record<string, unknown>;
   try {
@@ -90,11 +102,11 @@ function extractAndUpsertUser(event: InboundEvent): string | null {
   const rawHandle = senderIdField ?? senderField ?? authorUserId;
   if (!rawHandle) return null;
 
-  const userId = rawHandle.includes(':') ? rawHandle : `${event.channelType}:${rawHandle}`;
+  const userId = rawHandle.includes(':') ? rawHandle : `${baseChannelPlatform(event.channelType)}:${rawHandle}`;
   if (!getUser(userId)) {
     upsertUser({
       id: userId,
-      kind: event.channelType,
+      kind: baseChannelPlatform(event.channelType),
       display_name: senderName ?? null,
       created_at: new Date().toISOString(),
     });
