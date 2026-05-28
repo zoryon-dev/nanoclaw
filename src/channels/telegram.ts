@@ -8,6 +8,7 @@ import { createTelegramAdapter } from '@chat-adapter/telegram';
 import { readEnvFile } from '../env.js';
 import { log } from '../log.js';
 import { createMessagingGroup, getMessagingGroupByPlatform, updateMessagingGroup } from '../db/messaging-groups.js';
+import { getDb } from '../db/connection.js';
 import { grantRole, hasAnyOwner } from '../modules/permissions/db/user-roles.js';
 import { upsertUser } from '../modules/permissions/db/users.js';
 import { createChatSdkBridge, type ReplyContext } from './chat-sdk-bridge.js';
@@ -195,51 +196,121 @@ function createPairingInterceptor(
   };
 }
 
+/**
+ * Build a Telegram channel adapter for a single bot token.
+ *
+ * `channelType` is 'telegram' for the primary bot and 'telegram-<folder>' for
+ * each swarm-secondary bot, so inbound messages route to the right agent group
+ * (the messaging_groups + wirings in the DB carry these channel types). The
+ * bridge defaults channelType to the underlying adapter's name ('telegram'), so
+ * we override it here. `dmOnly` secondaries drop group messages — the shared
+ * group is owned by the primary bot, so a secondary that also sits in the group
+ * must not double-process.
+ */
+function buildTelegramAdapter(token: string, channelType: string, dmOnly: boolean): ChannelAdapter {
+  const telegramAdapter = createTelegramAdapter({
+    botToken: token,
+    mode: 'polling',
+  });
+  const bridge = createChatSdkBridge({
+    adapter: telegramAdapter,
+    concurrency: 'concurrent',
+    extractReplyContext,
+    supportsThreads: false,
+    transformOutboundText: sanitizeTelegramLegacyMarkdown,
+    maxTextLength: 4000,
+  });
+
+  const botUsernamePromise = fetchBotUsername(token);
+
+  const wrapped: ChannelAdapter = {
+    ...bridge,
+    channelType,
+    resolveChannelName: async (platformId: string) => {
+      const chatId = platformId.split(':').slice(1).join(':');
+      if (!chatId) return null;
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${token}/getChat`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ chat_id: chatId }),
+        });
+        const data = (await res.json()) as { ok?: boolean; result?: { title?: string } };
+        return data.ok ? (data.result?.title ?? null) : null;
+      } catch {
+        return null;
+      }
+    },
+    async setup(hostConfig: ChannelSetup) {
+      const onInbound: ChannelSetup['onInbound'] = dmOnly
+        ? (platformId, threadId, message) => {
+            if (message.isGroup) return;
+            return hostConfig.onInbound(platformId, threadId, message);
+          }
+        : hostConfig.onInbound;
+      const intercepted: ChannelSetup = {
+        ...hostConfig,
+        onInbound: createPairingInterceptor(botUsernamePromise, onInbound, token),
+      };
+      return withRetry(() => bridge.setup(intercepted), 'bridge.setup');
+    },
+  };
+  return wrapped;
+}
+
+/**
+ * Multi-bot swarm support. Each agent group can have its own Telegram bot, with
+ * the token stored in the legacy `agent_groups.container_config` JSON column
+ * (`telegramBotToken`) — preserved across the v2.0.70 migration even though the
+ * new schema's source of truth is the `container_configs` table. Register one
+ * DM-only adapter per distinct secondary token under channel_type
+ * 'telegram-<folder>'. Called inside the primary factory (after DB init); the
+ * registry's Map iteration picks up entries added during the loop, so the
+ * secondaries are instantiated in the same initChannelAdapters pass.
+ */
+function registerSecondaryBots(primaryToken: string): void {
+  let rows: { id: string; folder: string; container_config: string | null }[];
+  try {
+    rows = getDb().prepare('SELECT id, folder, container_config FROM agent_groups').all() as {
+      id: string;
+      folder: string;
+      container_config: string | null;
+    }[];
+  } catch (err) {
+    // Fresh installs lack the legacy container_config column — no swarm to wire.
+    log.warn('Telegram: could not query agent_groups for secondary bots', { err });
+    return;
+  }
+
+  const seenTokens = new Set<string>([primaryToken]);
+  for (const ag of rows) {
+    if (!ag.container_config) continue;
+    let cfg: { telegramBotToken?: unknown };
+    try {
+      cfg = JSON.parse(ag.container_config) as { telegramBotToken?: unknown };
+    } catch {
+      continue;
+    }
+    const token = typeof cfg.telegramBotToken === 'string' ? cfg.telegramBotToken : null;
+    if (!token || seenTokens.has(token)) continue;
+    seenTokens.add(token);
+
+    const channelType = `telegram-${ag.folder}`;
+    log.info('Registering secondary Telegram bot', { agentGroup: ag.id, folder: ag.folder, channelType });
+    registerChannelAdapter(channelType, {
+      factory: () => buildTelegramAdapter(token, channelType, /* dmOnly */ true),
+    });
+  }
+}
+
 registerChannelAdapter('telegram', {
   factory: () => {
     const env = readEnvFile(['TELEGRAM_BOT_TOKEN']);
     if (!env.TELEGRAM_BOT_TOKEN) return null;
     const token = env.TELEGRAM_BOT_TOKEN;
-    const telegramAdapter = createTelegramAdapter({
-      botToken: token,
-      mode: 'polling',
-    });
-    const bridge = createChatSdkBridge({
-      adapter: telegramAdapter,
-      concurrency: 'concurrent',
-      extractReplyContext,
-      supportsThreads: false,
-      transformOutboundText: sanitizeTelegramLegacyMarkdown,
-      maxTextLength: 4000,
-    });
-
-    const botUsernamePromise = fetchBotUsername(token);
-
-    const wrapped: ChannelAdapter = {
-      ...bridge,
-      resolveChannelName: async (platformId: string) => {
-        const chatId = platformId.split(':').slice(1).join(':');
-        if (!chatId) return null;
-        try {
-          const res = await fetch(`https://api.telegram.org/bot${token}/getChat`, {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ chat_id: chatId }),
-          });
-          const data = (await res.json()) as { ok?: boolean; result?: { title?: string } };
-          return data.ok ? (data.result?.title ?? null) : null;
-        } catch {
-          return null;
-        }
-      },
-      async setup(hostConfig: ChannelSetup) {
-        const intercepted: ChannelSetup = {
-          ...hostConfig,
-          onInbound: createPairingInterceptor(botUsernamePromise, hostConfig.onInbound, token),
-        };
-        return withRetry(() => bridge.setup(intercepted), 'bridge.setup');
-      },
-    };
-    return wrapped;
+    // Discover & register swarm-secondary bots before returning the primary;
+    // they get instantiated in the same initChannelAdapters loop iteration.
+    registerSecondaryBots(token);
+    return buildTelegramAdapter(token, 'telegram', /* dmOnly */ false);
   },
 });
