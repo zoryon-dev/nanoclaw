@@ -17,7 +17,8 @@ import path from 'path';
 import { deriveAttachmentName } from './attachment-naming.js';
 import { isSafeAttachmentName } from './attachment-safety.js';
 import type { OutboundFile } from './channels/adapter.js';
-import { DATA_DIR } from './config.js';
+import { DATA_DIR, GROUPS_DIR } from './config.js';
+import { getAgentGroup } from './db/agent-groups.js';
 import { getMessagingGroup } from './db/messaging-groups.js';
 import {
   createSession,
@@ -267,6 +268,76 @@ export function writeSessionMessage(
  *   4. `wx` flag on writeFileSync to refuse following a pre-existing symlink
  *      at the target file path or overwriting any existing file.
  */
+const CSV_XLS_MIMES = new Set([
+  'text/csv',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+]);
+const CSV_XLS_EXT = /\.(csv|xls|xlsx)$/i;
+
+function isCsvOrXls(att: Record<string, unknown>, filename: string): boolean {
+  const mime = typeof att.mimeType === 'string' ? att.mimeType : '';
+  return CSV_XLS_MIMES.has(mime) || CSV_XLS_EXT.test(filename);
+}
+
+/**
+ * Route bank-statement CSV/XLS to the agent group's PERSISTENT imports inbox
+ * (`groups/<folder>/imports/inbox/`, mounted at `/workspace/agent/imports/inbox/`)
+ * instead of the ephemeral per-session inbox, so the finance agent finds them
+ * across sessions. Same symlink-safety dance as the session inbox: real-dir
+ * check, realpath containment, exclusive `wx` write. Mutates `att` and returns
+ * true when handled.
+ */
+function saveCsvToGroupImports(agentGroupId: string, filename: string, att: Record<string, unknown>): boolean {
+  const group = getAgentGroup(agentGroupId);
+  if (!group) return false;
+
+  const inboxDir = path.join(GROUPS_DIR, group.folder, 'imports', 'inbox');
+  if (fs.existsSync(inboxDir)) {
+    const stat = fs.lstatSync(inboxDir);
+    if (stat.isSymbolicLink() || !stat.isDirectory()) {
+      log.warn('Rejecting unsafe group imports inbox', { agentGroupId, inboxDir });
+      return false;
+    }
+  }
+  fs.mkdirSync(inboxDir, { recursive: true });
+
+  let realInboxDir: string;
+  let groupRoot: string;
+  try {
+    realInboxDir = fs.realpathSync(inboxDir);
+    groupRoot = fs.realpathSync(path.join(GROUPS_DIR, group.folder));
+  } catch (err) {
+    log.warn('Failed to resolve group imports inbox', { agentGroupId, err });
+    return false;
+  }
+  if (!isPathInside(groupRoot, realInboxDir)) {
+    log.warn('Group imports inbox escaped group dir', { agentGroupId, inboxDir });
+    return false;
+  }
+
+  const filePath = path.join(inboxDir, filename);
+  try {
+    fs.writeFileSync(filePath, Buffer.from(att.data as string, 'base64'), { flag: 'wx' });
+  } catch (err: unknown) {
+    const e = err as NodeJS.ErrnoException;
+    if (e.code !== 'EEXIST') return false;
+    // Already present — only reuse it if it's a real file, never a symlink the
+    // container may have pre-placed.
+    if (fs.lstatSync(filePath).isSymbolicLink()) {
+      log.warn('Refusing pre-existing symlink in group imports inbox', { folder: group.folder, filename });
+      return false;
+    }
+    log.info('Group imports file already exists, reusing', { folder: group.folder, filename });
+  }
+
+  att.name = filename;
+  att.localPath = `agent/imports/inbox/${filename}`;
+  delete att.data;
+  log.info('Saved CSV/XLS to group imports inbox', { folder: group.folder, filename });
+  return true;
+}
+
 function extractAttachmentFiles(
   agentGroupId: string,
   sessionId: string,
@@ -300,6 +371,13 @@ function extractAttachmentFiles(
         rawName,
         replacement: filename,
       });
+    }
+
+    // Finance bank statements go to the group's persistent imports inbox, not
+    // the ephemeral per-session inbox.
+    if (isCsvOrXls(att, filename) && saveCsvToGroupImports(agentGroupId, filename, att)) {
+      changed = true;
+      continue;
     }
 
     const inboxDir = path.join(sessionDir(agentGroupId, sessionId), 'inbox', messageId);

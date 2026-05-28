@@ -93,6 +93,28 @@ export function initGroupFilesystem(group: AgentGroup, opts?: { instructions?: s
     initialized.push('skills/');
   }
 
+  // Container runs as UID 1000 (node) when the host is root (the host-side
+  // `--user` passthrough in container-runner.ts only fires for non-root,
+  // non-1000 hosts). Chown the agent-writable dirs so Claude Code can persist
+  // state/settings/transcripts, and the group dir so the agent can write its
+  // own CLAUDE.local.md, imports/, perfil/plano files. Host-created files would
+  // otherwise be root-owned and the container gets EACCES on write. Idempotent.
+  if (process.getuid?.() === 0) {
+    try {
+      const chownRecursive = (p: string): void => {
+        if (!fs.existsSync(p)) return;
+        fs.chownSync(p, 1000, 1000);
+        if (fs.statSync(p).isDirectory()) {
+          for (const entry of fs.readdirSync(p)) chownRecursive(path.join(p, entry));
+        }
+      };
+      chownRecursive(path.join(DATA_DIR, 'v2-sessions', group.id));
+      chownRecursive(groupDir);
+    } catch {
+      // Non-fatal
+    }
+  }
+
   if (initialized.length > 0) {
     log.info('Initialized group filesystem', {
       group: group.name,

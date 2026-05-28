@@ -11,6 +11,13 @@
 const CODE_PATTERN = /```[\s\S]*?```|`[^`\n]*`/g;
 const PLACEHOLDER_PREFIX = '\x00CODE';
 const PLACEHOLDER_SUFFIX = '\x00';
+// Bare URLs (e.g. Composio/OAuth authorize links) carry underscores in their
+// query params. Protect them from the delimiter-stripping passes below, which
+// would otherwise strip `_` (and corrupt the URL) when the message's total
+// underscore count is odd. Placeholder uses only \x00/letters/digits so it
+// survives the stripping unchanged.
+const URL_PATTERN = /https?:\/\/[^\s)<>]+/g;
+const URL_PLACEHOLDER_PREFIX = '\x00URL';
 
 export function sanitizeTelegramLegacyMarkdown(input: string): string {
   if (!input) return input;
@@ -19,6 +26,12 @@ export function sanitizeTelegramLegacyMarkdown(input: string): string {
   let text = input.replace(CODE_PATTERN, (m) => {
     codeSegments.push(m);
     return `${PLACEHOLDER_PREFIX}${codeSegments.length - 1}${PLACEHOLDER_SUFFIX}`;
+  });
+
+  const urlSegments: string[] = [];
+  text = text.replace(URL_PATTERN, (m) => {
+    urlSegments.push(m);
+    return `${URL_PLACEHOLDER_PREFIX}${urlSegments.length - 1}${PLACEHOLDER_SUFFIX}`;
   });
 
   // The adapter re-parses and re-stringifies markdown before sending, which
@@ -47,6 +60,11 @@ export function sanitizeTelegramLegacyMarkdown(input: string): string {
   if (openBrackets !== closeBrackets) {
     text = text.replace(/[[\]]/g, '');
   }
+
+  text = text.replace(
+    new RegExp(`${URL_PLACEHOLDER_PREFIX}(\\d+)${PLACEHOLDER_SUFFIX}`, 'g'),
+    (_, i) => urlSegments[Number(i)],
+  );
 
   return text.replace(
     new RegExp(`${PLACEHOLDER_PREFIX}(\\d+)${PLACEHOLDER_SUFFIX}`, 'g'),

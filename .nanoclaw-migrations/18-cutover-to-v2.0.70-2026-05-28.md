@@ -38,45 +38,58 @@ Base: db3aa0b · Fork HEAD: 18df8ce · Upstream: 2492259 (v2.0.70, +908 commits)
 - **`better-sqlite3` in agent-runner** — Bun uses `bun:sqlite`. Drop.
 - **poll-loop scratchpad-only warning / `IDLE_END_MS` bump** — agent-runner output handling rewritten (`<message>`/`<internal>` tags). Obsolete as written.
 
-## Deferred — genuine customizations needing careful re-implementation
+## Grafts applied 2026-05-28 (second pass — builds + tests green)
 
-These were NOT grafted because they touch security-hardened or
-architecture-shifted code and a blind graft would be subtly wrong. Each needs a
-dedicated, tested re-implementation against the new arch:
+1. **CSV/XLS routing → `<group>/imports/inbox/`** (`src/session-manager.ts`) ✅ DONE.
+   Added `isCsvOrXls` + `saveCsvToGroupImports` and a branch in
+   `extractAttachmentFiles`. Writes to `GROUPS_DIR/<folder>/imports/inbox/<file>`
+   using the SAME safety dance as the session inbox (lstat real-dir check,
+   realpath containment under the group dir, exclusive `wx` write, symlink
+   refusal on EEXIST). Sets `localPath = agent/imports/inbox/<file>` — the group
+   dir is mounted at `/workspace/agent`, so `formatAttachments` shows the agent
+   `saved to /workspace/agent/imports/inbox/<file>`. Resolves group via
+   `getAgentGroup(agentGroupId).folder`.
 
-1. **CSV/XLS routing → `<group>/imports/inbox/`** (`src/session-manager.ts`).
-   The new `extractAttachmentFiles` is symlink-hardened and writes to the
-   per-session inbox `sessionDir/inbox/<messageId>/<filename>` with a `wx`
-   exclusive flag + realpath containment. To route finance CSV/XLS to a
-   persistent group dir: add a branch that resolves the agent group's folder,
-   writes under `GROUPS_DIR/<folder>/imports/inbox/` preserving the SAME safety
-   pattern (lstat, realpath containment, `wx`), and sets `localPath` per the
-   NEW container mount layout (group dir is mounted at `/workspace/group`).
-   Verify the container-side path the finance agent reads matches.
+2. **Telegram URL preservation** (`src/channels/telegram-markdown-sanitize.ts`) ✅ DONE.
+   Added `URL_PATTERN` + `\x00URL` placeholder protect/restore around the
+   delimiter-stripping passes, so bare OAuth/Composio URLs survive the
+   odd-underscore strip. Sanitizer tests still pass (15).
 
-2. **Media pipeline wiring** (voice transcription + image vision).
-   `src/transcription.ts` and `src/image.ts` exist but are **unwired** — in the
-   new arch, inbound attachments are persisted by `session-manager.extractAttachmentFiles`,
-   not by `chat-sdk-bridge.ts`. Voice: transcribe audio and append text to the
-   message before the container reads it. Image vision (container side): the
-   agent-runner `formatter.ts` has NO image extraction; `providers/types.ts`
-   `QueryInput` has no `images` field; `providers/claude.ts` sends text only.
-   This is equivalent to the v2 `add-voice-transcription` + `add-image-vision`
-   skills — prefer applying those skills over hand-grafting, then reconcile with
-   the custom `transcription.ts`/`image.ts` if their behavior differs.
+3. **Group dir writability** (`src/group-init.ts`) ✅ DONE.
+   Re-added the root-host chown block (`getuid()===0` → `chownRecursive` of
+   `data/v2-sessions/<id>` and `groupDir` to 1000:1000). Needed because upstream
+   only passes `--user` for non-root hosts (`container-runner.ts:439-442`); on a
+   root host the container runs as `node` (uid 1000) and would get EACCES writing
+   host-(root)-created group files. **This install runs as root, so this graft is
+   load-bearing.**
 
-3. **Telegram URL preservation in sanitizer** (`src/channels/telegram-markdown-sanitize.ts`).
-   The `upstream/channels` version flattens horizontal rules but does NOT
-   protect bare URLs with underscores (OAuth/Composio authorize links). If those
-   still break, graft the `URL_PATTERN` placeholder protect/restore from
-   [16-infra-agent-runner-2026-05.md](16-infra-agent-runner-2026-05.md) §6 onto
-   the new sanitizer.
+## Image vision — OBSOLETE (no graft needed)
 
-4. **Group dir writability** (`src/group-init.ts`).
-   Our old `chownRecursive(groupDir)` graft has no equivalent hook in the
-   rewritten `initGroupFilesystem`. Verify the new permission/mount model lets
-   the container (uid 1000 / `node`) write its own `CLAUDE.local.md` and
-   `imports/` before relying on it.
+The custom base64 image-injection is unnecessary in the new arch. Inbound
+attachments are saved to disk and `formatter.ts:formatAttachments` tells the
+agent `[<type>: <name> — saved to /workspace/<localPath>]`. Claude Code reads
+the image file itself (native vision). `providers/types.ts:26` even notes the
+agent's Read produces the base64 image blocks in history. So image vision works
+via file-read for free. `src/image.ts`/`image.test.ts`/`sqlite-utc.ts` remain in
+the branch as dead reference only.
+
+## Still deferred — voice transcription (ONE item)
+
+**Voice transcription** is the only genuinely unfinished behavior. The agent
+cannot interpret an audio file (Claude Code has no audio), so voice notes must be
+transcribed host-side and injected as text. NOT grafted here because the natural
+host injection point is the **critical inbound path** and is untestable without
+live audio:
+
+- `writeSessionMessage` (`src/session-manager.ts`) is sync with ~12 callers, most
+  carrying non-user/system messages — do NOT make it async globally.
+- Correct injection: in `src/router.ts` `deliverToAgent` (already async, user
+  inbound only), before `writeSessionMessage`, detect audio attachments in the
+  message content, `await transcribeAudio(...)` (use `src/transcription.ts`,
+  which is already present and uses `OPENAI_API_KEY` via `readEnvFile`), and
+  append `\n[Voice: <transcript>]` to the content `text`.
+- Or apply the v2 `add-voice-transcription` skill and reconcile.
+- A bug here breaks ALL inbound messages, so do it with a live test, not blind.
 
 ## Remaining steps to actually GO LIVE (deliberate, not done here)
 
