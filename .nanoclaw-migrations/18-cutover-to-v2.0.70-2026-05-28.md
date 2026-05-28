@@ -94,8 +94,13 @@ live audio:
 ## Remaining steps to actually GO LIVE (deliberate, not done here)
 
 1. **Channel credentials**: `TELEGRAM_BOT_TOKEN` in `.env`; WhatsApp re-pair
-   (`store/auth/`). The swarm (multi-bot) is NOT re-set-up — confirm whether the
-   new Telegram adapter supports the per-bot swarm identities the fork used.
+   (`store/auth/`). **Multi-bot swarm: PORTED** (commit `b611c4f`) — `telegram.ts`
+   now discovers per-agent bot tokens from `agent_groups.container_config.telegramBotToken`
+   and registers a DM-only adapter per token under `channel_type='telegram-<folder>'`.
+   The 7 secondaries (Caio/Lad/Grow/Lili/Naia/Finance/Lobby) + primary (Zory) were
+   verified against the live DB. Still needs a LIVE per-bot smoke test after cutover
+   (each bot's token must remain valid). No swarm-specific re-setup needed — tokens
+   travel in the migrated DB.
 2. **Data/schema migration**: the live `data/v2.db` + sessions are early-v2
    schema. Upstream migrations (`src/db/migrations/`, 13 of them) run on host
    start, but verify they cover the entity-model + two-DB split for existing
