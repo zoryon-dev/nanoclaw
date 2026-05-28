@@ -10,13 +10,20 @@ Current merge-base with upstream/main: db3aa0b
 HEAD at last update: 06c1e79
 Upstream/main target at last update: 2492259 (v2.0.70)
 
-> **Status (2026-05-28):** Guide refreshed with 120 new commits since the
-> 2026-04-28 sync — see sections 13–17. Upstream/main has advanced ~908 commits
-> (to v2.0.70). New customizations: media pipeline (voice + image vision), the
-> finance subsystem (finance-csv CLI + add-finance skill + CSV routing), BRT
-> scheduling, channel-prefixed admin IDs, read-only agent-runner mount, and 11
-> persona/knowledge container skills. The Phase-2 upgrade has NOT been run yet —
-> this is a guide refresh only.
+> **Status (2026-05-28) — CUTOVER COMPLETE:** The live install was switched to
+> upstream/main v2.0.70 on branch `upgrade/upstream-2.0.70`. Migrations 6→15
+> applied to the live central DB (data preserved: 8 agent groups, 14 wirings,
+> sessions, crons all intact). All 8 Telegram bots (primary Zory + 7 swarm
+> secondaries) verified working after a userid-namespacing fix (commit
+> `b32de34` — swarm bots resolve to the base `telegram` identity). Crons
+> survived in session DBs (Lili 3 / Finance 13 / Lobby 2). OPEN: WhatsApp logged
+> out (401 — likely pre-existing; re-link if wanted); finance Composio 801 is a
+> pre-existing API-key issue unrelated to the upgrade. Backup:
+> `~/nanoclaw-backup-20260528-181723`. Rollback tags: `pre-update-06c1e79-*`,
+> `pre-migrate-18df8ce-*`.
+>
+> Guide history (sections 13–17): the 120-commit refresh that prepared this
+> cutover (media pipeline, finance subsystem, BRT scheduling, 11 persona skills).
 >
 > **Status (2026-04-28):** v1→v2 migration completed. Local has since added Composio Tool Router, multi-agent Telegram swarm, cold DM infra, and per-card approvals. Selective upstream sync done on 2026-04-28 — see [09-upstream-sync-2026-04-28.md](09-upstream-sync-2026-04-28.md). The full `src/modules/` refactor remains deferred.
 
