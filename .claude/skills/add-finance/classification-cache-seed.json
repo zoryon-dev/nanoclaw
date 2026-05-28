@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "patterns": [
+    { "match": "tarifa", "categoria": "Empresarial", "subcategoria": "Tarifas Bancárias", "hit_count": 0, "last_seen": "2026-05-16" },
+    { "match": "iof", "categoria": "Empresarial", "subcategoria": "Tarifas Bancárias", "hit_count": 0, "last_seen": "2026-05-16" },
+    { "match": "anuidade", "categoria": "Pessoal", "subcategoria": "Tarifas Bancárias", "hit_count": 0, "last_seen": "2026-05-16" },
+    { "match": "juros", "categoria": "Empresarial", "subcategoria": "Tarifas Bancárias", "hit_count": 0, "last_seen": "2026-05-16" }
+  ]
+}

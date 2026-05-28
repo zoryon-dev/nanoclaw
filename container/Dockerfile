@@ -110,6 +110,15 @@ RUN --mount=type=cache,target=/root/.cache/pnpm \
 RUN --mount=type=cache,target=/root/.cache/pnpm \
     pnpm install -g "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
 
+# ---- finance-csv CLI ---------------------------------------------------------
+# Local multi-file Node skill (parsers + xlsx). Isolated install into
+# /usr/local/lib so its single dep (xlsx) never touches the pnpm global store.
+COPY skills/finance-csv/lib /usr/local/lib/finance-csv
+COPY skills/finance-csv/package.json /usr/local/lib/finance-csv/package.json
+COPY skills/finance-csv/finance-csv /usr/local/bin/finance-csv
+RUN cd /usr/local/lib/finance-csv && npm install --omit=dev --no-audit --no-fund \
+    && chmod +x /usr/local/bin/finance-csv
+
 # ---- ncl CLI wrapper ----------------------------------------------------------
 # Actual script lives in the mounted source at /app/src/cli/ncl.ts.
 RUN printf '#!/bin/sh\nexec bun /app/src/cli/ncl.ts "$@"\n' > /usr/local/bin/ncl && \

@@ -20,6 +20,9 @@ groups/*
 **/.claude-shared.md
 **/.claude-fragments/
 
+# Real bank statements (PII) — never commit; finance-csv fixtures must be anonymized
+extratos/
+
 # Secrets
 *.keys.json
 .env

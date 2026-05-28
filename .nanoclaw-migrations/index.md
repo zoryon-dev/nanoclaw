@@ -1,0 +1,108 @@
+# NanoClaw Migration Guide: v1 -> v2
+
+Generated: 2026-04-15
+Base (merge-base): 934f063aff5c30e7b49ce58b53b41901d3472a3e
+HEAD at generation: 595f8ea
+Upstream target (original v1→v2): upstream/v2 (db3aa0b)
+
+Last updated: 2026-05-28
+Current merge-base with upstream/main: db3aa0b
+HEAD at last update: 06c1e79
+Upstream/main target at last update: 2492259 (v2.0.70)
+
+> **Status (2026-05-28):** Guide refreshed with 120 new commits since the
+> 2026-04-28 sync — see sections 13–17. Upstream/main has advanced ~908 commits
+> (to v2.0.70). New customizations: media pipeline (voice + image vision), the
+> finance subsystem (finance-csv CLI + add-finance skill + CSV routing), BRT
+> scheduling, channel-prefixed admin IDs, read-only agent-runner mount, and 11
+> persona/knowledge container skills. The Phase-2 upgrade has NOT been run yet —
+> this is a guide refresh only.
+>
+> **Status (2026-04-28):** v1→v2 migration completed. Local has since added Composio Tool Router, multi-agent Telegram swarm, cold DM infra, and per-card approvals. Selective upstream sync done on 2026-04-28 — see [09-upstream-sync-2026-04-28.md](09-upstream-sync-2026-04-28.md). The full `src/modules/` refactor remains deferred.
+
+## Overview
+
+This fork belongs to Jonas (Zoryon founder, Brazil). The assistant is named **Zory** — an executive secretary persona in Portuguese. The fork has 16 upstream skills applied and significant custom integrations (Composio, Parallel AI, Fireflies, Mem, Firecrawl, Todoist, QMD).
+
+Migration target is `upstream/v2`, which is an architectural rewrite. Most v1 skills are replaced by v2 native channel adapters and built-in MCP tools. The migration focuses on reapplying persona, MCP configurations, and custom container skills onto the v2 base.
+
+## Migration Plan
+
+### Order of Operations
+
+1. **Checkout clean v2** in worktree
+2. **Copy persona files** (groups/) — user content, architecture-independent
+3. **Apply v2 channel skills** — WhatsApp (`add-whatsapp-v2`), Telegram (`add-telegram-v2`) if available as v2 skills
+4. **Configure MCP servers** — via `NANOCLAW_MCP_SERVERS` env var (v2 pattern)
+5. **Port container skills** — copy custom skills (meta-ads-analyst, ivy-lee-todoist, mem)
+6. **Apply remaining v2 skills** — image-vision, voice-transcription, pdf-reader if v2 branches exist
+7. **Configure environment** — env vars, model selection
+8. **Validate** — build + test
+9. **Re-register scheduled tasks** — via agent after first boot (v2 uses `schedule_task` MCP tool)
+
+### Risk Areas
+
+- **Model selection**: v2 has no native per-task model selection (Sonnet vs Haiku). May need custom code in agent-runner provider.
+- **Status tracker**: v2 has no emoji reaction status tracking. If desired, needs reimplementation against v2's delivery system.
+- **MCP server config**: v2 uses `NANOCLAW_MCP_SERVERS` JSON env var instead of hardcoded configs in agent-runner. All MCP configs move to host-side env.
+- **Credential proxy**: v2 uses OneCLI gateway instead of the custom credential-proxy.ts. OneCLI must be configured.
+
+### What v2 Already Handles (no migration needed)
+
+- WhatsApp channel (native Baileys v6 adapter)
+- Telegram channel (Chat SDK bridge + pairing)
+- Channel formatting (built-in per-channel markdown conversion)
+- Session commands (/compact via Claude Agent SDK)
+- Scheduled tasks (via `schedule_task` MCP tool)
+- Credential management (OneCLI gateway)
+- Approval system (OneCLI + admin cards)
+
+## Section Files
+
+- [01-persona.md](01-persona.md) — Zory persona, group configs, daily routines
+- [02-mcp-integrations.md](02-mcp-integrations.md) — MCP server configurations
+- [03-container-skills.md](03-container-skills.md) — Custom container skills to port
+- [04-custom-features.md](04-custom-features.md) — Status tracker, image support, model selection
+- [05-environment.md](05-environment.md) — Environment variables and credentials
+- [06-scheduled-tasks.md](06-scheduled-tasks.md) — Scheduled task configurations
+- [07-ci-workflows.md](07-ci-workflows.md) — CI/CD customizations
+- [08-channels.md](08-channels.md) — Gmail and Emacs channel notes
+- [09-upstream-sync-2026-04-28.md](09-upstream-sync-2026-04-28.md) — Selective cherry-pick from upstream/main; what was taken, skipped, deferred
+- [10-swarm-routing-fix-2026-04-28.md](10-swarm-routing-fix-2026-04-28.md) — Creative_Lab routing fix (Zory catch-all), Lad system-prompt (no silent re-route to Grow), Caio briefing simplified (auto-Zoryon + auto-tom)
+- [11-thread-id-on-agent-to-agent-handoff-2026-04-28.md](11-thread-id-on-agent-to-agent-handoff-2026-04-28.md) — Caio's reply landing in General instead of CreativeLab's after Zory handoff; fix in `sendToDestination` to fall back to `session_routing.thread_id`
+- [12-poll-loop-stuck-after-compact-2026-04-28.md](12-poll-loop-stuck-after-compact-2026-04-28.md) — agent-runner poll-loop spam-loops "No SDK events for 20s, ending query" after `/compact`; fix adds `endRequested` flag + abort fallback
+- [13-media-pipeline-2026-05.md](13-media-pipeline-2026-05.md) — voice transcription (Whisper) + image normalization (sharp) host-side, image-vision multimodal blocks in agent-runner; deps openai+sharp
+- [14-finance-subsystem-2026-05.md](14-finance-subsystem-2026-05.md) — finance-csv container CLI skill, add-finance feature skill, CSV/XLS routing to `<group>/imports/inbox/`, Dockerfile install, PII .gitignore
+- [15-scheduling-timezone-2026-05.md](15-scheduling-timezone-2026-05.md) — host-sweep recurrence in America/Sao_Paulo, sqlite-utc helper, Lili/Lobby/Finance cron registration scripts
+- [16-infra-agent-runner-2026-05.md](16-infra-agent-runner-2026-05.md) — read-only agent-runner mount, group-init chown, IDLE_END_MS 300s, channel-prefixed admin IDs, telegram URL/HR sanitizer, better-sqlite3
+- [17-persona-knowledge-skills-2026-05.md](17-persona-knowledge-skills-2026-05.md) — 11 persona/knowledge container skills, find-skills, composio auth-link generator (copy-as-is)
+- [18-cutover-to-v2.0.70-2026-05-28.md](18-cutover-to-v2.0.70-2026-05-28.md) — **CUTOVER RECORD**: branch `upgrade/upstream-2.0.70` built on clean v2.0.70 (channels reinstalled, finance/persona copied, builds+tests green); which grafts were obsolete vs deferred; remaining steps to go live (data migration, credentials, service switch)
+
+## Applied Skills (v1)
+
+These were applied as branch merges in v1. In v2, most are replaced by native adapters or v2-specific skills:
+
+| v1 Skill | v2 Equivalent | Action |
+|----------|--------------|--------|
+| `skill/whatsapp` | Native WhatsApp adapter + `add-whatsapp-v2` skill | Use v2 native |
+| `skill/gmail` | Not in v2 natively; v2 has `add-resend-v2` for email | Check for v2 Gmail skill; may need Composio Gmail instead |
+| `skill/voice-transcription` | Check `upstream/skill/voice-transcription` | Re-merge if compatible |
+| `skill/image-vision` | Check `upstream/skill/image-vision` | Re-merge if compatible |
+| `skill/pdf-reader` | Check `upstream/skill/pdf-reader` | Re-merge if compatible |
+| `skill/reactions` | v2 WhatsApp has native reactions | Use v2 native |
+| `skill/telegram` | Native Telegram adapter + `add-telegram-v2` skill | Use v2 native |
+| `skill/compact` | Native Claude Agent SDK `/compact` | Use v2 native |
+| `skill/native-credential-proxy` | OneCLI gateway | Use v2 native (OneCLI) |
+| `skill/channel-formatting` | v2 has built-in formatting | Use v2 native |
+| `skill/emacs` | No v2 equivalent yet | Re-merge if compatible; or use v2 webhook server as bridge |
+| `skill/apple-container` | Check for v2 equivalent | Re-merge if compatible |
+| `skill/ollama-tool` | Check for v2 equivalent | Re-merge if compatible |
+| `skill/qmd` | Check for v2 equivalent | Re-merge if compatible |
+
+## Skill Interactions
+
+No inter-skill conflicts were identified. All skills were used as-is from upstream without modifications.
+
+## Modifications to Applied Skills
+
+None. User confirmed all skills were used without post-application changes.

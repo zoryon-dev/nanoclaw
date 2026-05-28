@@ -1,0 +1,18 @@
+{
+  "jobs": [
+    {
+      "id": "task-lobby-morning-briefing",
+      "kind": "task",
+      "recurrence": "0 6 * * *",
+      "promptFile": "morning-briefing.md",
+      "firstRunOffsetMs": 60000
+    },
+    {
+      "id": "task-lobby-daily-focus-check",
+      "kind": "task",
+      "recurrence": "0 11,15,19 * * *",
+      "promptFile": "daily-focus-check.md",
+      "firstRunOffsetMs": 60000
+    }
+  ]
+}

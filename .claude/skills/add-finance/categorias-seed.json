@@ -1,0 +1,19 @@
+{
+  "categorias": [
+    { "escopo": "PF", "categoria": "Alimentação", "ativo": true },
+    { "escopo": "PF", "categoria": "Transporte", "ativo": true },
+    { "escopo": "PF", "categoria": "Moradia", "ativo": true },
+    { "escopo": "PF", "categoria": "Saúde", "ativo": true },
+    { "escopo": "PF", "categoria": "Lazer", "ativo": true },
+    { "escopo": "PF", "categoria": "Educação", "ativo": true },
+    { "escopo": "PF", "categoria": "Assinaturas", "ativo": true },
+    { "escopo": "PF", "categoria": "Impostos", "ativo": true },
+    { "escopo": "PF", "categoria": "Outros", "ativo": true },
+    { "escopo": "PJ", "categoria": "Pró-labore", "ativo": true },
+    { "escopo": "PJ", "categoria": "Fornecedores", "ativo": true },
+    { "escopo": "PJ", "categoria": "Infraestrutura", "ativo": true },
+    { "escopo": "PJ", "categoria": "Marketing", "ativo": true },
+    { "escopo": "PJ", "categoria": "Impostos", "ativo": true },
+    { "escopo": "PJ", "categoria": "Outros", "ativo": true }
+  ]
+}
