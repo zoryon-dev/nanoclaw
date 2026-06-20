@@ -36,6 +36,8 @@ You can skip Step 0 on follow-up `/watch` calls in the same session.
 - The user pastes a video URL (YouTube, Vimeo, X, TikTok, most yt-dlp sites) and asks about it.
 - The user points at a local video file (`.mp4`, `.mov`, `.mkv`, `.webm`, …) in the workspace.
 - The user types `/watch <url-or-path> [question]`.
+- **Not for static image posts / carousels** (Instagram `/p/` photo posts, TikTok photo
+  slideshows, X image posts) — those have no video track; use **/read-post** instead.
 
 ## Recommended limits
 
