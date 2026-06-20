@@ -46,8 +46,13 @@ def _pick_subtitle(out_dir: Path) -> Path | None:
     candidates = sorted(out_dir.glob("video*.vtt"))
     if not candidates:
         return None
-    preferred = [c for c in candidates if ".en" in c.name]
-    return preferred[0] if preferred else candidates[0]
+    # Prefer Portuguese, then English, then whatever exists. (User content is
+    # mostly pt-BR; native captions beat a Whisper round-trip — free and exact.)
+    for tag in (".pt-BR", ".pt", ".pt-orig", ".en"):
+        for c in candidates:
+            if tag in c.name:
+                return c
+    return candidates[0]
 
 
 def _pick_video(out_dir: Path) -> Path | None:
@@ -95,7 +100,7 @@ def download_url(url: str, out_dir: Path) -> dict:
         "--write-info-json",
         "--write-subs",
         "--write-auto-subs",
-        "--sub-langs", "en,en-US,en-GB,en-orig",
+        "--sub-langs", "pt-BR,pt,pt-orig,en,en-US,en-GB,en-orig",
         "--sub-format", "vtt",
         "--convert-subs", "vtt",
         "--no-playlist",
@@ -132,6 +137,7 @@ def download_url(url: str, out_dir: Path) -> dict:
                 "title": raw.get("title"),
                 "uploader": raw.get("uploader") or raw.get("channel"),
                 "duration": raw.get("duration"),
+                "description": raw.get("description"),
                 "url": raw.get("webpage_url") or url,
             }
         except Exception as exc:

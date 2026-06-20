@@ -153,6 +153,9 @@ def main() -> int:
         print(f"- **Title:** {info['title']}")
     if info.get("uploader"):
         print(f"- **Uploader:** {info['uploader']}")
+    caption = " ".join((info.get("description") or "").split())
+    if caption:
+        print(f"- **Caption:** {caption[:800]}{'…' if len(caption) > 800 else ''}")
     print(f"- **Duration:** {format_time(full_duration)} ({full_duration:.1f}s)")
     if focused:
         print(
