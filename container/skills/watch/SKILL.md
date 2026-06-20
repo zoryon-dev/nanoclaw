@@ -100,6 +100,11 @@ likely, delete it: `rm -rf <dir>`. Otherwise leave it for follow-up questions.
   secret-mode excludes it. Tell the user the OpenAI credential needs to be connected/enabled
   in OneCLI; do not ask them for a raw key.
 - **Download fails (login/region-locked)** → report plainly; do not retry-loop.
+- **YouTube "Sign in to confirm you're not a bot"** → YouTube blocks downloads from
+  datacenter/server IPs. This container runs on a server, so **YouTube URLs often fail**
+  here. Tell the user plainly: YouTube needs cookies to work from this host. Local files
+  and direct video URLs (or other platforms — Vimeo, TikTok, X) are unaffected. Suggest the
+  user send a local file or a non-YouTube URL; do not retry the same YouTube URL.
 
 ## Token efficiency
 
