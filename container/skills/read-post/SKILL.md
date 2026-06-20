@@ -1,59 +1,54 @@
 ---
 name: read-post
-description: Read an image post or carousel (Instagram /p/, TikTok photo slideshow, X images) — downloads every card, extracts each card's text by vision, uploads the images to Google Drive, and records ONE row in a Google Sheet. Use for static posts/carousels; for Reels/videos use /watch.
+description: Read an image post or carousel (Instagram /p/, TikTok photo slideshow, X images) — downloads every card, uploads them to Google Drive, extracts each card's text by vision, and records ONE row in a Google Sheet. Use for static posts/carousels; for Reels/videos use /watch.
 user-invocable: true
 ---
 
-# /read-post — read an image post / carousel into Drive + a Google Sheet
+# /read-post — image post / carousel → Drive + a Google Sheet
 
-Turns a static post or carousel link into: the card images archived in Google Drive,
-and one structured sheet row (caption + per-card text + metadata + Drive link). Nothing
-is kept on the server — the working files are deleted after recording.
+One command downloads the cards AND archives them to Drive. You then read the cards
+for their text and write one sheet row. Nothing is kept on the server — the working
+files are deleted after.
 
 Covers **Instagram** (`/p/` posts, carousels, single photos), **TikTok** photo
 slideshows, **X/Twitter** image posts. For **Reels / videos**, use **/watch**.
 
-## ⚠️ Keep this turn LEAN
+## ⚠️ Use the script. Do NOT improvise.
 
-You carry many MCP tools, so this can blow your context if you wander. Do the
-**minimum**: run script → read cards once (one batched Read) → run upload script →
-append **one** sheet row → reply. The Drive upload is a SCRIPT (not Composio tool
-calls) precisely so it stays off your context. **You MUST end the turn with a
-`<message …>` reply** — a turn with no message block sends nothing.
+There is exactly one right way to do this — the script below. **Do not** use Composio
+Instagram/Drive tools, do not invent your own folder structure, do not save `.md` files.
+The script handles download + Drive upload deterministically; you only read the cards and
+write the sheet. Keep the turn lean and **always end with a `<message …>` reply** (a turn
+with no message block sends nothing).
 
-## Step 1 — download the cards
+## Step 1 — download + upload (one command)
 
 ```bash
-python3 /app/skills/read-post/scripts/gallery.py "<post-url>"
+python3 /app/skills/read-post/scripts/gallery.py "<post-url>" --drive
 ```
 
-Prints metadata (platform, profile, caption, date, count) + each card's path, in order.
-Note the **working dir** it prints (cards are in `<work>/cards`). Cookies are automatic.
-If it errors **"use /watch instead"**, the link is a video — switch to `/watch`.
+This downloads every card AND uploads them to a `Referências — Carrosséis` Drive folder.
+The report it prints includes:
+- metadata (platform, profile, shortcode, date, count, caption),
+- **`Drive folder:`** — the shareable link to this post's images (use it in the sheet),
+- the local path of each card.
+
+Notes:
+- If it errors **"use /watch instead"**, the link is a video → use `/watch`.
+- If the report shows **`Drive folder: UPLOAD FAILED …`**, put the **post URL** in the
+  sheet's *Link imagens* column instead, and mention it to the user.
 
 ## Step 2 — read the cards (one batch)
 
-`Read` every card path **in a single message** (parallel Reads). For each card, pull its
-text **verbatim** (hooks, numbered lists, CTAs). Keep it tight — capture the text, don't
+`Read` every card path the report lists, **in a single message** (parallel Reads). For each
+card, pull its text **verbatim** (hooks, numbered lists, CTAs). Capture the text; don't
 describe the design.
 
-## Step 3 — upload the images to Drive (script)
+## Step 3 — append one row to the sheet (Composio Sheets)
 
-```bash
-python3 /app/skills/read-post/scripts/upload_drive.py "<work>/cards" --name "<date> — @<handle> — <shortcode>"
-```
-
-It creates a subfolder under a "Referências — Carrosséis" Drive folder, uploads every
-card, makes it link-readable, and prints **one line: the Drive folder link**. Capture it.
-
-- If it errors **"not granted to this agent"**, the OneCLI Google Drive grant is missing —
-  tell the user to grant Drive to this agent, and put the **post URL** in *Link imagens*
-  for now so the row still gets written.
-
-## Step 4 — append one row to the sheet (Composio)
-
-Ensure a spreadsheet **"Referências — Carrosséis"** exists (search once; create if missing).
-On creation write this header row:
+Ensure the spreadsheet **"Referências — Carrosséis"** exists (its id may be cached in
+`/workspace/agent/read-post-targets.json` — reuse it; otherwise search once, create if
+missing). On creation write this header row:
 
 ```
 Data | Plataforma | Perfil | Link original | Tipo | Nº cards | Legenda | Texto consolidado | Card 1 | Card 2 | Card 3 | Card 4 | Card 5 | Card 6 | Card 7 | Card 8 | Card 9 | Card 10 | Link imagens
@@ -65,14 +60,14 @@ Append **one** row:
 - **Legenda** full caption
 - **Texto consolidado** every card's text in one cell, numbered: `Card 1: … | Card 2: … | …`
 - **Card 1 … Card 10** each card's text in its own column (extras blank; >10 → only consolidated)
-- **Link imagens** the **Drive folder link** from Step 3 (or the post URL if the upload wasn't granted)
+- **Link imagens** the **`Drive folder:`** link from Step 1's report
 
 Reuse the same spreadsheet every time — never create a second one.
 
-## Step 5 — clean up + reply
+## Step 4 — clean up + reply
 
-`rm -rf` the working directory. Then **send a `<message>`** — keep it **Telegram-safe**:
-plain prose, **no tables / no `**bold**` blocks**, and **put any URL inside backticks**
-(`` `https://…` ``) — sheet/Drive URLs contain `_` which breaks Telegram's Markdown
-otherwise. Content: profile, nº of cards, one line on the angle, the backticked sheet
-link, and the backticked Drive link. Don't paste the extracted text back.
+`rm -rf` the working directory the report named. Then **send a `<message>`** — keep it
+**Telegram-safe**: plain prose, **no tables / no `**bold**` blocks**, and **put every URL
+inside backticks** (`` `https://…` ``) — sheet/Drive URLs contain `_` which breaks
+Telegram's Markdown otherwise. Content: profile, nº of cards, one line on the angle, the
+backticked sheet link, and the backticked Drive link. Don't paste the extracted text back.
