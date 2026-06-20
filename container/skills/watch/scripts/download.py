@@ -107,6 +107,15 @@ def download_url(url: str, out_dir: Path) -> dict:
         "--ignore-errors",
     ]
 
+    # yt-dlp uses certifi and ignores SSL_CERT_FILE, and has no --ca-certs option,
+    # so behind the OneCLI gateway (which TLS-intercepts with its own CA) downloads
+    # fail CERTIFICATE_VERIFY_FAILED. Only when we're behind the gateway (a CA env is
+    # present) skip cert validation of the *local* proxy — safe here because the
+    # gateway itself validates the real upstream cert; this never loosens direct
+    # (no-gateway) connections, which keep normal validation.
+    if os.environ.get("SSL_CERT_FILE") or os.environ.get("NODE_EXTRA_CA_CERTS"):
+        cmd += ["--no-check-certificates"]
+
     cookies = find_cookies()
     if cookies is not None:
         cmd += ["--cookies", str(cookies)]
