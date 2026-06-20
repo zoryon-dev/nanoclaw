@@ -46,3 +46,7 @@ agents-sdk-docs
 # Python bytecode (watch skill scripts)
 __pycache__/
 *.pyc
+
+# watch skill: session cookies (secret — never commit)
+.watch-cookies.txt
+**/.watch-cookies.txt

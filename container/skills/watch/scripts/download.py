@@ -7,6 +7,7 @@ transcribe.py can parse them without needing Whisper.
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -59,6 +60,26 @@ def _pick_video(out_dir: Path) -> Path | None:
     return None
 
 
+# Where to look for a Netscape-format cookies.txt. Cookies let yt-dlp download
+# from sites that block server IPs (YouTube "confirm you're not a bot") or
+# require login (Instagram/Reels, often TikTok). One combined file covers all
+# platforms — yt-dlp selects cookies by domain. NanoClaw mounts each group's
+# agent dir at /workspace/agent, so the default lives there. Override with the
+# WATCH_COOKIES env var.
+DEFAULT_COOKIES_PATH = Path("/workspace/agent/.watch-cookies.txt")
+
+
+def find_cookies() -> Path | None:
+    """Return a cookies file path if one is configured and exists, else None."""
+    env = os.environ.get("WATCH_COOKIES")
+    candidates = [Path(env).expanduser()] if env else []
+    candidates.append(DEFAULT_COOKIES_PATH)
+    for c in candidates:
+        if c.is_file() and c.stat().st_size > 0:
+            return c
+    return None
+
+
 def download_url(url: str, out_dir: Path) -> dict:
     if shutil.which("yt-dlp") is None:
         raise SystemExit("yt-dlp is not installed. Install with: brew install yt-dlp")
@@ -79,6 +100,14 @@ def download_url(url: str, out_dir: Path) -> dict:
         "--convert-subs", "vtt",
         "--no-playlist",
         "--ignore-errors",
+    ]
+
+    cookies = find_cookies()
+    if cookies is not None:
+        cmd += ["--cookies", str(cookies)]
+        print(f"[watch] using cookies: {cookies}", file=sys.stderr)
+
+    cmd += [
         "-o", output_template,
         "--",
         url,

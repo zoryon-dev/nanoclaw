@@ -100,11 +100,20 @@ likely, delete it: `rm -rf <dir>`. Otherwise leave it for follow-up questions.
   secret-mode excludes it. Tell the user the OpenAI credential needs to be connected/enabled
   in OneCLI; do not ask them for a raw key.
 - **Download fails (login/region-locked)** → report plainly; do not retry-loop.
-- **YouTube "Sign in to confirm you're not a bot"** → YouTube blocks downloads from
-  datacenter/server IPs. This container runs on a server, so **YouTube URLs often fail**
-  here. Tell the user plainly: YouTube needs cookies to work from this host. Local files
-  and direct video URLs (or other platforms — Vimeo, TikTok, X) are unaffected. Suggest the
-  user send a local file or a non-YouTube URL; do not retry the same YouTube URL.
+- **YouTube "Sign in to confirm you're not a bot" / Instagram login required** → these
+  sites block server IPs or require login. The fix is cookies (see below). If a download
+  fails this way and cookies are NOT configured, tell the user plainly that the platform
+  needs cookies; do not retry the same URL.
+
+## Authenticated sources (cookies)
+
+`download.py` automatically passes `--cookies` to yt-dlp when a Netscape-format cookie
+file exists at `/workspace/agent/.watch-cookies.txt` (override with the `WATCH_COOKIES`
+env var). One combined file covers all platforms — yt-dlp picks cookies by domain. This
+is what makes YouTube (blocked from server IPs), Instagram/Reels and TikTok (login-gated)
+downloadable from this container. When cookies are present the script prints
+`[watch] using cookies: …` to stderr. If a cookied download still fails with an auth/bot
+error, the cookies are likely expired — tell the user to re-export and replace the file.
 
 ## Token efficiency
 
