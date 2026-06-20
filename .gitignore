@@ -50,3 +50,11 @@ __pycache__/
 # watch skill: session cookies (secret — never commit)
 .watch-cookies.txt
 **/.watch-cookies.txt
+
+.agents
+AGENTS.md
+
+# Internal working docs, never committed
+docs/maintainer-guide.md
+docs/drafts/
+forks.md
