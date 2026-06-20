@@ -63,6 +63,12 @@ id in `/workspace/agent/read-post-targets.json` so later runs skip the search.)
 
 ## Step 4 — clean up + reply
 
-`rm -rf` the working directory. Then **send the user a `<message>`**: profile, nº of
-cards, one line on the carousel's angle, and the sheet link. Don't paste all the text
-back — it's in the sheet.
+`rm -rf` the working directory. Then **send the user a `<message>`** — and keep it
+**Telegram-safe**, or it won't deliver:
+- Plain prose. **No markdown tables, no `**bold**`-heavy formatting** (the Telegram
+  adapter rejects them).
+- **Always put the sheet URL inside backticks** — `` `https://docs.google.com/…/edit` `` —
+  because sheet/Composio URLs contain `_`, which breaks Telegram's Markdown parser when
+  sent as a bare or linked URL. Backticked = monospace = delivers intact.
+- Content: profile, nº of cards, one line on the carousel's angle, then the backticked
+  sheet link. Don't paste the extracted text back — it's in the sheet.
