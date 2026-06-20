@@ -27,7 +27,7 @@ from urllib.request import Request, urlopen
 
 DRIVE_FILES = "https://www.googleapis.com/drive/v3/files"
 DRIVE_UPLOAD = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name"
-PARENT_FOLDER_NAME = "Referências — Carrosséis"
+PARENT_FOLDER_NAME = "Referências — Conteúdo"
 FOLDER_MIME = "application/vnd.google-apps.folder"
 IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
 
@@ -123,8 +123,20 @@ def main() -> int:
 
     print(f"[read-post] ensuring Drive parent folder…", file=sys.stderr)
     parent_id = find_or_create_folder(PARENT_FOLDER_NAME)
+
+    # Organize by month: parent -> "YYYY-MM" -> post subfolder. Month is taken from
+    # the YYYY-MM-DD prefix of --name; if absent, the post folder sits directly
+    # under the parent.
+    import re
+    m = re.match(r"(\d{4})-(\d{2})", args.name.strip())
+    container_id = parent_id
+    if m:
+        month = f"{m.group(1)}-{m.group(2)}"
+        print(f"[read-post] ensuring month folder '{month}'…", file=sys.stderr)
+        container_id = find_or_create_folder(month, parent_id=parent_id)
+
     print(f"[read-post] creating subfolder '{args.name}'…", file=sys.stderr)
-    sub_id = find_or_create_folder(args.name, parent_id=parent_id)
+    sub_id = find_or_create_folder(args.name, parent_id=container_id)
 
     for i, img in enumerate(images, 1):
         print(f"[read-post] uploading card {i}/{len(images)}: {img.name}", file=sys.stderr)

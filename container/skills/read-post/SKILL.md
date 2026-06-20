@@ -43,7 +43,15 @@ pull each card's text verbatim. For a **reel**, skip this — the transcript is 
 
 Ensure the spreadsheet **"Referências — Conteúdo"** exists (its id is cached in
 `/workspace/agent/read-post-targets.json` — reuse it; if it still has the old title
-"Referências — Carrosséis", rename it). Header row (create/repair to match):
+"Referências — Carrosséis", rename it).
+
+**Keep the sheet inside the Drive mother folder.** The script puts media under the
+`Referências — Conteúdo` Drive folder; the sheet should live there too. Once (if not
+already), move the spreadsheet into that folder via Composio (googledrive — search the
+folder by name to get its id, then update the file's parents). Record `sheet_in_folder: true`
+in `read-post-targets.json` so you don't redo it every run.
+
+Header row (create/repair to match):
 
 ```
 Data | Plataforma | Perfil | Link original | Tipo | Métrica | Legenda | Conteúdo | Card 1 | Card 2 | Card 3 | Card 4 | Card 5 | Card 6 | Card 7 | Card 8 | Card 9 | Card 10 | Link mídia
