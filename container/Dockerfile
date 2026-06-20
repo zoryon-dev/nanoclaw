@@ -26,7 +26,7 @@ ARG BUN_VERSION=1.3.12
 # yt-dlp for the /watch skill. Standalone zipapp (needs the python3 we install
 # below). Pin deliberately — yt-dlp ships frequent releases. Verify the tag
 # resolves before bumping (the build 404s loudly if it doesn't).
-ARG YT_DLP_VERSION=2025.09.26
+ARG YT_DLP_VERSION=2026.06.09
 
 # ---- System dependencies -----------------------------------------------------
 # tini: correct PID 1 / signal forwarding so outbound.db writes finalize on
