@@ -42,3 +42,7 @@ extratos/
 .nanoclaw/
 
 agents-sdk-docs
+
+# Python bytecode (watch skill scripts)
+__pycache__/
+*.pyc
