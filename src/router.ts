@@ -30,6 +30,7 @@ import { findSessionForAgent } from './db/sessions.js';
 import { startTypingRefresh, stopTypingRefresh } from './modules/typing/index.js';
 import { log } from './log.js';
 import { resolveSession, writeSessionMessage, writeOutboundDirect } from './session-manager.js';
+import { transcribeVoiceAttachments } from './transcription.js';
 import { wakeContainer } from './container-runner.js';
 import { getSession } from './db/sessions.js';
 import type { AgentGroup, MessagingGroup, MessagingGroupAgent } from './types.js';
@@ -458,6 +459,15 @@ async function deliverToAgent(
     }
   }
 
+  // Voice notes: transcribe any audio attachments host-side and fold the
+  // transcript into the message text before it reaches the container, so the
+  // agent reads `[Voice: <transcript>]` instead of an opaque .ogg file path.
+  // No-op for messages without audio attachments.
+  const deliveredContent =
+    event.message.kind === 'chat' || event.message.kind === 'chat-sdk'
+      ? await transcribeVoiceAttachments(event.message.content)
+      : event.message.content;
+
   writeSessionMessage(session.agent_group_id, session.id, {
     id: messageIdForAgent(event.message.id, agent.agent_group_id),
     kind: event.message.kind,
@@ -465,7 +475,7 @@ async function deliverToAgent(
     platformId: deliveryAddr.platformId,
     channelType: deliveryAddr.channelType,
     threadId: deliveryAddr.threadId,
-    content: event.message.content,
+    content: deliveredContent,
     trigger: wake ? 1 : 0,
   });
 

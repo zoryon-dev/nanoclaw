@@ -34,3 +34,57 @@ export async function transcribeAudio(
 }
 
 export const TRANSCRIPTION_FALLBACK = FALLBACK;
+
+type Transcriber = (
+  buffer: Buffer,
+  mimeType: string | undefined,
+  name: string | undefined,
+) => Promise<string | null>;
+
+function isAudioAttachment(a: Record<string, unknown>): boolean {
+  const mt = typeof a.mimeType === 'string' ? a.mimeType : '';
+  const ty = typeof a.type === 'string' ? a.type : '';
+  return mt.startsWith('audio/') || ty === 'audio' || ty === 'voice';
+}
+
+/**
+ * Channel-agnostic voice-note handling for the inbound path.
+ *
+ * Given a message content JSON string, transcribe any audio attachments (base64
+ * `data`) via OpenAI Whisper, inject the result into the message `text` as
+ * `[Voice: <transcript>]`, and drop the audio attachment so the agent reads the
+ * transcript instead of a useless `.ogg` file path. On transcription failure the
+ * fallback marker is injected so the agent still knows a voice note arrived.
+ *
+ * Returns the original string unchanged when there's nothing to do (non-JSON,
+ * no attachments, no audio). `transcriber` is injectable for tests.
+ */
+export async function transcribeVoiceAttachments(
+  contentStr: string,
+  transcriber: Transcriber = transcribeAudio,
+): Promise<string> {
+  let parsed: Record<string, unknown>;
+  try {
+    parsed = JSON.parse(contentStr);
+  } catch {
+    return contentStr;
+  }
+
+  const attachments = parsed.attachments as Array<Record<string, unknown>> | undefined;
+  if (!Array.isArray(attachments) || attachments.length === 0) return contentStr;
+
+  const audio = attachments.filter((a) => isAudioAttachment(a) && typeof a.data === 'string');
+  if (audio.length === 0) return contentStr;
+
+  const transcripts: string[] = [];
+  for (const a of audio) {
+    const buffer = Buffer.from(a.data as string, 'base64');
+    const t = await transcriber(buffer, a.mimeType as string | undefined, a.name as string | undefined);
+    transcripts.push(t ? `[Voice: ${t}]` : FALLBACK);
+  }
+
+  parsed.attachments = attachments.filter((a) => !(isAudioAttachment(a) && typeof a.data === 'string'));
+  const existing = typeof parsed.text === 'string' ? parsed.text : '';
+  parsed.text = [existing, ...transcripts].filter((s) => s.length > 0).join('\n');
+  return JSON.stringify(parsed);
+}
