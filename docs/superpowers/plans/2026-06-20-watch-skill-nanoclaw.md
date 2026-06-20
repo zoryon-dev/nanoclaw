@@ -441,20 +441,19 @@ import whisper, pathlib, tempfile
 # load_api_key always picks openai with the sentinel, even when asked for groq
 assert whisper.load_api_key() == ('openai', 'onecli-managed'), whisper.load_api_key()
 assert whisper.load_api_key('groq') == ('openai', 'onecli-managed')
-# _post_whisper builds a Request with NO Authorization header
+# _post_whisper builds a Request with NO Authorization header.
+# NOTE: whisper.py does 'from urllib.request import urlopen', so patch the name
+# bound INSIDE the module (whisper.urlopen), not urllib.request.urlopen.
 f = pathlib.Path(tempfile.mktemp(suffix='.mp3')); f.write_bytes(b'x')
-import urllib.request as u
-orig = u.urlopen
 captured = {}
 def fake(req, *a, **k):
     captured['headers'] = {h.lower() for h in req.headers}
     raise SystemExit('stop-after-capture')
-u.urlopen = fake
+whisper.urlopen = fake
 try:
     whisper._post_whisper(whisper.OPENAI_ENDPOINT, 'onecli-managed', 'whisper-1', f)
 except SystemExit:
     pass
-u.urlopen = orig
 assert 'authorization' not in captured['headers'], captured['headers']
 print('OK: openai+sentinel, no Authorization header sent')
 "
