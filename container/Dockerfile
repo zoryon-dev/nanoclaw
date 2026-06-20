@@ -27,6 +27,8 @@ ARG BUN_VERSION=1.3.12
 # below). Pin deliberately — yt-dlp ships frequent releases. Verify the tag
 # resolves before bumping (the build 404s loudly if it doesn't).
 ARG YT_DLP_VERSION=2026.06.09
+# gallery-dl for the /read-post skill (image carousels). Pin deliberately.
+ARG GALLERY_DL_VERSION=1.32.3
 
 # ---- System dependencies -----------------------------------------------------
 # tini: correct PID 1 / signal forwarding so outbound.db writes finalize on
@@ -37,6 +39,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         chromium \
         ffmpeg \
         python3 \
+        python3-pip \
         fonts-liberation \
         fonts-noto-color-emoji \
         libgbm1 \
@@ -68,6 +71,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 RUN curl -fsSL "https://github.com/yt-dlp/yt-dlp/releases/download/${YT_DLP_VERSION}/yt-dlp" \
         -o /usr/local/bin/yt-dlp \
     && chmod +x /usr/local/bin/yt-dlp
+
+# ---- /read-post skill runtime: gallery-dl -----------------------------------
+# Image-post / carousel downloader (Instagram, TikTok slideshows, X). yt-dlp is
+# video-only; gallery-dl pulls all carousel cards + post metadata. Pinned.
+RUN pip3 install --no-cache-dir --break-system-packages "gallery-dl==${GALLERY_DL_VERSION}"
 
 # Chromium path for agent-browser / Playwright consumers
 ENV AGENT_BROWSER_EXECUTABLE_PATH=/usr/bin/chromium
