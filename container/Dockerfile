@@ -23,6 +23,10 @@ ARG CLAUDE_CODE_VERSION=2.1.128
 ARG AGENT_BROWSER_VERSION=latest
 ARG VERCEL_VERSION=52.2.1
 ARG BUN_VERSION=1.3.12
+# yt-dlp for the /watch skill. Standalone zipapp (needs the python3 we install
+# below). Pin deliberately — yt-dlp ships frequent releases. Verify the tag
+# resolves before bumping (the build 404s loudly if it doesn't).
+ARG YT_DLP_VERSION=2025.09.26
 
 # ---- System dependencies -----------------------------------------------------
 # tini: correct PID 1 / signal forwarding so outbound.db writes finalize on
@@ -31,6 +35,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && apt-get install -y --no-install-recommends \
         chromium \
+        ffmpeg \
+        python3 \
         fonts-liberation \
         fonts-noto-color-emoji \
         libgbm1 \
@@ -55,6 +61,13 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         apt-get install -y --no-install-recommends fonts-noto-cjk; \
        fi \
     && rm -rf /var/lib/apt/lists/*
+
+# ---- /watch skill runtime: yt-dlp -------------------------------------------
+# ffmpeg/ffprobe (apt, above) + python3 (apt, above) + the yt-dlp zipapp.
+# download.py/frames.py shell out to these binaries; no pip packages needed.
+RUN curl -fsSL "https://github.com/yt-dlp/yt-dlp/releases/download/${YT_DLP_VERSION}/yt-dlp" \
+        -o /usr/local/bin/yt-dlp \
+    && chmod +x /usr/local/bin/yt-dlp
 
 # Chromium path for agent-browser / Playwright consumers
 ENV AGENT_BROWSER_EXECUTABLE_PATH=/usr/bin/chromium
