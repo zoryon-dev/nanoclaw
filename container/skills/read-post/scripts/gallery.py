@@ -115,6 +115,8 @@ def main() -> int:
     print(f"- **Platform:** {meta.get('category') or 'unknown'}")
     print(f"- **Profile:** {profile}")
     print(f"- **Post:** {meta.get('post_url') or args.source}")
+    if meta.get("post_shortcode"):
+        print(f"- **Shortcode:** {meta['post_shortcode']}")
     if date:
         print(f"- **Date:** {date}")
     if meta.get("likes") is not None:
