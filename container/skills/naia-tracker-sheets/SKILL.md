@@ -13,7 +13,7 @@ Documento de referência pra ler e escrever no tracker pessoal do Jonas. **Sempr
 - **Nome do arquivo:** `naia-tracker-jonas`
 - **Time zone:** America/Recife (UTC-3)
 - **Padrão de data:** `YYYY-MM-DD` (ISO). De hora: `HH:MM` 24h.
-- **Acesso:** via Composio toolkit `googlesheets` (descobrir slugs via `COMPOSIO_SEARCH_TOOLS`)
+- **Acesso:** NATIVO via helper `gsheets` (OAuth do Google pelo gateway OneCLI). **NÃO use Composio.** Carregue a skill `gsheets` e use `python3 /app/skills/gsheets/scripts/sheets_api.py {get|append|update|clear} 1SaFXt8hpuzlJ-S-DuWdiXOpzvF6xq1RjlAfIFKNs2tw "Aba!Range" ['<json 2-D>']`. Ver "Padrão de chamada" abaixo.
 
 ## Mapa rápido das 7 abas
 
@@ -314,22 +314,29 @@ Faça **no máximo 1 alerta por gravação** — se tiver vários disparando, es
 5. **Texto livre vazio** = string vazia, não `null` nem `N/A`.
 6. **Append, nunca update** — exceto no caso de Jonas pedir explicitamente correção de uma linha já gravada (aí busca por `data` e atualiza).
 
-## Padrão de chamada Composio
+## Padrão de chamada (helper nativo `gsheets`)
 
-Usar tools `googlesheets` via Composio Tool Router. Sequência típica:
+Leitura/escrita via `python3 /app/skills/gsheets/scripts/sheets_api.py` — Google REST API direto pelo gateway OneCLI (injeta o token). **Nunca Composio.** Defina uma vez:
 
-```
-1. COMPOSIO_SEARCH_TOOLS query="append row to google sheet"
-2. → router devolve slug exato (ex: GOOGLESHEETS_BATCH_UPDATE_VALUES ou ..._APPEND_VALUES)
-3. COMPOSIO_MULTI_EXECUTE_TOOL com:
-   - spreadsheet_id: "1SaFXt8hpuzlJ-S-DuWdiXOpzvF6xq1RjlAfIFKNs2tw"
-   - range: "<aba>!A:<última coluna>"
-   - values: [[col_A, col_B, ..., col_N]]
-   - value_input_option: "USER_ENTERED" (pra fórmulas resolverem) ou "RAW" (texto puro)
-4. Verificar resposta — se erro, reportar pro Jonas
+```bash
+PY=/app/skills/gsheets/scripts/sheets_api.py
+SHEET=1SaFXt8hpuzlJ-S-DuWdiXOpzvF6xq1RjlAfIFKNs2tw
 ```
 
-Não memorize slugs — cada chamada começa por `SEARCH_TOOLS`.
+Sequência típica:
+
+```bash
+# Ler (ex.: descobrir a próxima linha ou consultar histórico)
+python3 $PY get "$SHEET" "Pesagens!A1:H1000"     # imprime {"values":[[...]]}
+
+# Acrescentar uma linha (USER_ENTERED — fórmulas/datas resolvem)
+python3 $PY append "$SHEET" "Pesagens!A:H" '[["2026-06-20","08:30","98.4", "...", "..."]]'
+
+# Sobrescrever um range exato (update por linha)
+python3 $PY update "$SHEET" "Timeline!A42:F42" '[["..."]]'
+```
+
+`append`/`update` já usam `valueInputOption=USER_ENTERED`. Lookup/filtragem é feita em memória após o `get` (os dados vêm como JSON). Se der HTTP 403/`access_restricted`, o app `google-sheets` não está concedido à Naia no OneCLI — avise o Jonas, não tente Composio.
 
 ## Quando esta skill NÃO se aplica
 

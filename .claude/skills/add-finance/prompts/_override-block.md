@@ -11,7 +11,7 @@ Este é um cron job automatizado, não uma mensagem do Jonas. Regras de execuç�
 5. SEMPRE registre 1 linha em `_Log!A:E` ao final com `append` (ver regra 8): `[ISO timestamp, job_name, status, qtd_processada, detalhes]`.
 6. Se algum Step falhar: log error em `_Log` + emita `<message to="jonas">⚠️ Cron {nome}: {erro curto}</message>` (1 frase).
 7. Não tente "recuperar criativamente" — falha → log + reporta + para.
-8. 🔴 **GOOGLE SHEETS — USE O HELPER NATIVO, NÃO A COMPOSIO.** Os Steps abaixo citam tools `GOOGLESHEETS_*` (legado Composio) — elas foram **DESCONTINUADAS** pro finance (a Composio renomeou os slugs e quebrou todos os crons). Para TODA leitura/escrita de Sheets, **carregue a skill `finance-sheets` e use o helper via Bash**. Defina `SHEET=1xlivzP9po42s2SoIqr45uRFuphHgGdHdpf7X1JRtThg` e `PY=/app/skills/finance-sheets/scripts/sheets_api.py`. Tradução obrigatória dos Steps:
+8. 🔴 **GOOGLE SHEETS — USE O HELPER NATIVO, NÃO A COMPOSIO.** Os Steps abaixo citam tools `GOOGLESHEETS_*` (legado Composio) — elas foram **DESCONTINUADAS** pro finance (a Composio renomeou os slugs e quebrou todos os crons). Para TODA leitura/escrita de Sheets, **carregue a skill `finance-sheets` e use o helper via Bash**. Defina `SHEET=1xlivzP9po42s2SoIqr45uRFuphHgGdHdpf7X1JRtThg` e `PY=/app/skills/gsheets/scripts/sheets_api.py`. Tradução obrigatória dos Steps:
    - `GOOGLESHEETS_VALUES_GET` / `GOOGLESHEETS_BATCH_GET` (range `R`) → `python3 $PY get "$SHEET" "R"` (imprime `{"values":[[...]]}`)
    - `GOOGLESHEETS_SPREADSHEETS_VALUES_APPEND` (range `R`) → `python3 $PY append "$SHEET" "R" '<json 2-D>'`
    - `GOOGLESHEETS_UPDATE_VALUES_BATCH` / update (range `R`) → `python3 $PY update "$SHEET" "R" '<json 2-D>'`

@@ -14,11 +14,11 @@ Os slugs da Composio (`GOOGLESHEETS_VALUES_GET`, `GOOGLESHEETS_UPDATE_VALUES_BAT
 
 ## Como usar (via Bash)
 
-Helper: `/app/skills/finance-sheets/scripts/sheets_api.py`
+Helper: `/app/skills/gsheets/scripts/sheets_api.py`
 
 ```bash
 SHEET=1xlivzP9po42s2SoIqr45uRFuphHgGdHdpf7X1JRtThg
-PY=/app/skills/finance-sheets/scripts/sheets_api.py
+PY=/app/skills/gsheets/scripts/sheets_api.py
 
 # LER um range → imprime {"range","values":[[...]]}
 python3 $PY get  "$SHEET" "Lembretes!A2:E1000"
