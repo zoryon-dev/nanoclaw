@@ -104,29 +104,22 @@ ls -la groups/content-machine/carrosseis groups/content-machine/read-post-target
 ```
 Expected: all three exist under `content-machine/`.
 
-- [ ] **Step 2: Inspect Caio's current MCP config (decide how to wire `composio`/instagram)**
+- [ ] **Step 2: Inspect Caio's current MCP config (informational only)**
 
 ```bash
 ./bin/ncl groups config get --id ag-1776256973199-ukacj8
 ```
-Read the output. If a `composio` (http tool router) server is already present, no MCP change is needed — instagram is a toolkit inside the router. If it is absent, add it by writing the `container_configs.mcp_servers` JSON directly (http servers cannot be added via `ncl add-mcp-server`, which only writes stdio servers):
+Record what Caio has. **Decision (operator, 2026-06-21): Caio uses NATIVE Google OAuth via the OneCLI gateway — never Composio.** `/read-post` archives via the native helpers (`drive_api.py` + `sheets_api.py`), and media download is via cookies + gallery-dl. So **no Composio MCP server is added to Caio** regardless of what this inspection shows.
+
+- [ ] **Step 3: Ensure Caio's native Google access (Drive + Sheets) — operator grant**
+
+`/read-post` writes to the Drive root + the "Referências — Conteúdo" sheet through the OneCLI gateway, which injects native Google OAuth tokens at request time. Caio's OneCLI agent must have the **Drive and Sheets** Google apps granted (web-UI only — `http://127.0.0.1:10254`). This is the pending Caio grant from the Google Native migration. Verify after grant:
 
 ```bash
-# ONLY if composio is missing from Caio — copy Zory's tool-router URL:
-pnpm exec tsx scripts/q.ts data/v2.db \
-  "SELECT json_extract(mcp_servers,'$.composio') FROM container_configs WHERE id='ag-1776256973199-ukacj8'"
+onecli agents list   # confirm Caio's agent exists / secretMode
+# the live gate in Step 5 is the real proof: /read-post must reach Drive + the sheet
 ```
-
-- [ ] **Step 3: If needed, add the `composio` http server to Caio's config**
-
-Only run if Step 2 showed `composio` absent. Replace `<ROUTER_URL>` with Zory's tool-router URL (`https://backend.composio.dev/tool_router/trs_UB_TakAL9_aJ/mcp`) — or a Caio-specific router if Jonas prefers a separate session:
-
-```bash
-pnpm exec tsx scripts/q.ts data/v2.db \
-  "UPDATE container_configs SET mcp_servers = json_set(mcp_servers,'$.composio', json('{\"type\":\"http\",\"url\":\"https://backend.composio.dev/tool_router/trs_UB_TakAL9_aJ/mcp\"}')) WHERE id='ag-1776256973199-ukacj8'"
-./bin/ncl groups config get --id ag-1776256973199-ukacj8
-```
-Expected: `composio` now present in Caio's config. (Note for Jonas: the Composio account must have the `instagram` toolkit connected; if not, he authorizes it via `COMPOSIO_MANAGE_CONNECTIONS`.)
+If the gate in Step 5 returns 403/`access_restricted`, the grant is missing — operator completes it before proceeding. No Composio fallback.
 
 - [ ] **Step 4: Append `/watch` + `/read-post` usage to Caio's system prompt**
 
@@ -256,6 +249,8 @@ Expected: `SKILL.md` present.
 Replace the body of `groups/dm-with-jonas/CLAUDE.local.md` (keep the leading `@./.claude-global.md` import line) with the content of `v1/zory/CLAUDE.md`, adapting two things:
 1. Keep the **swarm handoff block** (delegate to Caio/Lad) — and make it explicit that ALL Instagram/content goes to Caio now (Zory holds no IG archiving).
 2. Reference the kept tools only (Todoist, Gmail/Calendar/Drive/Docs/Sheets native, Fireflies, Firecrawl, LLM Wiki via `wiki/` + `qmd`). Remove all Mem.ai (`mem-cli`) instructions and the dropped Composio toolkits (github/neon/cloudflare/metaads/GA4/short_io/tavily). Out-of-lane → route per v1 §Escopo.
+
+> **FINDING (2026-06-21):** Zory has ONE session (`sess-1776222866733-njio0t`) with **zero `kind='task'`/recurrence rows** — the Ivy Lee / 18h Organizze / weekly-review crons described in the old persona are NOT live in the DB (lost in the v2.1.19 cutover or never registered). So Steps 3-4 below are a **no-op**: there is nothing to re-point. Retiring Ivy Lee is purely the persona rewrite (Step 2). The MIT 08h/17h routines get scheduled later via chat with the new Zory (per `v1/README.md` step 5). Steps 3-4 retained for the record.
 
 - [ ] **Step 3: Identify Zory's live recurring task rows (the crons)**
 
