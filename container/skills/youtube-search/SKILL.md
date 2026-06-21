@@ -65,6 +65,28 @@ NODE_NO_WARNINGS=1 node $YT search "" --channel <CHANNEL_ID> --order date --max 
 **Referência por formato** — pra "vídeo longo de verdade" use `--no-shorts` + `--min-min 5`;
 pra "o mais recente" use `--order date`; pra "o mais popular" use `--order viewCount`.
 
+## Salvar referência no Notion (SOB DEMANDA — só quando o Jonas pedir)
+
+Pesquisa não salva nada. Mas quando o Jonas disser "salva essa referência" / "guarda esse
+vídeo", registre o vídeo escolhido no database **"Referências — Conteúdo"** (o mesmo do
+`/read-post`), via o writer `notion_row.py`. É só metadado — **sem mídia no Drive** (não dá
+pra baixar YouTube; `--drive` é opcional, deixe de fora).
+
+```bash
+# 1) pegue os detalhes do vídeo escolhido
+NODE_NO_WARNINGS=1 node /app/skills/youtube-search/yt.mjs details <videoId> --json
+# 2) grave a descrição num arquivo (vira o corpo/legenda) e registre a linha:
+python3 /app/skills/read-post/scripts/notion_row.py \
+  --tipo video --plataforma youtube \
+  --perfil "<canal>" --titulo "<título do vídeo>" \
+  --data YYYY-MM-DD --link "https://youtu.be/<id>" \
+  --metrica "<duração · views, ex: 9:24 · 12.5K>" \
+  --tema "<tags do ângulo>" --legenda-file desc.txt
+```
+
+`--tipo video` cai como **"Vídeo"** no Notion (distinto de Reel). Só faça isso quando o Jonas
+escolher um vídeo específico — nunca salve resultados de busca em lote.
+
 ## Como usar o resultado
 
 - `--json` quando for filtrar/encadear programaticamente; sem `--json` a saída já vem legível.

@@ -48,7 +48,10 @@ PLATAFORMA = {
 TIPO = {
     "carrossel": "Carrossel", "carousel": "Carrossel",
     "foto": "Foto", "photo": "Foto", "image": "Foto",
-    "reel": "Reel", "video": "Reel", "vídeo": "Reel",
+    "reel": "Reel",
+    # YouTube/long-form references are metadata-only (no Drive media) → "Vídeo",
+    # distinct from a downloaded IG/TikTok "Reel".
+    "video": "Vídeo", "vídeo": "Vídeo", "youtube": "Vídeo", "yt": "Vídeo",
 }
 
 
