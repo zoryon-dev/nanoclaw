@@ -136,6 +136,25 @@ COPY cli-tools.json install-cli-tools.sh /tmp/
 RUN --mount=type=cache,target=/root/.cache/pnpm \
     sh /tmp/install-cli-tools.sh /tmp/cli-tools.json
 
+# ---- uv + Python 3.12 + Tavily CLI (research toolkit) ------------------------
+# uv (pinned, copied from the official static image — NO curl|bash, NO remote
+# script at build) gives us two things the research skills need:
+#   (1) a relocatable CPython 3.12 — the `last30days` skill hard-requires 3.12+
+#       and the base image ships 3.11; exposed as `python3.12` (base `python3`
+#       stays 3.11 so existing scripts are untouched).
+#   (2) the Tavily CLI (PyPI `tavily-cli`, pinned) as `tvly` — its key is injected
+#       by the OneCLI gateway at runtime (api.tavily.com); no key in the image.
+# Tool/python dirs are world-readable so the non-root agent user can run them.
+COPY --from=ghcr.io/astral-sh/uv:0.11.23 /uv /usr/local/bin/uv
+ENV UV_PYTHON_INSTALL_DIR=/opt/uv/python \
+    UV_TOOL_DIR=/opt/uv/tools \
+    UV_TOOL_BIN_DIR=/usr/local/bin
+RUN uv python install 3.12 && \
+    ln -sf "$(uv python find 3.12)" /usr/local/bin/python3.12 && \
+    uv tool install "tavily-cli==0.1.4" && \
+    chmod -R a+rX /opt/uv && \
+    python3.12 --version && /usr/local/bin/tvly --version
+
 # ---- finance-csv CLI ---------------------------------------------------------
 # Local multi-file Node skill (parsers + xlsx). Isolated install into
 # /usr/local/lib so its single dep (xlsx) never touches the pnpm global store.
