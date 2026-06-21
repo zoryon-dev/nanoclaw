@@ -103,7 +103,7 @@ def upload_image(path: Path, folder_id: str) -> None:
 
 
 def make_anyone_reader(file_id: str) -> None:
-    """Grant 'anyone with the link' read access so the sheet link opens."""
+    """Grant 'anyone with the link' read access so the Drive link opens."""
     _api("POST", f"{DRIVE_FILES}/{file_id}/permissions",
          body=json.dumps({"role": "reader", "type": "anyone"}).encode(),
          content_type="application/json")
@@ -147,7 +147,7 @@ def main() -> int:
     link = info.get("webViewLink", f"https://drive.google.com/drive/folders/{sub_id}")
 
     print(f"[read-post] uploaded {len(images)} cards", file=sys.stderr)
-    print(link)   # stdout: the one line the agent puts in the sheet
+    print(link)   # stdout: the Drive link the agent passes to notion_row.py --drive
     return 0
 
 

@@ -4,7 +4,7 @@
 yt-dlp is video-only; this pulls every carousel card plus the post metadata.
 Prints a structured report — platform, profile, caption, date, card count, and
 the local path + type of each card, in order. The agent then Reads each image
-card to extract its text and routes the result to Drive + Sheets (see SKILL.md).
+card to extract its text and routes the result to Drive + Notion (see SKILL.md).
 
 Cookies (the same file /watch uses) enable Instagram / TikTok / X. Pure stdlib;
 shells out to the `gallery-dl` binary baked into the image.
@@ -159,7 +159,7 @@ def main() -> int:
             print(f"- **Drive folder:** {drive_link}")
         else:
             print(f"- **Drive folder:** UPLOAD FAILED ({drive_error or 'unknown'}) — "
-                  f"use the post URL in the sheet's Link imagens column")
+                  f"use the post URL in the Notion row's Midia (Drive) field")
     caption = (meta.get("description") or "").strip()
     print()
     print("## Caption")
@@ -175,7 +175,7 @@ def main() -> int:
         print(f"- `{c}` (card {i}, {kind})")
     print()
     print("---")
-    print(f"_Work dir: `{work}` — upload to Drive + record in the sheet, then delete it (see SKILL.md)._")
+    print(f"_Work dir: `{work}` — upload to Drive + create the Notion row, then delete it (see SKILL.md)._")
     return 0
 
 

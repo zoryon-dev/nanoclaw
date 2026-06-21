@@ -2,7 +2,7 @@
 """Unified content archiver — detects carousel vs reel/video and routes.
 
 One command for the agent: download the content, upload its media to Google
-Drive, and emit a standardized report the agent turns into ONE sheet row
+Drive, and emit a standardized report the agent turns into ONE Notion row
 (Tipo distinguishes carrossel / foto / reel). All heavy lifting is here so a
 heavy agent turn can't skip a step.
 
@@ -163,7 +163,7 @@ def _emit_reel_report(url, info, duration, transcript, source, drive_link, work)
     print("```")
     print()
     print("---")
-    print(f"_Work dir: `{work}` — write the sheet row, then delete it._")
+    print(f"_Work dir: `{work}` — create the Notion row (notion_row.py), then delete it._")
 
 
 def _platform(url: str) -> str:
@@ -176,7 +176,7 @@ def _platform(url: str) -> str:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(prog="archive", description="Archive a post/reel to Drive + emit a sheet-ready report.")
+    ap = argparse.ArgumentParser(prog="archive", description="Archive a post/reel to Drive + emit a report for the Notion row.")
     ap.add_argument("source", help="Post or reel URL")
     ap.add_argument("--out-dir", default=None)
     args = ap.parse_args()
