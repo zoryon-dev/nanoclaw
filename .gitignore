@@ -61,3 +61,6 @@ forks.md
 
 # Raw company-docs drop (staging only — curated subset lives in groups/dm-with-jonas/sources/marca/)
 arquivos-empresa/
+
+# Magnific MCP OAuth refresh job (install-specific ids; data/magnific-mcp-oauth.json gitignored)
+scripts/refresh-magnific-token.sh
