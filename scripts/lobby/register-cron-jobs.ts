@@ -10,6 +10,7 @@
  * as a recurring row with kind='task' (idempotent via INSERT OR REPLACE).
  */
 import Database from 'better-sqlite3';
+import { CronExpressionParser } from 'cron-parser';
 import fs from 'fs';
 import path from 'path';
 import { toSqliteUtc } from '../../src/db/sqlite-utc.js';
@@ -25,7 +26,6 @@ interface JobConfig {
   kind: string;
   recurrence: string;
   promptFile: string;
-  firstRunOffsetMs: number;
 }
 
 export function registerCronJobs(opts: RegisterOptions): void {
@@ -38,14 +38,15 @@ export function registerCronJobs(opts: RegisterOptions): void {
   const maxSeq = (db.prepare('SELECT COALESCE(MAX(seq), 0) AS m FROM messages_in').get() as { m: number }).m;
   let seq = maxSeq < 2 ? 2 : maxSeq + 2 - (maxSeq % 2);
 
-  const now = Date.now();
-
   for (const job of config.jobs) {
     const procedural = fs.readFileSync(path.join(opts.promptsDir, job.promptFile), 'utf8');
     const prompt = overrideBlock + '\n\n' + procedural;
     const content = JSON.stringify({ prompt });
 
-    const processAfter = toSqliteUtc(new Date(now + job.firstRunOffsetMs));
+    // First run = next cron occurrence in BRT (matches host-sweep's recurrence
+    // logic), so registering doesn't immediately fire every job.
+    const interval = CronExpressionParser.parse(job.recurrence, { tz: 'America/Sao_Paulo' });
+    const processAfter = toSqliteUtc(interval.next().toDate());
     const timestamp = toSqliteUtc(new Date());
 
     db.prepare(
