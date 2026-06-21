@@ -8,6 +8,12 @@ description: Pesquisa web e research autônomo via Tavily CLI (`tvly`) — searc
 Chama `api.tavily.com` — a key é injetada pelo **gateway OneCLI** (não há key no comando).
 Use `--json` quando for processar/encadear. Saída de research pode ir pra `/workspace/agent/research/`.
 
+**Antes de usar `tvly`, confie na CA do gateway** (o `tvly` usa Python `requests`, que ignora
+`SSL_CERT_FILE` — sem isto dá `CERTIFICATE_VERIFY_FAILED`). Rode UMA vez por sessão:
+```bash
+export REQUESTS_CA_BUNDLE="$SSL_CERT_FILE" CURL_CA_BUNDLE="$SSL_CERT_FILE"
+```
+
 ## Comandos
 
 ```bash

@@ -1,18 +1,24 @@
 ---
 name: last30days
-description: Pesquisa de tendência social multi-plataforma (Reddit, Hacker News, Polymarket, GitHub) com score por engajamento real, sintetizada num brief citado. Use para "o que está se falando / tendência social sobre X", sinal de comunidade. Janela padrão 7 dias. Síntese via OpenRouter (gateway). NÃO cobre X nem transcrição de YouTube nesta config (YouTube tem a skill `youtube-search`).
+description: Pesquisa de tendência social multi-plataforma (Reddit, Hacker News, Polymarket, GitHub) com score por engajamento real. Coleta os dados crus; VOCÊ (o agente) sintetiza. Use para "o que está se falando / tendência social sobre X", sinal de comunidade. Janela padrão 7 dias. NÃO cobre X nem transcrição de YouTube nesta config (YouTube tem a skill `youtube-search`).
 ---
 
 # last30days — tendência social (janela de 7 dias)
 
 Roda em **Python 3.12** (use `python3.12`, não `python3` — o script exige 3.12+). Zero deps
-externas (stdlib + lib vendorizada). Síntese via OpenRouter (key injetada pelo gateway).
+externas (stdlib + lib vendorizada). **Você é o planner + o sintetizador:** o script coleta
+os dados crus (Reddit/HN/GitHub/Polymarket); você lê o `-raw.md` e escreve a síntese. (Não
+precisa de key de LLM — o OpenRouter só é usado no modo headless/cron, que não é o nosso.)
 
 ```bash
 mkdir -p /workspace/agent/research/last30days
 python3.12 /app/skills/last30days/scripts/last30days.py "<tema>" --days=7 --agent \
   --emit=compact --save-dir=/workspace/agent/research/last30days
 ```
+
+Para resultados melhores, gere você mesmo um plano de busca e passe via `--plan '<json>'`
+(o script mostra o schema quando rodado sem `--plan`); sem isso ele usa um plano determinístico
+que já funciona. Depois, **leia o `<tema>-raw.md`** gerado e sintetize as tendências.
 
 ## Regras
 
