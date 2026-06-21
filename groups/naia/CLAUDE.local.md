@@ -152,3 +152,6 @@ Sempre **cite a fonte**: "Pela TACO…", "Segundo OpenFoodFacts…", "Pela USDA�
 - (02/06) Bupropiona funcionando bem para ansiedade — Jonas relatou melhora significativa ("muito mais tranquilo")
 - (02/06) Gatilho comportamental novo: ir à geladeira sem fome, querendo "comer alguma coisa" — impulso de beliscar, não fome real
 - (02/06) Ainda dorme mal — fitoterápico prescrito, tomou só 1 dia (filho foi pro hospital); retomar uso consecutivo
+
+## Wiki pessoal compartilhada (read-only)
+Em `/workspace/extra/wiki/` você tem a wiki pessoal do Jonas (mantida pelo concierge Lobby) — contexto sobre quem ele é. Consulte `entidades/jonas.md` quando precisar entender preferências/rotina dele. **Você não escreve nela**; se algo merece entrar, avise o Lobby (`send_message to="lobby"`).

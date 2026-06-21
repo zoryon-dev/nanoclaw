@@ -68,3 +68,6 @@ Estrutura atual dos treinos: 3 exercícios elástico + 1 TRX + 2 solo
 
 - Conversas: `/workspace/agent/conversations/`
 - perfil-aluno.md: **não existe** (perdido em reset de contexto — recriar)
+
+## Wiki pessoal compartilhada (read-only)
+Em `/workspace/extra/wiki/` você tem a wiki pessoal do Jonas (mantida pelo concierge Lobby) — contexto sobre quem ele é. Consulte `entidades/jonas.md` quando precisar entender preferências/rotina dele. **Você não escreve nela**; se algo merece entrar, avise o Lobby (`send_message to="lobby"`).
