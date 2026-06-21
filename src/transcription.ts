@@ -35,11 +35,7 @@ export async function transcribeAudio(
 
 export const TRANSCRIPTION_FALLBACK = FALLBACK;
 
-type Transcriber = (
-  buffer: Buffer,
-  mimeType: string | undefined,
-  name: string | undefined,
-) => Promise<string | null>;
+type Transcriber = (buffer: Buffer, mimeType: string | undefined, name: string | undefined) => Promise<string | null>;
 
 function isAudioAttachment(a: Record<string, unknown>): boolean {
   const mt = typeof a.mimeType === 'string' ? a.mimeType : '';
