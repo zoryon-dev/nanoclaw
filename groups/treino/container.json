@@ -2,13 +2,24 @@
   "mcpServers": {
     "hevy": {
       "command": "node",
-      "args": ["/workspace/extra/hevy-mcp/node_modules/hevy-mcp/dist/cli.mjs"],
-      "env": { "HEVY_API_KEY": "2c1b8058-1b9b-42fc-84ef-3f0fb606e720" }
+      "args": [
+        "/workspace/extra/hevy-mcp/node_modules/hevy-mcp/dist/cli.mjs"
+      ],
+      "env": {
+        "HEVY_API_KEY": "2c1b8058-1b9b-42fc-84ef-3f0fb606e720"
+      }
     }
   },
-  "packages": { "apt": [], "npm": [] },
+  "packages": {
+    "apt": [],
+    "npm": []
+  },
   "additionalMounts": [
-    { "hostPath": "/root/nanoclaw/vendor/hevy-mcp", "containerPath": "hevy-mcp", "readonly": true }
+    {
+      "hostPath": "/root/nanoclaw/vendor/hevy-mcp",
+      "containerPath": "hevy-mcp",
+      "readonly": true
+    }
   ],
   "skills": "all",
   "groupName": "Treino",
