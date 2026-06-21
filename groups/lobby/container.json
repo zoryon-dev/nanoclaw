@@ -21,7 +21,11 @@
       "readonly": true
     }
   ],
-  "skills": "all",
+  "skills": [
+    "watch",
+    "wiki",
+    "onecli-gateway"
+  ],
   "groupName": "Lobby",
   "assistantName": "Lobby",
   "agentGroupId": "lobby"
