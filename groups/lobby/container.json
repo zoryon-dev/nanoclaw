@@ -1,0 +1,13 @@
+{
+  "mcpServers": {},
+  "packages": { "apt": [], "npm": [] },
+  "additionalMounts": [
+    { "hostPath": "/root/nanoclaw/groups/treino", "containerPath": "agents/treino", "readonly": true },
+    { "hostPath": "/root/nanoclaw/groups/naia", "containerPath": "agents/naia", "readonly": true },
+    { "hostPath": "/root/nanoclaw/groups/finance", "containerPath": "agents/finance", "readonly": true }
+  ],
+  "skills": "all",
+  "groupName": "Lobby",
+  "assistantName": "Lobby",
+  "agentGroupId": "lobby"
+}
