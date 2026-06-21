@@ -190,3 +190,4 @@ be reverted without unwinding the others. Full revert = restore both tars + all 
 
 ## Changelog
 - 2026-06-21: design approved; spec written.
+- 2026-06-21: Phase 1 done — IG flows live on Caio (native OAuth verified 200 Sheets+Drive), removed from Zory; cookies+wiki intact.
