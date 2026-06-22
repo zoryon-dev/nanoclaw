@@ -113,7 +113,7 @@ carousels you *produced*.)
 Flow when the user hands you — or you produce — a reusable asset:
 
 1. **File → Drive** (canonical home): `python3 /app/skills/google-native/scripts/drive_upload.py --parent-name "Materiais — Marca" --subfolder "<Zoryon|Faryon|Geral>" <arquivo>` → keep the printed link.
-2. **Only if it needs a public URL** (web/IG image, Magnific brand-ref): also `python3 /app/skills/read-post/scripts/r2_upload.py <arquivo>` → keep the public URL.
+2. **Only if it needs a public URL** (web/IG image, Magnific brand-ref): also `python3 /app/skills/r2-upload/scripts/r2_upload.py <arquivo> materiais/<marca>/<arquivo>` → prints the public URL `https://bucket-nanoclaw.zoryon.co/materiais/<marca>/<arquivo>`.
 3. **Record the row:**
 
 ```bash
