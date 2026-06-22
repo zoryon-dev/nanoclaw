@@ -9,6 +9,12 @@ from pathlib import Path
 
 SCRIPT = Path(__file__).with_name("napkin_generate.py")
 
+# Exact set of fields the Napkin /v1/visual API accepts (verified 2026-06-22).
+ALLOWED = {
+    "content", "format", "language", "color_mode", "transparent_background",
+    "number_of_visuals", "orientation", "style_id",
+}
+
 
 def _dry_run(*args: str) -> dict:
     out = subprocess.run(
@@ -20,42 +26,35 @@ def _dry_run(*args: str) -> dict:
     return json.loads(out.stdout)
 
 
-def test_defaults_match_pack():
-    p = _dry_run(
-        "--content", "extremos bons, meio ruim",
-        "--visual-query", "comparison",
-        "--out", "d.png",
-    )
-    assert p["content"] == "extremos bons, meio ruim"
-    assert p["visual_query"] == "comparison"
-    # The pack always uses pt-BR + dark + transparent for the black canvas.
+def test_defaults_match_pack_and_api():
+    p = _dry_run("--content", "Processo organizado × IA = escala", "--out", "d.png")
+    assert p["content"] == "Processo organizado × IA = escala"
+    # Pack defaults: pt-BR + dark + transparent for the black canvas.
     assert p["language"] == "pt-BR"
     assert p["color_mode"] == "dark"
     assert p["transparent_background"] is True
     assert p["format"] == "png"
+    assert p["number_of_visuals"] == 1
+    # Only API-accepted fields are sent (no visual_query/style/width).
+    assert set(p).issubset(ALLOWED), f"unexpected fields: {set(p) - ALLOWED}"
 
 
 def test_overrides():
     p = _dry_run(
-        "--content", "x",
-        "--visual-query", "cycle",
-        "--language", "en",
-        "--color-mode", "light",
-        "--no-transparent",
-        "--format", "svg",
-        "--style", "Elegant Outline",
-        "--width", "1600",
-        "--out", "d.svg",
+        "--content", "x", "--format", "svg", "--language", "en",
+        "--color-mode", "light", "--no-transparent",
+        "--orientation", "vertical", "--style-id", "ABC123", "--out", "d.svg",
     )
+    assert p["format"] == "svg"
     assert p["language"] == "en"
     assert p["color_mode"] == "light"
     assert p["transparent_background"] is False
-    assert p["format"] == "svg"
-    assert p["style"] == "Elegant Outline"
-    assert p["width"] == 1600
+    assert p["orientation"] == "vertical"
+    assert p["style_id"] == "ABC123"
+    assert set(p).issubset(ALLOWED)
 
 
 if __name__ == "__main__":
-    test_defaults_match_pack()
+    test_defaults_match_pack_and_api()
     test_overrides()
     print("ok")

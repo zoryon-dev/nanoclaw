@@ -9,27 +9,32 @@ Notion/Drive vêm de `/workspace/agent/read-post-targets.json` (campos `reels_*`
 
 ---
 
-## 1. Diagrama — Napkin primário, Magnific fallback
+## 1. Diagrama — Napkin é SEMPRE a base (Magnific e HTML→PNG só se Napkin falhar)
+
+**Napkin é o motor primário e padrão — sempre tente Napkin primeiro.** Os
+fallbacks abaixo só entram se o Napkin sair com código ≠ 0.
 
 O `modules/04-BIBLIOTECA-DIAGRAMAS.md` e `templates/brief-diagrama-napkin.md`
-definem a receita genérica (`content`, `visual_query`, `style`, `language`,
-`format`, `color_mode`, `transparent_background`). Preencha o brief primeiro;
-depois gere assim:
+ajudam a **estruturar o `content`** — o tipo de diagrama (curva, comparação,
+loop, funil…) o Napkin **auto-seleciona pela estrutura do texto**, então capriche
+no texto cru (extremos/passos/relações claros). Não há parâmetro `visual_query`.
 
 ### Primário — Napkin (script)
 
 ```bash
 python3 /app/skills/funcao-reels/scripts/napkin_generate.py \
   --content "<texto cru estruturado do brief>" \
-  --visual-query <flowchart|comparison|cycle|pyramid|timeline|chart|mindmap> \
-  --style "Monochrome Pro" \
-  --language pt-BR --format png --color-mode dark --transparent \
-  --width 1400 --out diagrama.png
+  --format png --language pt-BR --color-mode dark --transparent \
+  --out diagrama.png
+# opcionais: --orientation vertical|horizontal · --style-id <id> · --number-of-visuals N · --format svg
 ```
 
-Auth: nenhuma — o gateway injeta o token do Napkin. Se sair **código ≠ 0**
-(sem token / API beta indisponível / erro), o script imprime a instrução de
-fallback e **você cai para o Magnific** (abaixo). Não invente o arquivo.
+Auth: nenhuma — o gateway injeta o token do Napkin (`api.napkin.ai`,
+`Authorization: Bearer`). É assíncrono; o script cuida do POST + polling +
+download e imprime o caminho salvo. Se sair **código ≠ 0** (token ausente / erro
+/ geração falhou), ele imprime a instrução de fallback e **só então** você cai
+para o Magnific (abaixo) e, se também falhar, para o HTML→PNG. Não invente o
+arquivo.
 
 ### Fallback — Magnific (MCP, já no Caio)
 

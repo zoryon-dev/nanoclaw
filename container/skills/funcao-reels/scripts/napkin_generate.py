@@ -2,25 +2,29 @@
 """Generate a Napkin diagram from structured concept text — Função Reels.
 
 PRIMARY diagram generator for the funcao-reels skill (módulo 04). Takes the
-"texto cru estruturado" from the brief and asks the Napkin API for a visual,
-saving SVG/PNG to --out.
+"texto cru estruturado" from the brief and asks the Napkin Visual API for a
+diagram, then downloads SVG/PNG to --out.
 
-Auth: NONE here. The container runs under the OneCLI gateway, which injects the
-Napkin token for api.napkin.ai. We send NO Authorization header. TLS trusts the
-gateway CA via SSL_CERT_FILE (set in the container env).
+Napkin API (verified 2026-06-22): async.
+  POST https://api.napkin.ai/v1/visual            → 201 {id, status:"pending"}
+  GET  https://api.napkin.ai/v1/visual/{id}/status → {status, generated_files:[{url,…}], credits}
+  GET  <generated_files[i].url>                    → the SVG/PNG bytes
+Napkin auto-selects the visual TYPE from the structure of `content` (there is no
+`visual_query` param); an optional `style_id` picks a Napkin style.
 
-If the Napkin path is unavailable (no token / beta access not granted / API
-error), this script exits NON-ZERO with a clear message; the agent then falls
-back to Magnific `images_generate_svg` per ADAPTER.md. The script NEVER invents
-or fabricates an output file.
+Auth: inside the container the OneCLI gateway injects the Napkin bearer for
+api.napkin.ai, so we send NO Authorization header. For host testing / non-gateway
+use, set env `NAPKIN_API_TOKEN` and the script will send the header itself.
+
+If Napkin is unavailable (no token / API error / generation failed), the script
+exits NON-ZERO with a clear message; the agent then falls back to Magnific, then
+HTML→PNG, per ADAPTER.md. The script NEVER fabricates an output file.
 
 Usage:
   napkin_generate.py \
     --content "<texto cru estruturado>" \
-    --visual-query comparison \
-    --style "Monochrome Pro" \
-    --language pt-BR --format png --color-mode dark --transparent \
-    --width 1400 --out diagrama.png
+    --format png --language pt-BR --color-mode dark --transparent \
+    --out diagrama.png
 
   napkin_generate.py --dry-run ...   # prints the request payload JSON, no call
 """
@@ -35,57 +39,59 @@ import urllib.error
 from urllib.request import Request, urlopen
 
 API_BASE = os.environ.get("NAPKIN_API_BASE", "https://api.napkin.ai/v1").rstrip("/")
+TOKEN = os.environ.get("NAPKIN_API_TOKEN")  # host/testing only; unset in-container
 FALLBACK_MSG = (
     "[funcao-reels] Napkin indisponível ({why}). "
-    "Use o fallback Magnific (images_generate_svg) — ver ADAPTER.md."
+    "Use o fallback Magnific (images_generate_svg) e, se também falhar, o "
+    "fallback HTML→PNG — ver ADAPTER.md."
 )
 
 
 def build_payload(args: argparse.Namespace) -> dict:
-    """Deterministic Napkin request body. Defaults match the pack: pt-BR,
-    dark, transparent — for the formato's black canvas."""
+    """Deterministic Napkin request body. Only fields the API accepts. Defaults
+    match the pack: pt-BR, dark, transparent — for the formato's black canvas."""
     payload: dict = {
         "content": args.content,
-        "visual_query": args.visual_query,
-        "language": args.language,
         "format": args.format,
+        "language": args.language,
         "color_mode": args.color_mode,
         "transparent_background": args.transparent,
+        "number_of_visuals": args.number_of_visuals,
     }
-    if args.style:
-        payload["style"] = args.style
-    if args.width:
-        payload["width"] = args.width
-    if args.number_of_visuals:
-        payload["number_of_visuals"] = args.number_of_visuals
+    if args.orientation:
+        payload["orientation"] = args.orientation
+    if args.style_id:
+        payload["style_id"] = args.style_id
     return payload
 
 
-def _post(url: str, body: bytes) -> dict:
-    req = Request(
-        url,
-        data=body,
-        headers={
-            "Content-Type": "application/json",
-            "User-Agent": "funcao-reels/1.0 (+nanoclaw)",
-        },
-        method="POST",
-    )
+def _headers(content_type: str | None = None) -> dict:
+    h = {"User-Agent": "funcao-reels/1.0 (+nanoclaw)"}
+    if content_type:
+        h["Content-Type"] = content_type
+    if TOKEN:  # host/testing path; in-container the gateway injects this
+        h["Authorization"] = f"Bearer {TOKEN}"
+    return h
+
+
+def _req(method: str, url: str, body: bytes | None = None) -> tuple[int, bytes]:
+    req = Request(url, data=body, method=method,
+                  headers=_headers("application/json" if body else None))
     with urlopen(req, timeout=180) as resp:
-        return json.loads(resp.read().decode("utf-8", errors="replace"))
+        return resp.status, resp.read()
 
 
 def _get_bytes(url: str) -> bytes:
-    req = Request(url, headers={"User-Agent": "funcao-reels/1.0 (+nanoclaw)"})
+    req = Request(url, headers=_headers())
     with urlopen(req, timeout=180) as resp:
         return resp.read()
 
 
 def generate(args: argparse.Namespace) -> int:
-    payload = build_payload(args)
-    body = json.dumps(payload).encode("utf-8")
+    body = json.dumps(build_payload(args)).encode("utf-8")
     try:
-        created = _post(f"{API_BASE}/visual", body)
+        _, raw = _req("POST", f"{API_BASE}/visual", body)
+        created = json.loads(raw.decode("utf-8", errors="replace"))
     except urllib.error.HTTPError as exc:
         detail = ""
         try:
@@ -98,24 +104,34 @@ def generate(args: argparse.Namespace) -> int:
         print(FALLBACK_MSG.format(why=f"rede: {exc}"), file=sys.stderr)
         return 1
 
-    # The API may return the asset URL directly or a job to poll.
-    status_url = created.get("status_url") or created.get("self")
-    asset_url = created.get("url") or created.get("file_url")
+    vid = created.get("id")
+    if not vid:
+        print(FALLBACK_MSG.format(why="sem id na resposta de criação"), file=sys.stderr)
+        return 1
+
+    # Poll status until completed/failed.
+    asset_url = None
     deadline = time.time() + 180
-    while not asset_url and status_url and time.time() < deadline:
-        time.sleep(3)
+    while time.time() < deadline:
         try:
-            st = json.loads(_get_bytes(status_url).decode("utf-8", errors="replace"))
+            _, raw = _req("GET", f"{API_BASE}/visual/{vid}/status")
+            st = json.loads(raw.decode("utf-8", errors="replace"))
         except Exception as exc:  # noqa: BLE001
             print(FALLBACK_MSG.format(why=f"polling: {exc}"), file=sys.stderr)
             return 1
-        if st.get("status") in {"failed", "error"}:
+        status = st.get("status")
+        if status == "completed":
+            files = st.get("generated_files") or []
+            if files:
+                asset_url = files[0].get("url")
+            break
+        if status in {"failed", "error"}:
             print(FALLBACK_MSG.format(why="geração falhou"), file=sys.stderr)
             return 1
-        asset_url = st.get("url") or st.get("file_url")
+        time.sleep(3)
 
     if not asset_url:
-        print(FALLBACK_MSG.format(why="sem URL de asset na resposta"), file=sys.stderr)
+        print(FALLBACK_MSG.format(why="sem arquivo gerado (timeout?)"), file=sys.stderr)
         return 1
 
     try:
@@ -136,19 +152,20 @@ def main() -> int:
         description="Generate a Napkin diagram from structured concept text.",
     )
     ap.add_argument("--content", required=True, help="Texto cru estruturado (curto)")
-    ap.add_argument("--visual-query", dest="visual_query", required=True,
-                    help="flowchart|comparison|cycle|pyramid|timeline|chart|mindmap")
-    ap.add_argument("--style", help='ex: "Monochrome Pro" / "Elegant Outline"')
-    ap.add_argument("--language", default="pt-BR")
     ap.add_argument("--format", default="png", choices=["png", "svg"])
+    ap.add_argument("--language", default="pt-BR")
     ap.add_argument("--color-mode", dest="color_mode", default="dark",
                     choices=["dark", "light"])
     ap.add_argument("--transparent", dest="transparent", action="store_true",
                     default=True, help="(default) fundo transparente")
     ap.add_argument("--no-transparent", dest="transparent", action="store_false",
                     help="fundo opaco")
-    ap.add_argument("--width", type=int, help="largura em px (se png)")
-    ap.add_argument("--number-of-visuals", dest="number_of_visuals", type=int)
+    ap.add_argument("--number-of-visuals", dest="number_of_visuals", type=int,
+                    default=1)
+    ap.add_argument("--orientation", choices=["auto", "horizontal", "vertical"],
+                    help="orientação (default: deixa o Napkin decidir)")
+    ap.add_argument("--style-id", dest="style_id",
+                    help="Napkin style_id opcional (look da série)")
     ap.add_argument("--out", required=True, help="caminho de saída (svg/png)")
     ap.add_argument("--dry-run", action="store_true",
                     help="imprime o payload JSON e sai (sem chamar a API)")
