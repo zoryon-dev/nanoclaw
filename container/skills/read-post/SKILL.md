@@ -100,3 +100,29 @@ or pass a database id — there is exactly one, baked into the script.
 **every URL inside backticks** (`` `https://…` ``) or it won't deliver. Content: tipo,
 profile, one line on the angle, the backticked **Notion** link, and the backticked Drive
 link. Don't paste the content back.
+
+## Catalog a brand asset (`notion_asset.py`) — distinct flow
+
+This is NOT `/read-post`. `/read-post` archives posts found **elsewhere** (references) into
+"Referências — Conteúdo". `notion_asset.py` catalogs a **reusable brand asset of ours** (a
+logo, brand book, design tokens, paleta, doc oficial, template, brand-ref board) into the
+**"Materiais — Marca"** Notion DB — the navigable index behind the per-brand hub
+"Materiais & Conteúdo — por Marca". (And it is distinct from `notion_delivery.py`, which logs
+carousels you *produced*.)
+
+Flow when the user hands you — or you produce — a reusable asset:
+
+1. **File → Drive** (canonical home): `python3 /app/skills/google-native/scripts/drive_upload.py --parent-name "Materiais — Marca" --subfolder "<Zoryon|Faryon|Geral>" <arquivo>` → keep the printed link.
+2. **Only if it needs a public URL** (web/IG image, Magnific brand-ref): also `python3 /app/skills/read-post/scripts/r2_upload.py <arquivo>` → keep the public URL.
+3. **Record the row:**
+
+```bash
+python3 /app/skills/read-post/scripts/notion_asset.py \
+  --material "<nome>" --marca <Zoryon|Faryon|Geral> \
+  --tipo <Logo|Brand book|Design tokens|Paleta|Tipografia|Doc oficial|Template|Brand-ref|Outro> \
+  --drive "<link Drive>" [--r2 "<URL pública>"] \
+  --formato <SVG|PNG|PDF|CSS|MD|JSON|Outro> --notas "<1 linha: pra que serve>"
+```
+
+DB id is baked into the script — never pass one. Prints the Notion page URL on success;
+relay `ERRO…` if it fails instead of pretending it saved.
