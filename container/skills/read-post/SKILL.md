@@ -68,6 +68,7 @@ python3 /app/skills/read-post/scripts/notion_row.py \
   --drive "<Drive folder link from the report>" \
   --metrica "<duração ex 0:32  |  Nº de cards>" \
   --tema "tag1,tag2" \
+  --marca <Zoryon|Faryon> \
   --legenda-file <caption.txt> \
   --body-file <content.txt>
 ```
@@ -83,8 +84,11 @@ Field mapping by type:
 | `--drive` | the `Drive folder:` link | the `Drive folder (keyframes)` link |
 | `--body-file` | `## Card N` blocks | the **transcript** |
 
-`--data`, `--link`, `--legenda-file`, `--tema` are optional but fill them when you have them
-(`--tema` is for browsing later — add 1–3 short tags about the angle/format). The script
+`--data`, `--link`, `--legenda-file`, `--tema`, `--marca` are optional but fill them when you have them
+(`--tema` is for browsing later — add 1–3 short tags about the angle/format). `--marca` tags which
+of our brands this reference informs (`Zoryon` or `Faryon`) — set it when the angle clearly serves
+one brand (e.g. a due-diligence/imobiliário reference → `Faryon`; an IA-aplicada-a-negócios one →
+`Zoryon`); leave it off for generic inspiration that fits neither. The script
 prints the **Notion page URL** on success; keep it for the reply. If it prints `ERRO…`,
 relay that to the user instead of pretending it saved. **Never** create a second database
 or pass a database id — there is exactly one, baked into the script.

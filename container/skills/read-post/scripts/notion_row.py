@@ -18,7 +18,7 @@ Usage:
     --tipo reel --plataforma instagram --perfil "@x" --data 2026-06-21 \
     --link "https://..." --drive "https://drive.google.com/..." \
     --metrica "0:42" --legenda-file cap.txt --tema "hook,storytelling" \
-    --body-file transcript.txt
+    --marca Zoryon --body-file transcript.txt
 Prints the created page URL on success.
 """
 from __future__ import annotations
@@ -53,6 +53,9 @@ TIPO = {
     # distinct from a downloaded IG/TikTok "Reel".
     "video": "Vídeo", "vídeo": "Vídeo", "youtube": "Vídeo", "yt": "Vídeo",
 }
+# Which of our brands this reference informs (optional — a generic reference
+# may map to neither). Mirrors the "Marca" select on "Carrosséis — Entregas".
+MARCA = {"zoryon": "Zoryon", "faryon": "Faryon"}
 
 
 def _norm(table: dict[str, str], value: str | None) -> str | None:
@@ -105,6 +108,7 @@ def main() -> int:
     ap.add_argument("--legenda", help="caption text (inline)")
     ap.add_argument("--legenda-file", help="caption text from a file")
     ap.add_argument("--tema", help="comma-separated tags")
+    ap.add_argument("--marca", help="Zoryon | Faryon — qual marca nossa esta referência informa (opcional)")
     ap.add_argument("--titulo", help="row title (default: composed from perfil/tipo/data)")
     ap.add_argument("--body-file", help="post content as plain text (transcript / card texts)")
     args = ap.parse_args()
@@ -135,6 +139,9 @@ def main() -> int:
         tags = [t.strip() for t in args.tema.split(",") if t.strip()]
         if tags:
             props["Tema"] = {"multi_select": [{"name": t} for t in tags]}
+    marca = _norm(MARCA, args.marca)
+    if marca:
+        props["Marca"] = {"select": {"name": marca}}
 
     payload: dict = {"parent": {"database_id": DATABASE_ID}, "properties": props}
     body = _read(args.body_file)
