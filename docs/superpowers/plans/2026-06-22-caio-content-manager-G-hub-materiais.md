@@ -415,3 +415,25 @@ Tell Jonas to test in the Caio DM: (a) "cataloga esse asset da Faryon: <link/arq
 **Placeholder scan:** `<MATERIAIS_DB_ID>` / `<MATERIAIS_DS_ID>` are deliberate carries from Task 1 (the DB does not exist until then), substituted in Tasks 2/4/5/6 — not open TODOs. The seed instruction text (Task 4 Step 2) is templated with an explicit per-asset mapping table — no vague content. All commands concrete.
 
 **Type/consistency:** `Marca` options `Zoryon|Faryon|Geral` consistent across Tasks 1/2/3/4; property names (`Arquivo (Drive)`, `URL pública (R2)`, `Formato`, `Notas`) identical in Task 1 schema, Task 2 `build_payload`, and the Task 2 test; gateway-only rule (no host runs of `notion_asset.py`/`drive_upload.py`/`r2_upload.py`) consistent with the seed running inside Caio (Task 4).
+
+---
+
+## Execution Record (2026-06-22) — COMPLETE, live-verified
+
+All 6 tasks executed inline + smoke-tested live through Caio's real gateway.
+
+- **Task 1 ✅** DB `Materiais — Marca` created (id `d6e8e3ac-1b93-412d-90d2-6c2c101db87c`, data source `30e911f6-020d-4daa-8fa9-01e8b17b9027`) under "Base | Nanoclaw" via the claude.ai Notion MCP.
+- **Task 2 ✅** `notion_asset.py` + `test_notion_asset.py` (2 tests pass via `--dry-run`) + SKILL.md. Commits `4975637`, `99056f7` (r2_upload path/key fix).
+- **Task 3 ✅** Cataloging instruction in `system-prompt.md` + `CLAUDE.local.md` (gitignored).
+- **Task 4 ✅** Seed of 16 Zoryon+Faryon assets → Drive `Materiais — Marca/<marca>` + 4 R2 public + 16 Notion rows. Ran inside Caio's container via the real gateway, no FAIL; row props verified via MCP fetch.
+- **Task 5 ✅** Hub page "Materiais & Conteúdo — por Marca" (`387481ddf84381c8a6cee37284df7061`) — 3 DBs with per-brand filter guidance.
+- **Task 6 ✅** `read-post-targets.json` (materiais_* keys + `hub_page_url`; bonus: `magnific_brand_ref_url` set from the R2-hosted brand-ref, unblocking Subsystem D) + memory updated.
+- **Smoke ✅** Both items passed via `scripts/wake-with-task.ts`: (1) Caio listed the 8 Zoryon materials from the DB; (2) Caio catalogued a new Faryon doc via the prompt-driven flow (`drive_upload`→`notion_asset`), row verified (Marca=Faryon, Tipo=Doc oficial, Formato=MD).
+
+**Seed-trigger tooling discovered/built:** `scripts/wake-with-task.ts` (commits `0c22e34`, `2adef33`) — `ncl restart --message` is a no-op for an idle single-DM `--rm` agent (0 running containers); this helper writes a `trigger=1` task message to the active session and the live host-sweep wakes the container. Uses `trigger`-only (NOT `onWake=1`, which an already-running container skips).
+
+**Operational note:** when staging files into Caio's workspace as root, `chmod 644` them — the container runs as `node` (uid 1000) and can't read root/600 files (caught in smoke; not a flow defect).
+
+**Related (same session, separate commit):** `Marca` (Zoryon/Faryon) select added to the Referências DB + `notion_row.py --marca` — commit `39a3dc2`.
+
+Install-specific artifacts (Notion DB/page, Drive files, R2 objects, `read-post-targets.json`, prompt files) are live data / gitignored — not committed, per the Global Constraints.
