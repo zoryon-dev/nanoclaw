@@ -124,3 +124,31 @@ Three sections:
 - [ ] Append an Execution Record to this plan (tasks, smoke results, DB/Drive ids referenced, any fallbacks taken).
 - [ ] Update memory (`project_caio_content_manager.md`): Função Reels skill live.
 - [ ] Verify no install-specific files staged; commit; push to origin/main.
+
+---
+
+## Execution Record (2026-06-22) — COMPLETE, live-verified
+
+Executed autonomously, inline. All tasks done; feature proven end-to-end.
+
+**Tasks 1–6 (skill build):**
+- 16 source files copied byte-for-byte → `modules/` + `templates/` + `referencias/`. Fidelity gate `diff -r` clean. **100% na íntegra.**
+- `SKILL.md` (router) + `ADAPTER.md` (diagram engine, brand voice, deliverable contract).
+- `napkin_generate.py` + test (green), `notion_reel.py` + test (green). Drive reused `google-native/drive_upload.py` (Task 6 collapsed — no new script needed).
+- Notion DB "Reels — Entregas" created host-side (id `5a920ab3-b2d6-4552-8ae5-3ff9c6582f27`, data source `c110b104-…`).
+- Committed `c57d0d8`.
+
+**Task 7 (wire Caio, install-specific, not committed):**
+- `funcao-reels` added to the **`skills` column in `container_configs` (DB = source of truth)**, not just the materialized file — else spawn would overwrite it.
+- `system-prompt.md` BLOCO 2 routing: "reel" now routes to the skill (was "em construção"); capability map updated.
+- `read-post-targets.json`: `reels_*` fields added.
+
+**Task 8 (live smoke — 2 themes, 1 attempt, both passed):**
+- Enqueued one autonomous task via `wake-with-task.ts`; host sweep respawned Caio with the new skill; full pipeline ran for both brands.
+- **Zoryon** — "IA é multiplicador, não conserto" — folder `/workspace/reels/2026-06-22-zoryon-…`, 3 texts confirmed (roteiro 5.3KB w/ narração + legenda palavra-a-palavra; brief w/ texto-cru), diagram PNG 2800×2200 (verified: dark + `#837BF4`, two inputs × IA → two mirrored outputs), Drive folder + Notion row (Marca=Zoryon, Status=Entregue, parent = Reels — Entregas DB — verified via notion-fetch).
+- **Faryon** — "O banco financia o seu crédito — não audita o risco da obra" — folder, 3 texts (juridical boundary respected, art. 32 Lei 4.591, no "apto/pode comprar"), diagram PNG 2800×2360 (verified: green + gold serif, 2-column "banco verifica × ninguém verifica"), Drive + Notion. Brand voice + palette demonstrably distinct from Zoryon → **brand adapter works.**
+- Honest gap: **both documented diagram engines were credential-blocked this session** — Napkin HTTP 403 `credential_not_found` (api.napkin.ai not connected in OneCLI); Magnific MCP not OAuth-authenticated (only `authenticate`/`complete_authentication` tools present). Caio degraded to a faithful HTML→PNG diagram. Post-smoke hardening: **promoted HTML→PNG to a documented third fallback tier in ADAPTER.md** (zero-credential, Chromium-in-container) so the diagram step never hard-fails. Also added guidance to pass a canonical `--objetivo` (two bespoke select options leaked into the Reels DB during the smoke — cosmetic, left as test data).
+
+**Open (external, user-side — not skill defects):** to make diagram generation fully automated, connect Napkin in the OneCLI gateway and/or re-auth the Magnific MCP OAuth. Until then the HTML→PNG tier carries it and produces professional, on-brand diagrams.
+
+**Net:** the Função Reels skill is live on Caio, carries the pack 100% verbatim, and produces the full deliverable (diagram + 3 texts) into Drive + the new Notion DB, brand-aware, end-to-end — verified on 2 real themes.

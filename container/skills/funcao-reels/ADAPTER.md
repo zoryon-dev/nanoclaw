@@ -59,6 +59,26 @@ brief, traduzido para um prompt de diagrama. Sempre: rótulos em **PT-BR**, fund
 Depois do Magnific: `creations_wait` → baixe o SVG/PNG para o arquivo de saída.
 Anote no entregável que o diagrama saiu do **fallback Magnific** (não Napkin).
 
+### Fallback final — HTML→PNG (zero credencial, sempre disponível)
+
+Se **ambos** (Napkin e Magnific) estiverem indisponíveis (sem credencial /
+OAuth não autenticado), monte o diagrama em **HTML/CSS** seguindo a estrutura do
+brief (o `templates/brief-diagrama-napkin.md` já prevê este fallback manual) e
+renderize em PNG via Chromium (já no container). Regras:
+
+- Use a paleta e a tipografia da **marca** (do brand-wiki): Zoryon → fundo
+  `#141420`, accent `#837BF4`, sans (Sora/Inter); Faryon → fundo verde-escuro,
+  accent dourado, serif no título. Fundo escuro sempre (combina com o canvas).
+- Título = a tese do beat 3; layout = o tipo de diagrama do brief (duas
+  entradas/saídas, comparação 2 colunas, curva em U, loop, etc.).
+- Rótulos em **PT-BR**, 1 ideia visual, espaço pra anotação ao vivo.
+- Salve `diagrama.html` + `diagrama.png` (≥1400px de largura) no folder do reel.
+- Anote no entregável: **motor = fallback manual HTML→PNG**.
+
+Este tier é determinístico e não depende de nenhuma API — é a garantia de que o
+diagrama **sempre** sai. Napkin/Magnific são preferidos quando credenciados
+(menos trabalho), mas o HTML→PNG nunca trava.
+
 ---
 
 ## 2. Voz de marca — Zoryon / Faryon (do brand-wiki)
@@ -121,6 +141,12 @@ python3 /app/skills/funcao-reels/scripts/notion_reel.py \
 
 Auth: nenhuma — o gateway injeta o bearer do Notion. IDs vêm baked no script +
 em `read-post-targets.json`. Nunca escreva o token Notion à mão.
+
+> `--objetivo` deve ser **um dos valores canônicos** (`salvar|enviar|comentar|
+> seguir|clicar`) — o script normaliza. NÃO passe a frase inteira do CTA aí
+> (ex. "Comenta DIAGNÓSTICO…"), senão o Notion cria uma opção de select nova e
+> polui o campo. A frase do CTA vai no `--hook` ou no corpo; o `Objetivo` é a
+> categoria.
 
 ---
 
