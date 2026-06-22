@@ -1,14 +1,17 @@
 /**
- * Enqueue a one-off on_wake task message into an agent group's most-recent
- * active session, then exit. The LIVE host's sweep (≤60s) sees the due message
- * and spawns the container; the fresh container's first poll picks up the
- * on_wake message and acts on it. We do NOT spawn the container here — that
- * would mean managing docker out-of-band from the running host.
+ * Enqueue a one-off task message into an agent group's most-recent active
+ * session, then exit. If a container is already running it picks the message
+ * up on its next poll; if none is running, the LIVE host's sweep (≤60s) sees
+ * the due message (countDueMessages gates on trigger=1) and spawns one, whose
+ * first poll picks it up. We do NOT spawn the container here — that would mean
+ * managing docker out-of-band from the running host.
  *
- * Mirrors the on_wake message shape used by container-restart.ts
- * (kind 'chat', channelType 'agent', content {text,sender,senderId},
- * onWake 1, trigger 1-by-default). Use for operator-driven one-off tasks
- * (seeds, maintenance) when no container is currently running.
+ * Message shape: kind 'chat', channelType 'agent', content {text,sender,senderId},
+ * trigger 1 (default). We deliberately do NOT set onWake=1: that flag restricts
+ * delivery to a fresh container's FIRST poll, so an already-running container
+ * (past its first poll) would skip it and the task would stall. trigger-only
+ * is picked up whether or not a container is currently running. Use for
+ * operator-driven one-off tasks (seeds, maintenance, smokes).
  *
  * Usage: pnpm exec tsx scripts/wake-with-task.ts <agentGroupId> "<task text>"
  */
@@ -49,10 +52,9 @@ writeSessionMessage(agentGroupId, session.id, {
   channelType: 'agent',
   threadId: null,
   content: JSON.stringify({ text, sender: 'system', senderId: 'system' }),
-  onWake: 1,
 });
 
 console.log(
-  `Queued on_wake task ${id} into session ${session.id} (of ${active.length} active). ` +
-    `Host sweep will wake the container within ~60s.`,
+  `Queued task ${id} into session ${session.id} (of ${active.length} active). ` +
+    `A running container picks it up on its next poll; otherwise the host sweep spawns one within ~60s.`,
 );
