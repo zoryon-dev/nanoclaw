@@ -53,6 +53,17 @@ def test_minimal_defaults():
     assert "Objetivo" not in props
 
 
+def test_objetivo_clamps_full_cta_phrase():
+    # A full CTA phrase must collapse to the canonical option, never pollute.
+    p = _dry_run("--titulo", "x", "--objetivo", "Comenta DIAGNÓSTICO — lead pro pré-diagnóstico")
+    assert p["properties"]["Objetivo"]["select"]["name"] == "Comentar"
+
+
+def test_objetivo_unknown_is_omitted():
+    p = _dry_run("--titulo", "x", "--objetivo", "xpto qualquer coisa")
+    assert "Objetivo" not in p["properties"]
+
+
 if __name__ == "__main__":
     test_required_props_and_normalization()
     test_minimal_defaults()

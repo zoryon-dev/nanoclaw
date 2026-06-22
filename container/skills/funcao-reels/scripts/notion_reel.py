@@ -63,6 +63,22 @@ def _norm(table: dict[str, str], value: str | None) -> str | None:
     return table.get(value.strip().lower(), value.strip())
 
 
+def _norm_objetivo(value: str | None) -> str | None:
+    """Objetivo is a fixed-vocabulary select — clamp to a canonical option so a
+    full CTA phrase ("Comenta DIAGNÓSTICO…") can't create a junk select option.
+    Exact alias first, then substring (the CTA verb is usually in the phrase);
+    if nothing matches, return None (omit the prop) rather than pollute."""
+    if not value:
+        return None
+    v = value.strip().lower()
+    if v in OBJETIVO:
+        return OBJETIVO[v]
+    for alias, canonical in OBJETIVO.items():
+        if alias in v:
+            return canonical
+    return None
+
+
 def _rt(text: str) -> list[dict]:
     text = text or ""
     return [{"type": "text", "text": {"content": text[i:i + TEXT_LIMIT]}}
@@ -105,7 +121,7 @@ def build_payload(args: argparse.Namespace) -> dict:
         props["Formato"] = {"select": {"name": fmt}}
     if args.duracao:
         props["Duração"] = {"rich_text": _rt(args.duracao)}
-    obj = _norm(OBJETIVO, args.objetivo)
+    obj = _norm_objetivo(args.objetivo)
     if obj:
         props["Objetivo"] = {"select": {"name": obj}}
     if args.drive:
