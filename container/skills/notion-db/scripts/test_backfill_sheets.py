@@ -26,3 +26,16 @@ def test_rows_to_records_handles_short_rows():
     values = [["id", "data", "valor"], ["lan-3", "2026-05-03"]]  # missing valor cell
     recs = backfill.rows_to_records(values, {"id": "id", "data": "data", "valor": "valor"})
     assert recs == [{"id": "lan-3", "data": "2026-05-03"}]  # absent cell omitted
+
+
+def test_build_colmap_identity_from_header_row():
+    values = [["id", "data", "valor"], ["lan-1", "2026-05-01", "80"]]
+    assert backfill.build_colmap("identity", values) == {"id": "id", "data": "data", "valor": "valor"}
+
+
+def test_build_colmap_identity_skips_blank_headers():
+    assert backfill.build_colmap("identity", [["id", "", "valor"]]) == {"id": "id", "valor": "valor"}
+
+
+def test_build_colmap_inline_json():
+    assert backfill.build_colmap('{"a": "x"}', []) == {"a": "x"}
