@@ -1,0 +1,29 @@
+{
+  "parent_page": "00000000-0000-0000-0000-000000000000",
+  "databases": {
+    "lancamentos": {
+      "database_id": "",
+      "title": "Lançamentos",
+      "icon": "💸",
+      "properties": {
+        "descricao": {"notion": "Descrição", "type": "title"},
+        "id": {"notion": "id", "type": "text"},
+        "data": {"notion": "Data", "type": "date"},
+        "criado_em": {"notion": "Criado em", "type": "created_time"},
+        "tipo": {"notion": "Tipo", "type": "select", "options": ["despesa", "receita"]},
+        "valor": {"notion": "Valor", "type": "number"},
+        "pago": {"notion": "Pago", "type": "checkbox"},
+        "categoria": {"notion": "Categoria", "type": "relation", "relation_db": "categorias"}
+      }
+    },
+    "categorias": {
+      "database_id": "",
+      "title": "Categorias",
+      "icon": "🏷️",
+      "properties": {
+        "nome": {"notion": "Nome", "type": "title"},
+        "codigo_prefixo": {"notion": "Código prefixo", "type": "text"}
+      }
+    }
+  }
+}
