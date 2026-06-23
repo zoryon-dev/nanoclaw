@@ -6,7 +6,7 @@
 
 **Architecture:** A single Python CLI (`notion_db.py`, stdlib only) makes gateway-proxied HTTPS calls to `api.notion.com` with **no Authorization header** (the OneCLI gateway injects the Notion OAuth bearer), mirroring the existing native `sheets_api.py`. All Notion-specific shape lives in a per-agent JSON **schema file** that maps logical field → Notion property name + type; the script is a dumb translator driven by that schema. A `--dry-run` flag prints the payload it *would* send, which is the unit under test (matching the existing `read-post` skill test convention). A separate `backfill_sheets.py` reads a sheet via `sheets_api.py` and replays rows through `notion_db.py create-row`.
 
-**Tech Stack:** Python 3 standard library only (`urllib`, `json`, `argparse`). No third-party deps. Tests are pytest-style functions invoking the script as a subprocess with `--dry-run`. Notion API version `2022-06-28`.
+**Tech Stack:** Python 3 standard library only (`urllib`, `json`, `argparse`). No third-party deps. Tests are pytest-compatible functions run by a shared stdlib `run_tests.py` discovery runner (the host has no pytest/pip), invoking the script as a subprocess with `--dry-run`. Notion API version `2022-06-28`.
 
 ## Global Constraints
 
@@ -14,6 +14,7 @@
 - **Notion API version header on every call:** `Notion-Version: 2022-06-28`.
 - **Stdlib only** in container skill scripts — no pip installs. Mirror `container/skills/gsheets/scripts/sheets_api.py` for the network layer (`urllib.request`, honors the container's `HTTPS_PROXY` + `SSL_CERT_FILE` automatically via the default opener/SSL context).
 - **Network calls are never unit-tested.** The deterministic payload-building logic is tested via `--dry-run`; live API behavior is covered by documented manual smoke commands only (consistent with existing skills, which do not mock the gateway).
+- **Tests run with stdlib only — no pytest.** The host has no `pip`/`pytest`. Test files stay clean and pytest-collectable (`test_*` functions, bare `assert`); a shared `run_tests.py` (created in Task 1) discovers and runs every `test_*.py` in the scripts dir. Run the whole suite with `python3 run_tests.py` (exit 0 = all pass, exit 1 = a failure). The files also run under pytest inside the container image if ever desired.
 - **No secrets in the schema files.** Database IDs are not secrets; they are committed to the repo and filled at bootstrap.
 - Skill path: `container/skills/notion-db/`. Both target agents already mount all skills (`"skills": "all"` in their `container.json`), so no per-group wiring is needed. Inside the container the skill is at `/app/skills/notion-db/`.
 
@@ -22,7 +23,8 @@
 ## File Structure
 
 - `container/skills/notion-db/scripts/notion_db.py` — the generic CRUD + create-db CLI (one responsibility: translate flat input ⇄ Notion API given a schema).
-- `container/skills/notion-db/scripts/test_notion_db.py` — pytest dry-run tests for payload building.
+- `container/skills/notion-db/scripts/test_notion_db.py` — dry-run tests for payload building.
+- `container/skills/notion-db/scripts/run_tests.py` — stdlib test runner (no pytest on host).
 - `container/skills/notion-db/scripts/backfill_sheets.py` — one-time Sheets→Notion loader (one responsibility: map sheet rows → create-row calls, throttled, deduped).
 - `container/skills/notion-db/scripts/test_backfill_sheets.py` — pytest dry-run tests for row→field mapping.
 - `container/skills/notion-db/schema.example.json` — a documented example schema file (the real `schema.finance.json` / `schema.naia.json` are produced by the Finance/Naia plans).
@@ -64,6 +66,7 @@ Rules the code enforces:
 **Files:**
 - Create: `container/skills/notion-db/scripts/notion_db.py`
 - Create: `container/skills/notion-db/scripts/test_notion_db.py`
+- Create: `container/skills/notion-db/scripts/run_tests.py`
 - Create: `container/skills/notion-db/schema.example.json`
 
 **Interfaces:**
@@ -166,12 +169,42 @@ def test_checkbox_accepts_nao_as_false():
     assert p["properties"]["Pago"]["checkbox"] is False
 ```
 
-- [ ] **Step 3: Run tests to verify they fail**
+- [ ] **Step 3: Create the stdlib test runner**
 
-Run: `cd container/skills/notion-db/scripts && python3 -m pytest test_notion_db.py -v`
-Expected: FAIL — `notion_db.py` does not exist / no `create-row`.
+Create `container/skills/notion-db/scripts/run_tests.py`:
 
-- [ ] **Step 4: Write the minimal implementation**
+```python
+#!/usr/bin/env python3
+"""Stdlib test runner — no pytest needed. Discovers every test_*.py in this
+directory, runs each test_* function, prints PASS/FAIL, exits non-zero on any
+failure. Files stay pytest-collectable too."""
+import importlib.util
+import pathlib
+import sys
+
+HERE = pathlib.Path(__file__).resolve().parent
+failures = 0
+for tf in sorted(HERE.glob("test_*.py")):
+    spec = importlib.util.spec_from_file_location(tf.stem, tf)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    for name in sorted(dir(mod)):
+        if name.startswith("test_") and callable(getattr(mod, name)):
+            try:
+                getattr(mod, name)()
+                print(f"PASS {tf.name}::{name}")
+            except Exception as exc:  # noqa: BLE001
+                failures += 1
+                print(f"FAIL {tf.name}::{name}: {exc!r}")
+sys.exit(1 if failures else 0)
+```
+
+- [ ] **Step 4: Run the suite to verify the new tests fail**
+
+Run: `cd container/skills/notion-db/scripts && python3 run_tests.py`
+Expected: the three `test_*` functions print `FAIL` (because `notion_db.py` doesn't exist / has no `create-row`); exit 1.
+
+- [ ] **Step 5: Write the minimal implementation**
 
 Create `container/skills/notion-db/scripts/notion_db.py`:
 
@@ -328,16 +361,17 @@ if __name__ == "__main__":
     raise SystemExit(main())
 ```
 
-- [ ] **Step 5: Run tests to verify they pass**
+- [ ] **Step 6: Run tests to verify they pass**
 
-Run: `cd container/skills/notion-db/scripts && python3 -m pytest test_notion_db.py -v`
-Expected: PASS (3 tests).
+Run: `cd container/skills/notion-db/scripts && python3 run_tests.py`
+Expected: `PASS` for all 3 tests; exit 0.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
 git add container/skills/notion-db/scripts/notion_db.py \
         container/skills/notion-db/scripts/test_notion_db.py \
+        container/skills/notion-db/scripts/run_tests.py \
         container/skills/notion-db/schema.example.json
 git commit -m "feat(notion-db): schema-driven create-row payload builder + dry-run tests"
 ```
@@ -395,8 +429,8 @@ def test_create_db_requires_exactly_one_title():
 
 - [ ] **Step 2: Run tests to verify they fail**
 
-Run: `cd container/skills/notion-db/scripts && python3 -m pytest test_notion_db.py -k create_db -v`
-Expected: FAIL — no `create-db` subcommand.
+Run: `cd container/skills/notion-db/scripts && python3 run_tests.py`
+Expected: the two new `test_create_db_*` tests print `FAIL` (no `create-db` subcommand); exit 1.
 
 - [ ] **Step 3: Add the implementation**
 
@@ -479,8 +513,8 @@ and in the dispatch block, before the final `raise SystemExit(2)`:
 
 - [ ] **Step 4: Run tests to verify they pass**
 
-Run: `cd container/skills/notion-db/scripts && python3 -m pytest test_notion_db.py -v`
-Expected: PASS (all tests, incl. create-db).
+Run: `cd container/skills/notion-db/scripts && python3 run_tests.py`
+Expected: `PASS` for all tests (incl. create-db); exit 0.
 
 - [ ] **Step 5: Commit**
 
@@ -533,8 +567,8 @@ def test_auth_hint_fires_on_401_403_and_restricted():
 
 - [ ] **Step 2: Run tests to verify they fail**
 
-Run: `cd container/skills/notion-db/scripts && python3 -m pytest test_notion_db.py -k "parse_match or auth_hint" -v`
-Expected: FAIL — `parse_match` / `auth_hint` not defined.
+Run: `cd container/skills/notion-db/scripts && python3 run_tests.py`
+Expected: the new `test_parse_match_*` / `test_auth_hint_*` tests print `FAIL` (functions not defined); exit 1.
 
 - [ ] **Step 3: Implement the network layer and helpers**
 
@@ -749,8 +783,8 @@ and dispatch (before the final `raise SystemExit(2)`):
 
 - [ ] **Step 4: Run tests to verify they pass**
 
-Run: `cd container/skills/notion-db/scripts && python3 -m pytest test_notion_db.py -v`
-Expected: PASS (all dry-run + unit tests). The network paths are not exercised by tests.
+Run: `cd container/skills/notion-db/scripts && python3 run_tests.py`
+Expected: `PASS` for all dry-run + unit tests; exit 0. The network paths are not exercised by tests.
 
 - [ ] **Step 5: Verify `update --dry-run` works end to end**
 
@@ -820,8 +854,8 @@ def test_rows_to_records_handles_short_rows():
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `cd container/skills/notion-db/scripts && python3 -m pytest test_backfill_sheets.py -v`
-Expected: FAIL — `backfill_sheets.py` does not exist.
+Run: `cd container/skills/notion-db/scripts && python3 run_tests.py`
+Expected: the `test_rows_to_records_*` tests print `FAIL` (`backfill_sheets.py` does not exist); exit 1.
 
 - [ ] **Step 3: Implement**
 
@@ -947,8 +981,8 @@ if __name__ == "__main__":
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `cd container/skills/notion-db/scripts && python3 -m pytest test_backfill_sheets.py -v`
-Expected: PASS (2 tests).
+Run: `cd container/skills/notion-db/scripts && python3 run_tests.py`
+Expected: `PASS` for all tests (incl. the 2 backfill tests); exit 0.
 
 - [ ] **Step 5: Commit**
 
@@ -1038,10 +1072,10 @@ Use `--dry-run` first to preview the records. The loader dedupes by `--id-field`
 Run:
 ```bash
 cd container/skills/notion-db/scripts
-python3 -m pytest -v
+python3 run_tests.py
 python3 notion_db.py --schema ../schema.example.json create-db categorias --dry-run
 ```
-Expected: all tests pass; the create-db dry-run prints a valid Notion database payload.
+Expected: all tests pass (exit 0); the create-db dry-run prints a valid Notion database payload.
 
 - [ ] **Step 3: Commit**
 
