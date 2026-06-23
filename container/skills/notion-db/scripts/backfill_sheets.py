@@ -45,6 +45,22 @@ def rows_to_records(values: list[list], colmap: dict) -> list[dict]:
     return records
 
 
+def build_colmap(raw: str, values: list[list]) -> dict:
+    """Resolve the --colmap argument into a {sheet_header: logical_field} map.
+
+    "identity" builds the map from the sheet's own header row (each header maps
+    to a logical field of the same name — schema property keys must match the
+    sheet headers verbatim). "@path" reads JSON from a file. Otherwise raw is
+    parsed as an inline JSON object.
+    """
+    if raw == "identity":
+        headers = values[0] if values else []
+        return {h: h for h in headers if str(h).strip()}
+    if raw.startswith("@"):
+        raw = pathlib.Path(raw[1:]).read_text(encoding="utf-8")
+    return json.loads(raw)
+
+
 def _sheets_get(sheet_id: str, a1: str) -> list[list]:
     out = subprocess.run([sys.executable, SHEETS, "get", sheet_id, a1],
                          capture_output=True, text=True)
@@ -84,12 +100,8 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
-    raw = args.colmap
-    if raw.startswith("@"):
-        raw = pathlib.Path(raw[1:]).read_text(encoding="utf-8")
-    colmap = json.loads(raw)
-
     values = _sheets_get(args.sheet_id, args.a1)
+    colmap = build_colmap(args.colmap, values)
     records = rows_to_records(values, colmap)
 
     if args.dry_run:
