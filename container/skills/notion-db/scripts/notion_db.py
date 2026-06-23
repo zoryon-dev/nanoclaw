@@ -122,6 +122,67 @@ def cmd_create_row(schema: dict, db_key: str, flat: dict, dry_run: bool) -> int:
     return 0
 
 
+def _db_prop_def(spec: dict, resolve_db_id) -> dict:
+    t = spec["type"]
+    if t == "title":
+        return {"title": {}}
+    if t == "text":
+        return {"rich_text": {}}
+    if t == "number":
+        return {"number": {"format": "number"}}
+    if t in ("date", "datetime"):
+        return {"date": {}}
+    if t == "select":
+        opts = [{"name": o} for o in spec.get("options", [])]
+        return {"select": {"options": opts}}
+    if t == "multi_select":
+        opts = [{"name": o} for o in spec.get("options", [])]
+        return {"multi_select": {"options": opts}}
+    if t == "checkbox":
+        return {"checkbox": {}}
+    if t == "created_time":
+        return {"created_time": {}}
+    if t == "formula":
+        return {"formula": {"expression": spec["expression"]}}
+    if t == "relation":
+        return {"relation": {"database_id": resolve_db_id(spec["relation_db"]),
+                             "single_property": {}}}
+    raise SystemExit(f"unknown property type: {t}")
+
+
+def build_db_properties(db_schema: dict, resolve_db_id) -> dict:
+    fields = db_schema["properties"]
+    titles = [k for k, s in fields.items() if s["type"] == "title"]
+    if len(titles) != 1:
+        raise SystemExit(f"database must have exactly one title property, found {titles}")
+    return {s["notion"]: _db_prop_def(s, resolve_db_id) for s in fields.values()}
+
+
+def _dry_resolve_db_id(db_key: str) -> str:
+    return f"DBID:{db_key}"
+
+
+def cmd_create_db(schema: dict, db_key: str, parent: str | None, dry_run: bool) -> int:
+    db = schema["databases"][db_key]
+    parent_page = parent or schema["parent_page"]
+    resolve_db_id = _dry_resolve_db_id if dry_run else (lambda k: schema["databases"][k]["database_id"])
+    payload = {
+        "parent": {"type": "page_id", "page_id": parent_page},
+        "title": [{"text": {"content": db["title"]}}],
+        "icon": {"type": "emoji", "emoji": db["icon"]},
+        "properties": build_db_properties(db, resolve_db_id),
+    }
+    if dry_run:
+        json.dump(payload, sys.stdout, ensure_ascii=False)
+        sys.stdout.write("\n")
+        return 0
+    out = _api("POST", f"{API}/databases", payload)
+    new_id = out["id"]
+    db["database_id"] = new_id  # write-back happens in Task 3 via _save_schema
+    print(new_id)
+    return 0
+
+
 # --- network + live resolve + remaining verbs are added in later tasks ---
 def _api(method, url, body=None):  # placeholder filled in Task 3
     raise SystemExit("network layer not implemented yet")
@@ -137,6 +198,7 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true")
     sub = ap.add_subparsers(dest="cmd", required=True)
     cr = sub.add_parser("create-row"); cr.add_argument("db_key"); cr.add_argument("--json", required=True, dest="flat"); cr.add_argument("--dry-run", action="store_true")
+    cd = sub.add_parser("create-db"); cd.add_argument("db_key"); cd.add_argument("--parent", default=None); cd.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
     schema = load_schema(args.schema)
@@ -144,6 +206,8 @@ def main() -> int:
     if args.cmd == "create-row":
         flat = json.loads(args.flat)
         return cmd_create_row(schema, args.db_key, flat, dry_run)
+    if args.cmd == "create-db":
+        return cmd_create_db(schema, args.db_key, args.parent, dry_run)
     raise SystemExit(2)
 
 

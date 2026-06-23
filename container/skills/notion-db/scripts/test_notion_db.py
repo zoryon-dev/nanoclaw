@@ -46,3 +46,35 @@ def test_create_row_drops_readonly_and_absent():
 def test_checkbox_accepts_nao_as_false():
     p = _dry_create("lancamentos", {"descricao": "x", "pago": "não"})
     assert p["properties"]["Pago"]["checkbox"] is False
+
+
+def _dry_create_db(db_key):
+    out = subprocess.run(
+        [sys.executable, SCRIPT, "--schema", SCHEMA, "create-db", db_key, "--dry-run"],
+        capture_output=True, text=True,
+    )
+    assert out.returncode == 0, out.stderr
+    return json.loads(out.stdout)
+
+
+def test_create_db_translates_property_types():
+    p = _dry_create_db("lancamentos")
+    assert p["parent"] == {"type": "page_id", "page_id": "00000000-0000-0000-0000-000000000000"}
+    assert p["title"][0]["text"]["content"] == "Lançamentos"
+    assert p["icon"] == {"type": "emoji", "emoji": "💸"}
+    props = p["properties"]
+    assert props["Descrição"] == {"title": {}}
+    assert props["id"] == {"rich_text": {}}
+    assert props["Data"] == {"date": {}}
+    assert props["Criado em"] == {"created_time": {}}
+    assert props["Valor"] == {"number": {"format": "number"}}
+    assert props["Pago"] == {"checkbox": {}}
+    assert props["Tipo"]["select"]["options"] == [{"name": "despesa"}, {"name": "receita"}]
+    assert props["Categoria"]["relation"]["database_id"] == "DBID:categorias"
+
+
+def test_create_db_requires_exactly_one_title():
+    # categorias has exactly one title -> fine
+    p = _dry_create_db("categorias")
+    titles = [k for k, v in p["properties"].items() if v == {"title": {}}]
+    assert titles == ["Nome"]
