@@ -39,3 +39,13 @@ def test_build_colmap_identity_skips_blank_headers():
 
 def test_build_colmap_inline_json():
     assert backfill.build_colmap('{"a": "x"}', []) == {"a": "x"}
+
+
+def test_filter_required_drops_empty_key_rows():
+    recs = [{"nome": "Pessoal", "codigo": "PES"}, {"codigo": "FALSE"}, {"nome": "  ", "x": "y"}]
+    assert backfill.filter_required(recs, "nome") == [{"nome": "Pessoal", "codigo": "PES"}]
+
+
+def test_filter_required_noop_when_field_none():
+    recs = [{"a": "1"}, {"b": "2"}]
+    assert backfill.filter_required(recs, None) == recs

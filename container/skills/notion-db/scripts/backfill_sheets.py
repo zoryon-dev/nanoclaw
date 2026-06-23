@@ -88,6 +88,15 @@ def _create(schema_path: str, db_key: str, rec: dict) -> None:
         raise SystemExit(f"notion_db create-row failed for {rec!r}: {out.stderr}")
 
 
+def filter_required(records: list[dict], field: str | None) -> list[dict]:
+    """Drop records whose required field is missing or empty. Sheets often have
+    template/filler rows where a secondary column is filled (a checkbox, a
+    dragged-down formula) but the key column is blank — those are not real rows."""
+    if not field:
+        return records
+    return [r for r in records if str(r.get(field, "")).strip()]
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(prog="backfill_sheets")
     ap.add_argument("--schema", required=True)
@@ -96,13 +105,15 @@ def main() -> int:
     ap.add_argument("--range", required=True, dest="a1")
     ap.add_argument("--colmap", required=True, help="JSON object or @file")
     ap.add_argument("--id-field", default="id")
+    ap.add_argument("--require-field", default=None,
+                    help="skip rows where this logical field is empty (drops filler rows)")
     ap.add_argument("--sleep", type=float, default=0.4)
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
     values = _sheets_get(args.sheet_id, args.a1)
     colmap = build_colmap(args.colmap, values)
-    records = rows_to_records(values, colmap)
+    records = filter_required(rows_to_records(values, colmap), args.require_field)
 
     if args.dry_run:
         for rec in records:
