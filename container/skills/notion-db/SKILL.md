@@ -55,4 +55,7 @@ agent in OneCLI, or the page "Base | Pessoal" isn't shared with the integration
       --colmap @/app/skills/notion-db/colmap.lancamentos.json
 
 Use `--dry-run` first to preview the records. The loader dedupes by `--id-field`
-(default `id`), so re-running is safe.
+(default `id`), so re-running is safe. Note: dedup uses EXACT-STRING match on the
+`--id-field`, so re-run safety depends on ids being stable and unique; verify by
+running the backfill a second time and confirming it reports `created=0` (all
+skipped) before trusting full idempotency.

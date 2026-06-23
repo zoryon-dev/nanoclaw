@@ -129,3 +129,26 @@ def test_match_filter_rejects_unsupported():
 
 def test_parse_match_strips_value():
     assert notion_db.parse_match("id= lan-1 ") == ("id", "lan-1")
+
+
+def test_flatten_page_surfaces_relation_and_multi_select():
+    db_schema = {
+        "properties": {
+            "tags": {"notion": "Tags", "type": "multi_select"},
+            "categoria": {"notion": "Categoria", "type": "relation"},
+        }
+    }
+    page = {
+        "id": "page-abc",
+        "properties": {
+            "Tags": {
+                "multi_select": [{"name": "saúde"}, {"name": "lazer"}]
+            },
+            "Categoria": {
+                "relation": [{"id": "rel-id-1"}, {"id": "rel-id-2"}]
+            },
+        },
+    }
+    result = notion_db._flatten_page(db_schema, page)
+    assert result["tags"] == ["saúde", "lazer"]
+    assert result["categoria"] == ["rel-id-1", "rel-id-2"]

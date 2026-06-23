@@ -313,6 +313,10 @@ def _flatten_page(db_schema: dict, page: dict) -> dict:
         elif t == "formula":
             f = v.get("formula", {})
             out[key] = f.get("string") or f.get("number") or f.get("boolean")
+        elif t == "multi_select":
+            out[key] = [o["name"] for o in v.get("multi_select", [])]
+        elif t == "relation":
+            out[key] = [r["id"] for r in v.get("relation", [])]
     return out
 
 
@@ -366,7 +370,6 @@ def cmd_archive(schema: dict, db_key: str, match: str) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser(prog="notion_db")
     ap.add_argument("--schema", required=True)
-    ap.add_argument("--dry-run", action="store_true")
     sub = ap.add_subparsers(dest="cmd", required=True)
     cr = sub.add_parser("create-row"); cr.add_argument("db_key"); cr.add_argument("--json", required=True, dest="flat"); cr.add_argument("--dry-run", action="store_true")
     cd = sub.add_parser("create-db"); cd.add_argument("db_key"); cd.add_argument("--parent", default=None); cd.add_argument("--dry-run", action="store_true")
