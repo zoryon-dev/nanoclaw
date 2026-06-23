@@ -227,7 +227,7 @@ def parse_match(s: str) -> tuple[str, str]:
     if "=" not in s:
         raise SystemExit("--match must be field=value")
     field, value = s.split("=", 1)
-    return field.strip(), value
+    return field.strip(), value.strip()
 
 
 def _title_field(db_schema: dict) -> str:
@@ -237,16 +237,28 @@ def _title_field(db_schema: dict) -> str:
     raise SystemExit("database has no title property")
 
 
+def _match_filter(spec: dict, value: str) -> dict:
+    """Build a Notion query filter dict for a given property spec + string value."""
+    t = spec["type"]
+    prop = spec["notion"]
+    if t == "title":
+        return {"property": prop, "title": {"equals": value}}
+    if t == "text":
+        return {"property": prop, "rich_text": {"equals": value}}
+    if t == "number":
+        return {"property": prop, "number": {"equals": float(value)}}
+    if t == "select":
+        return {"property": prop, "select": {"equals": value}}
+    raise SystemExit(
+        f"--match/--filter not supported for property type {t!r} "
+        f"(supported: title, text, number, select)"
+    )
+
+
 def _find_page(schema: dict, db_key: str, field: str, value: str) -> dict | None:
     db = schema["databases"][db_key]
     spec = db["properties"][field]
-    prop = spec["notion"]
-    if spec["type"] == "title":
-        flt = {"property": prop, "title": {"equals": value}}
-    elif spec["type"] in ("text",):
-        flt = {"property": prop, "rich_text": {"equals": value}}
-    else:
-        flt = {"property": prop, "rich_text": {"equals": value}}
+    flt = _match_filter(spec, value)
     out = _api("POST", f"{API}/databases/{db['database_id']}/query",
                {"filter": flt, "page_size": 1})
     results = out.get("results", [])
@@ -312,8 +324,7 @@ def cmd_query(schema: dict, db_key: str, filters: list[str], limit: int) -> int:
         for f in filters:
             field, value = parse_match(f)
             spec = db["properties"][field]
-            kind = "title" if spec["type"] == "title" else "rich_text"
-            conds.append({"property": spec["notion"], kind: {"equals": value}})
+            conds.append(_match_filter(spec, value))
         notion_filter = conds[0] if len(conds) == 1 else {"and": conds}
     body = {"page_size": min(limit, 100)}
     if notion_filter:

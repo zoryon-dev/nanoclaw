@@ -97,3 +97,35 @@ def test_auth_hint_fires_on_401_403_and_restricted():
     assert notion_db.auth_hint(403, "") is not None
     assert notion_db.auth_hint(404, "object_not_found") is not None  # page not shared
     assert notion_db.auth_hint(400, "validation_error") is None
+
+
+def test_match_filter_supported_types():
+    title_spec = {"notion": "Descrição", "type": "title"}
+    assert notion_db._match_filter(title_spec, "Uber") == {
+        "property": "Descrição", "title": {"equals": "Uber"}
+    }
+    text_spec = {"notion": "id", "type": "text"}
+    assert notion_db._match_filter(text_spec, "lan-1") == {
+        "property": "id", "rich_text": {"equals": "lan-1"}
+    }
+    number_spec = {"notion": "Valor", "type": "number"}
+    result = notion_db._match_filter(number_spec, "42")
+    assert result == {"property": "Valor", "number": {"equals": 42.0}}
+    assert isinstance(result["number"]["equals"], float)
+    select_spec = {"notion": "Tipo", "type": "select"}
+    assert notion_db._match_filter(select_spec, "despesa") == {
+        "property": "Tipo", "select": {"equals": "despesa"}
+    }
+
+
+def test_match_filter_rejects_unsupported():
+    checkbox_spec = {"notion": "X", "type": "checkbox"}
+    try:
+        notion_db._match_filter(checkbox_spec, "x")
+        assert False, "expected SystemExit"
+    except SystemExit:
+        pass
+
+
+def test_parse_match_strips_value():
+    assert notion_db.parse_match("id= lan-1 ") == ("id", "lan-1")
