@@ -39,6 +39,20 @@ def test_defaults_match_pack_and_api():
     assert set(p).issubset(ALLOWED), f"unexpected fields: {set(p) - ALLOWED}"
 
 
+def test_out_paths_naming():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "napkin_generate", SCRIPT)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    # One visual → the path as given.
+    assert mod.out_paths("/x/diagrama.png", 1) == ["/x/diagrama.png"]
+    # N visuals → stem-numbered siblings, suffix preserved.
+    assert mod.out_paths("/x/diagrama.png", 3) == [
+        "/x/diagrama-1.png", "/x/diagrama-2.png", "/x/diagrama-3.png"]
+    assert mod.out_paths("/x/d.svg", 2) == ["/x/d-1.svg", "/x/d-2.svg"]
+
+
 def test_overrides():
     p = _dry_run(
         "--content", "x", "--format", "svg", "--language", "en",

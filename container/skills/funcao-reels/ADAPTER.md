@@ -36,6 +36,30 @@ download e imprime o caminho salvo. Se sair **código ≠ 0** (token ausente / e
 para o Magnific (abaixo) e, se também falhar, para o HTML→PNG. Não invente o
 arquivo.
 
+### Multi-slide congruente — diagrama que evolui pelas etapas (opt-in)
+
+Default: **1 diagrama** por reel. Mas quando o conceito **evolui ao longo dos
+beats** (ex.: beat 3 monta o setup → beat 4 destaca o exemplo → beat 5 resolve),
+gere um **set de slides congruentes** — o workflow Napkin de "gere o visual de
+cada bloco" (módulo 04 / referências). Continua **um conceito por reel**; o que
+muda é que o visual vira um storyboard mapeado às etapas, não uma imagem estática.
+
+Quebre o conceito em N blocos (um por etapa) num JSON e rode:
+
+```bash
+# blocks.json: [{"content":"<texto cru do bloco>","label":"beat3-setup"}, ...]
+python3 /app/skills/funcao-reels/scripts/napkin_slides.py \
+  --blocks blocks.json --out-dir . --prefix diagrama \
+  --format png --language pt-BR --color-mode dark --transparent
+# salva diagrama-1-<label>.png … diagrama-N-<label>.png (na ordem dos beats)
+```
+
+Congruência é garantida pelo script: o **slide 1 define o `style_id`** do Napkin
+e os **demais reusam o mesmo** → cara visual idêntica entre os slides. (Pra fixar
+um estilo específico em todos, passe `--style-id <id>`.) No `roteiro-reel.md`,
+marque em qual beat cada slide entra. Se algum slide falhar, o script diz qual e
+você cai pro fallback (abaixo). Para 1 só diagrama, use `napkin_generate.py`.
+
 ### Fallback — Magnific (MCP, já no Caio)
 
 Use a tool MCP `images_generate_svg` (texto → SVG) com o **mesmo texto cru** do
