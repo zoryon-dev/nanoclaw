@@ -35,6 +35,8 @@ READONLY_TYPES = {"created_time", "formula"}
 TRUE_WORDS = {"sim", "true", "1", "yes", "y", "verdadeiro"}
 FALSE_WORDS = {"não", "nao", "false", "0", "no", "n", "falso", ""}
 
+_SCHEMA_PATH = None
+
 
 def load_schema(path: str) -> dict:
     with open(path, encoding="utf-8") as fh:
@@ -178,18 +180,176 @@ def cmd_create_db(schema: dict, db_key: str, parent: str | None, dry_run: bool) 
         return 0
     out = _api("POST", f"{API}/databases", payload)
     new_id = out["id"]
-    db["database_id"] = new_id  # write-back happens in Task 3 via _save_schema
+    db["database_id"] = new_id
+    _save_schema(_SCHEMA_PATH, schema)
     print(new_id)
     return 0
 
 
-# --- network + live resolve + remaining verbs are added in later tasks ---
-def _api(method, url, body=None):  # placeholder filled in Task 3
-    raise SystemExit("network layer not implemented yet")
+def auth_hint(code: int, detail: str) -> str | None:
+    d = (detail or "").lower()
+    if code in (401, 403) or "restricted" in d or "unauthorized" in d:
+        return ("Notion is not granted to this agent in OneCLI. Ask the user to grant "
+                "the `notion` app to this agent, then retry.")
+    if code == 404 or "object_not_found" in d:
+        return ("Notion returned not-found. The target page/database is likely not shared "
+                "with the integration — open 'Base | Pessoal' in Notion, click the ••• menu, "
+                "Connections → add the integration, then retry.")
+    return None
 
 
-def _live_resolve(schema):  # placeholder filled in Task 3
-    raise SystemExit("live relation resolve not implemented yet")
+def _api(method, url, body=None):
+    headers = {"User-Agent": "notion-db/1.0 (+nanoclaw)", "Notion-Version": NOTION_VERSION}
+    data = None
+    if body is not None:
+        data = json.dumps(body).encode()
+        headers["Content-Type"] = "application/json"
+    req = Request(url, data=data, headers=headers, method=method)
+    try:
+        with urlopen(req, timeout=TIMEOUT) as resp:
+            raw = resp.read().decode("utf-8", errors="replace")
+    except urllib.error.HTTPError as exc:
+        detail = ""
+        try:
+            detail = exc.read().decode("utf-8", errors="replace")[:600]
+        except Exception:
+            pass
+        hint = auth_hint(exc.code, detail)
+        if hint:
+            raise SystemExit(f"{hint} Detail: HTTP {exc.code} {detail}")
+        raise SystemExit(f"Notion API {method} failed: HTTP {exc.code} {detail}")
+    except (urllib.error.URLError, TimeoutError, OSError) as exc:
+        raise SystemExit(f"Notion API call failed (network/proxy): {exc}")
+    return json.loads(raw) if raw.strip() else {}
+
+
+def parse_match(s: str) -> tuple[str, str]:
+    if "=" not in s:
+        raise SystemExit("--match must be field=value")
+    field, value = s.split("=", 1)
+    return field.strip(), value
+
+
+def _title_field(db_schema: dict) -> str:
+    for key, spec in db_schema["properties"].items():
+        if spec["type"] == "title":
+            return key
+    raise SystemExit("database has no title property")
+
+
+def _find_page(schema: dict, db_key: str, field: str, value: str) -> dict | None:
+    db = schema["databases"][db_key]
+    spec = db["properties"][field]
+    prop = spec["notion"]
+    if spec["type"] == "title":
+        flt = {"property": prop, "title": {"equals": value}}
+    elif spec["type"] in ("text",):
+        flt = {"property": prop, "rich_text": {"equals": value}}
+    else:
+        flt = {"property": prop, "rich_text": {"equals": value}}
+    out = _api("POST", f"{API}/databases/{db['database_id']}/query",
+               {"filter": flt, "page_size": 1})
+    results = out.get("results", [])
+    return results[0] if results else None
+
+
+def _live_resolve(schema: dict):
+    cache: dict[tuple[str, str], str] = {}
+
+    def resolve(name: str, relation_db_key: str) -> str:
+        key = (relation_db_key, name)
+        if key in cache:
+            return cache[key]
+        target = schema["databases"][relation_db_key]
+        title_field = _title_field(target)
+        page = _find_page(schema, relation_db_key, title_field, name)
+        if not page:
+            raise SystemExit(f"relation target not found in {relation_db_key!r}: {name!r}")
+        cache[key] = page["id"]
+        return page["id"]
+
+    return resolve
+
+
+def _save_schema(path: str, schema: dict) -> None:
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(schema, fh, ensure_ascii=False, indent=2)
+        fh.write("\n")
+
+
+def _flatten_page(db_schema: dict, page: dict) -> dict:
+    """Notion page -> flat logical dict (best-effort, for query output)."""
+    out = {"_page_id": page["id"]}
+    props = page.get("properties", {})
+    for key, spec in db_schema["properties"].items():
+        v = props.get(spec["notion"])
+        if not v:
+            continue
+        t = spec["type"]
+        if t == "title":
+            out[key] = "".join(r["plain_text"] for r in v.get("title", []))
+        elif t == "text":
+            out[key] = "".join(r["plain_text"] for r in v.get("rich_text", []))
+        elif t == "number":
+            out[key] = v.get("number")
+        elif t in ("date", "datetime"):
+            out[key] = (v.get("date") or {}).get("start")
+        elif t == "select":
+            out[key] = (v.get("select") or {}).get("name")
+        elif t == "checkbox":
+            out[key] = v.get("checkbox")
+        elif t == "formula":
+            f = v.get("formula", {})
+            out[key] = f.get("string") or f.get("number") or f.get("boolean")
+    return out
+
+
+def cmd_query(schema: dict, db_key: str, filters: list[str], limit: int) -> int:
+    db = schema["databases"][db_key]
+    notion_filter = None
+    if filters:
+        conds = []
+        for f in filters:
+            field, value = parse_match(f)
+            spec = db["properties"][field]
+            kind = "title" if spec["type"] == "title" else "rich_text"
+            conds.append({"property": spec["notion"], kind: {"equals": value}})
+        notion_filter = conds[0] if len(conds) == 1 else {"and": conds}
+    body = {"page_size": min(limit, 100)}
+    if notion_filter:
+        body["filter"] = notion_filter
+    out = _api("POST", f"{API}/databases/{db['database_id']}/query", body)
+    rows = [_flatten_page(db, p) for p in out.get("results", [])]
+    json.dump(rows, sys.stdout, ensure_ascii=False)
+    sys.stdout.write("\n")
+    return 0
+
+
+def cmd_update(schema: dict, db_key: str, match: str, flat: dict, dry_run: bool) -> int:
+    db = schema["databases"][db_key]
+    field, value = parse_match(match)
+    resolve = _dry_resolve if dry_run else _live_resolve(schema)
+    props = build_props(db, flat, resolve)
+    if dry_run:
+        json.dump({"_match": {field: value}, "properties": props}, sys.stdout, ensure_ascii=False)
+        sys.stdout.write("\n")
+        return 0
+    page = _find_page(schema, db_key, field, value)
+    if not page:
+        raise SystemExit(f"no row in {db_key!r} where {field}={value!r}")
+    out = _api("PATCH", f"{API}/pages/{page['id']}", {"properties": props})
+    print(out.get("url", "(sem url)"))
+    return 0
+
+
+def cmd_archive(schema: dict, db_key: str, match: str) -> int:
+    field, value = parse_match(match)
+    page = _find_page(schema, db_key, field, value)
+    if not page:
+        raise SystemExit(f"no row in {db_key!r} where {field}={value!r}")
+    _api("PATCH", f"{API}/pages/{page['id']}", {"archived": True})
+    print(f"archived {field}={value}")
+    return 0
 
 
 def main() -> int:
@@ -199,8 +359,13 @@ def main() -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
     cr = sub.add_parser("create-row"); cr.add_argument("db_key"); cr.add_argument("--json", required=True, dest="flat"); cr.add_argument("--dry-run", action="store_true")
     cd = sub.add_parser("create-db"); cd.add_argument("db_key"); cd.add_argument("--parent", default=None); cd.add_argument("--dry-run", action="store_true")
+    q = sub.add_parser("query"); q.add_argument("db_key"); q.add_argument("--filter", action="append", default=[], dest="filters"); q.add_argument("--limit", type=int, default=100)
+    up = sub.add_parser("update"); up.add_argument("db_key"); up.add_argument("--match", required=True); up.add_argument("--json", required=True, dest="flat"); up.add_argument("--dry-run", action="store_true")
+    ar = sub.add_parser("archive"); ar.add_argument("db_key"); ar.add_argument("--match", required=True)
     args = ap.parse_args()
 
+    global _SCHEMA_PATH
+    _SCHEMA_PATH = args.schema
     schema = load_schema(args.schema)
     dry_run = getattr(args, "dry_run", False)
     if args.cmd == "create-row":
@@ -208,6 +373,12 @@ def main() -> int:
         return cmd_create_row(schema, args.db_key, flat, dry_run)
     if args.cmd == "create-db":
         return cmd_create_db(schema, args.db_key, args.parent, dry_run)
+    if args.cmd == "query":
+        return cmd_query(schema, args.db_key, args.filters, args.limit)
+    if args.cmd == "update":
+        return cmd_update(schema, args.db_key, args.match, json.loads(args.flat), dry_run)
+    if args.cmd == "archive":
+        return cmd_archive(schema, args.db_key, args.match)
     raise SystemExit(2)
 
 

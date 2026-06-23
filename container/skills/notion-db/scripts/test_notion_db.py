@@ -78,3 +78,22 @@ def test_create_db_requires_exactly_one_title():
     p = _dry_create_db("categorias")
     titles = [k for k, v in p["properties"].items() if v == {"title": {}}]
     assert titles == ["Nome"]
+
+
+import importlib.util
+
+_spec = importlib.util.spec_from_file_location("notion_db", SCRIPT)
+notion_db = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(notion_db)
+
+
+def test_parse_match_splits_on_first_equals():
+    assert notion_db.parse_match("id=lan-3c7a8e") == ("id", "lan-3c7a8e")
+    assert notion_db.parse_match("nome=A=B") == ("nome", "A=B")
+
+
+def test_auth_hint_fires_on_401_403_and_restricted():
+    assert notion_db.auth_hint(401, "") is not None
+    assert notion_db.auth_hint(403, "") is not None
+    assert notion_db.auth_hint(404, "object_not_found") is not None  # page not shared
+    assert notion_db.auth_hint(400, "validation_error") is None
