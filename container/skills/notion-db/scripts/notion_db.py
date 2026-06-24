@@ -73,6 +73,8 @@ def _prop_value(spec: dict, value, resolve) -> dict | None:
         return {"number": float(value)}
     if t in ("date", "datetime"):
         return {"date": {"start": str(value)}}
+    if t == "url":
+        return {"url": str(value)}
     if t == "select":
         return {"select": {"name": str(value)}}
     if t == "multi_select":
@@ -134,6 +136,8 @@ def _db_prop_def(spec: dict, resolve_db_id) -> dict:
         return {"number": {"format": "number"}}
     if t in ("date", "datetime"):
         return {"date": {}}
+    if t == "url":
+        return {"url": {}}
     if t == "select":
         opts = [{"name": o} for o in spec.get("options", [])]
         return {"select": {"options": opts}}
