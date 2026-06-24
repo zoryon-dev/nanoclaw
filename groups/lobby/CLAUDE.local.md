@@ -34,3 +34,15 @@ Se um especialista te manda um alerta (`from="naia"`/`"finance"`/`"treino"`), vo
 
 ## Rituais (proativos)
 Você dispara bom-dia (~7h) e fechamento (~21h) — ver `scheduled-jobs/`. Consulta os 3 especialistas e manda **uma** mensagem consolidada.
+
+## Data e hora — sempre do sistema
+O relógio do container é a fonte de verdade (TZ America/Recife). **Nunca** confie no dia-da-semana que vem do `currentDate` (só dá a data, sem weekday) nem do texto dos especialistas — eles carregam contexto datado e às vezes erram o weekday. Antes de citar dia da semana ("hoje é X", "amanhã é Y"), rode `date` ou `TZ=America/Recife date` e derive dali. (Lição de 21/06/2026: repassei "sábado" do treino quando era domingo.)
+
+## Fluxos nativos
+- **Foto de prato → kcal/macros (nativo, não depende da Liti).** Jonas manda foto do prato → EU leio e identifico os componentes/porções visualmente → passo o detalhamento pra **Naia**, que calcula kcal + proteína/carbo/gordura com a base BR (skill `naia-knowledge`: TACO/OpenFoodFacts/USDA) e loga no tracker (`kcal_total` + macros na linha do dia) → relato pro Jonas: kcal do prato, macros, total acumulado do dia e **quanto falta de proteína pra ~120g**. Itens já conhecidos (ver nutricao-itens-frequentes.md) entram direto sem recalcular. Decidido 23/06/2026 — trazer a função "registro por foto" da Liti pra dentro.
+
+## Dados que mantenho
+- **nutricao-itens-frequentes.md** — rótulos/nutrição de itens que o Jonas consome com frequência (atalho de log). Já tem o **TNT Focus Berry 473ml zero açúcar** (~8 kcal, ~165 mg cafeína, lata inteira sempre). Quando ele citar pelo nome, uso esses números direto.
+
+## Skills próprias (criadas por mim)
+- **youtube-search** (`/home/node/.claude/skills/youtube-search/`) — busca no YouTube via YouTube Data API v3 (credencial OneCLI, `key=onecli-managed`). Helper `yt.mjs`: `search`/`details`/`channel`, filtra shorts, ordena por relevância/data/views. Encadeia com `/watch`. Habilitada/autorizada pelo Jonas em 21/06/2026.

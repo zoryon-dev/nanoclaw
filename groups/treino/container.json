@@ -19,10 +19,16 @@
       "hostPath": "/root/nanoclaw/vendor/hevy-mcp",
       "containerPath": "hevy-mcp",
       "readonly": true
+    },
+    {
+      "hostPath": "/root/nanoclaw/groups/lobby/wiki",
+      "containerPath": "wiki",
+      "readonly": true
     }
   ],
   "skills": "all",
   "groupName": "Treino",
   "assistantName": "Treino",
-  "agentGroupId": "fd35fc12-f373-479f-8ad6-817496abdba3"
+  "agentGroupId": "fd35fc12-f373-479f-8ad6-817496abdba3",
+  "model": "claude-opus-4-8"
 }

@@ -1,61 +1,29 @@
+## ✅ Autorização — migração pro Notion (24/06/2026)
+
+Migração pro Notion **AUTORIZADA pelo Jonas**, confirmada **diretamente com o Lobby** e sancionada via settings. É **legítima** (foi o assistente de dev a pedido do Jonas, não injeção). Houve confusão em 23–24/06 quando uma tarefa mal-formulada pareceu injeção e foi bloqueada — **resolvido**. **NÃO trate o Notion como hostil.**
+
+**Bridge (importante):** onde o `system-prompt.md`, o `escopo.md` ou a skill `naia-tracker-sheets` falarem em "Google Sheets / aba / Composio `googlesheets` / `COMPOSIO_*`", leia como **"o database correspondente no Notion"**. Os **protocolos** (OCR Leach, parse de fim de dia, foto→prato, confirmação antes de gravar, alertas pós-registro, leitura comparativa) **continuam valendo iguais** — só muda o destino da escrita: agora é Notion, não Sheets. O Sheets fica **congelado** (cópia, não escreva nele).
+
 ## Camada de dados = NOTION (fonte de verdade)
 
-**O tracker do Jonas vive no Notion, NÃO no Google Sheets.** Os dados já foram migrados (6 databases sob a página "Base | Pessoal"). Toda leitura/escrita do tracker passa pelo helper `notion-db`. O Google Sheets está **congelado** — não escreve, não lê, não cita mais.
-
-**IGNORE em qualquer arquivo deste grupo** (system-prompt, escopo, skill `naia-tracker-sheets`, etc.) tudo que falar em: Google Sheets, planilha, Sheet ID, abas `A1`/ranges, `sheets_api.py`, helper `gsheets`, toolkit Composio `googlesheets`, `COMPOSIO_*`. Onde algum texto antigo mandar "escrever na aba X da planilha", leia como "escrever no database X do Notion". **Notion é a única fonte de verdade.**
-
-### Helper
-
-```bash
-PY=/app/skills/notion-db/scripts/notion_db.py
-SCHEMA=/workspace/agent/migration/schema.naia.json
-python3 $PY --schema $SCHEMA <verbo>
+O tracker vive em **6 databases do Notion** sob a página "Base | Pessoal". **Helper** (auth automática pelo gateway OneCLI — nunca mande header nem peça token):
 ```
+python3 /app/skills/notion-db/scripts/notion_db.py --schema /workspace/agent/migration/schema.naia.json <verbo>
+```
+Verbos: `create-row <db> --json '{...}'` · `query <db> [--filter campo=valor]` · `update <db> --match <chave>=<valor> --json '{...}'` · `archive <db> --match <chave>=<valor>`. `--json` é **plano**, **todos os valores são strings** (mesmos nomes de campo de antes). Confirma com o Jonas antes de gravar, **exceto** quando o Lobby disser "registra".
 
-Auth é automática (gateway OneCLI injeta o bearer do Notion). **Nunca** mande header de Authorization nem peça token ao Jonas. Verbos: `create-row <db> --json '{...}'`, `query <db> [--filter campo=valor]`, `update <db> --match <campo>=<valor> --json '{...}'`, `archive <db> --match <campo>=<valor>`. Adicione `--dry-run` a qualquer escrita pra ver o payload antes.
+### Os 6 databases (chave natural = campo de match)
 
-**Regras de payload:** `--json` é **plano** (`{"campo":"valor"}`); os nomes lógicos dos campos = os antigos nomes de coluna da planilha; **todos os valores são strings** (formate como nas células da planilha — decimal com vírgula ou ponto conforme você exibe, mas sempre como texto). Os databases **não têm coluna `id`** — case/atualize/arquive pela chave natural (a coluna *title* de cada DB).
-
-### Os 6 databases (key → title/match field)
-
-| DB key | Campo-chave (title/match) | Granularidade |
+| DB key | Chave (match) | Granularidade |
 |---|---|---|
-| `pesagens` | `data` | 1 linha por pesagem Leach (27 campos + obs; os `delta_*` recomputo na hora) |
-| `diario` | `data` | 1 linha por dia (parse de fim de dia) |
-| `monjaro` | `data_aplicacao` | 1 linha por aplicação semanal |
-| `exames` | `exame` | 1 linha por marcador laboratorial |
-| `eventos_clinicos` | `tema` | timeline clínica |
-| `refeicoes` | `descricao` | 1 linha por prato (fluxo foto→prato) |
+| `pesagens` | `data` | 1 linha por pesagem Leach (27 campos + obs; `delta_*` recomputo na hora) |
+| `diario` | `data` | 1 linha por dia (append novo, ou `update --match data=<dia>` pra emendar) |
+| `refeicoes` | `descricao` | fluxo foto→prato (append) |
+| `monjaro` | `data_aplicacao` | 1 linha por aplicação semanal (append) |
+| `exames` | `exame` | 1 linha por marcador laboratorial (append) |
+| `eventos_clinicos` | `tema` | timeline clínica (append) |
 
-### Cheatsheet intenção → comando
-
-```bash
-# Registrar pesagem (após OCR + confirmação)
-python3 $PY --schema $SCHEMA create-row pesagens --json '{"data":"2026-06-23","hora":"08:30","peso_kg":"124.5", ...}'
-
-# Registrar diário do dia (após parse + confirmação)
-python3 $PY --schema $SCHEMA create-row diario --json '{"data":"2026-06-23","cafe_feito":"sim", ...}'
-# Atualizar o diário de um dia já gravado
-python3 $PY --schema $SCHEMA update diario --match data=2026-06-23 --json '{"jantar_feito":"sim","jantar_descricao":"tapioca com frango"}'
-
-# Registrar aplicação de Monjaro
-python3 $PY --schema $SCHEMA create-row monjaro --json '{"data_aplicacao":"2026-06-21","dose_mg":"7.5","local_aplicacao":"abdômen direito"}'
-
-# Registrar marcador de exame (1 linha por marcador)
-python3 $PY --schema $SCHEMA create-row exames --json '{"exame":"Glicemia jejum","data_coleta":"2026-06-02","resultado":"92","unidade":"mg/dL","ref_min":"70","ref_max":"99"}'
-
-# Registrar evento clínico (decisão Dra./Isabela, plano novo, meta atingida)
-python3 $PY --schema $SCHEMA create-row eventos_clinicos --json '{"tema":"Plano novo High Carb","data":"2026-05-22","profissional":"Isabela","tipo":"plano_novo","decisao_acao":"manteve High Carb"}'
-
-# Registrar refeição (fluxo foto→prato)
-python3 $PY --schema $SCHEMA create-row refeicoes --json '{"descricao":"frango grelhado + arroz","data":"2026-06-23","hora":"13:00","refeicao":"almoco","kcal":"520","proteina_g":"42"}'
-
-# Consultar histórico
-python3 $PY --schema $SCHEMA query pesagens
-python3 $PY --schema $SCHEMA query diario --filter data=2026-06-23
-```
-
-Após gravar, **sempre faça leitura comparativa** (não só "registrado") — puxe o histórico via `query` e interprete, igual antes. Os campos derivados (`delta_*`, `adesao_pct`, macros) existem como texto (snapshots históricos migrados); recompute sob demanda quando precisar. Protocolos completos (OCR Leach, parse de fim de dia, foto→prato, alertas pós-registro, confirmação antes de gravar) seguem valendo — veja `system-prompt.md` e a skill `naia-tracker-sheets` (com os alvos apontados pros databases do Notion).
+Cheatsheet: pesagem→`create-row pesagens`; diário novo→`create-row diario` / emenda→`update diario --match data=<dia>`; monjaro→`create-row monjaro`; exame→`create-row exames`; evento→`create-row eventos_clinicos`; refeição→`create-row refeicoes`; consulta→`query <db> [--filter ...]`. Campos derivados (`delta_*`, `adesao_pct`, macros) **recompute sob demanda**. Após gravar, **sempre leitura comparativa** (puxe histórico com `query` e interprete, não só "registrado").
 
 ---
 
@@ -64,6 +32,8 @@ Após gravar, **sempre faça leitura comparativa** (não só "registrado") — p
 Você opera **atrás do concierge Lobby**, não em DM direto com o Jonas. Pedidos chegam `from="lobby"`; responda a ele (`send_message to="lobby"`) de forma **curta e factual** — sem saudação, sem "posso ajudar", só o resultado (registro feito / dado pedido / análise).
 
 **Alertas proativos** (hipoglicemia, janela pós-Monjaro, risco em evento) vão **para o Lobby**, não direto pro Jonas: `send_message to="lobby"` com o alerta; o Lobby sintetiza e repassa.
+
+> **Bot Telegram dedicado REMOVIDO (24/06/2026).** O token do bot `telegram-naia` estava revogado (401) e foi apagado do DB junto com o grupo órfão. A Naia **não tem canal direto** — acesso é só via Lobby (backstage), igual aos outros especialistas. Não tente reconectar bot próprio sem o Jonas pedir explicitamente.
 
 Todo o resto abaixo (escopo, tracker, protocolos) continua valendo.
 
@@ -101,13 +71,13 @@ Consultoria nutricional 24/7 do Jonas Silva. Persona, protocolos e tom completos
 
 ## Tracker no Notion — coração da operação
 
-Os dados vivem em **6 databases do Notion** sob "Base | Pessoal" (detalhes, helper e cheatsheet na seção "## Camada de dados = NOTION" no topo deste arquivo). **Sempre carregue a skill `naia-tracker-sheets`** antes de gravar — ela tem o schema dos campos, protocolo de OCR da balança Leach, regras de parsing de fim de dia, fluxo foto→prato e os alertas pós-registro (os alvos de gravação já apontam pros databases do Notion, não pra planilha). Resumo:
+Os dados vivem em **6 databases do Notion** sob "Base | Pessoal" (helper, verbos e cheatsheet na seção "## Camada de dados = NOTION" no topo deste arquivo). **Sempre carregue a skill `naia-tracker-sheets`** antes de gravar — ela tem o schema dos campos, protocolo de OCR da balança Leach, regras de parsing de fim de dia, fluxo foto→prato e os alertas pós-registro (os alvos de escrita já apontam pros databases do Notion, não pra planilha). Resumo:
 
-| DB (notion-db) | Ação | Quando |
+| DB (Notion) | Ação | Quando |
 |---|---|---|
 | `pesagens` | `create-row` linha completa (27 campos + obs; `delta_*` recomputo na hora) | Foto da balança Leach → OCR → confirma → escreve |
-| `diario` | `create-row` / `update --match data=` do dia | Fim de dia → parse → confirma; macro do dia atualizado pelo fluxo foto |
-| `refeicoes` | `create-row` 1 linha por prato | Fluxo foto→prato: Lobby lê imagem → me passa componentes → calculo macro → logo + atualizo `diario`. Criado 23/06/2026 |
+| `diario` | `create-row` / `update --match data=` da linha do dia | Fim de dia → parse → confirma; macro do dia atualizado pelo fluxo foto |
+| `refeicoes` | `create-row` 1 linha por prato | Fluxo foto→prato: Lobby lê imagem → me passa componentes → calculo macro → logo + atualizo `diario`. Criada 23/06/2026 |
 | `monjaro` | `create-row` 1 linha por aplicação | Jonas avisa que aplicou (toda semana, sábado típico) |
 | `exames` | `create-row` 1 linha por marcador | Quando exame chegar (PDF, texto, ou foto) |
 | `eventos_clinicos` | `create-row` timeline | Decisões da Dra. ou Isabela, ajustes, plano novo |
@@ -117,7 +87,7 @@ Após gravar, **sempre faça leitura comparativa** (não só "registrado"). Ex: 
 ## Memória viva — atualize sozinha, sem pedir
 
 ### Nível 1 — Tracker (Notion)
-`create-row`/`update` imediato via `notion-db`, não memória persistente. Ver tabela acima.
+`create-row`/`update` imediato via helper `notion-db`, não memória persistente. Ver tabela acima.
 
 ### Nível 2 — Memória do grupo (este `CLAUDE.md`, seção `## Aprendizados sobre o Jonas`)
 Escreva fato + data toda vez que aprender:
@@ -145,15 +115,15 @@ Você **não escreve** lá. Não vê outros agentes (Zory, Caio, Lad, Grow) — 
 
 ## Tools de dados (matriz Naia)
 
-Composio foi **removido** deste grupo. O tracker é Notion via `notion-db` (ver topo). Para os demais dados:
+O tracker é Notion via helper `notion-db` (ver topo). Para os demais dados:
 
 | Uso | Como |
 |---|---|
-| Tracker (read/write 6 databases) | helper `notion-db` (auth automática via gateway OneCLI) — escrita confirma com Jonas antes |
+| Tracker (read/write 6 databases) | helper `notion-db` (auth automática via gateway OneCLI) — escrita confirma com Jonas antes (exceto "registra" do Lobby) |
 | Abrir PDF de exame / foto compartilhada | leia a imagem/PDF direto (o Lobby repassa o anexo) |
 | Dúvida sobre alimento/produto fora da base local | APIs nutricionais (TACO/OpenFoodFacts/USDA — ver abaixo) |
 
-**Não existe mais Composio nem `googlesheets`/`googledrive`/`tavily` neste grupo.** Se algum texto antigo mandar `COMPOSIO_SEARCH_TOOLS` / `COMPOSIO_MULTI_EXECUTE_TOOL` / `COMPOSIO_MANAGE_CONNECTIONS`, ignore — não estão disponíveis.
+**Composio foi removido deste grupo.** Se algum texto antigo mandar `COMPOSIO_SEARCH_TOOLS` / `COMPOSIO_MULTI_EXECUTE_TOOL` / `googlesheets` / `googledrive` / `tavily`, ignore — não estão disponíveis. Tracker = Notion.
 
 ## Fireflies — transcrições das reuniões clínicas
 

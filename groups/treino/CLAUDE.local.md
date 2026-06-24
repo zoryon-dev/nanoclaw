@@ -4,7 +4,9 @@ Você é o especialista de treino do cluster pessoal do Jonas. Você **não fala
 
 Domínio: Hevy, rotinas, execução de treino, progressão, restrições físicas (joelho/coluna), janela do Mounjaro.
 
-<!-- abaixo: conteúdo de treino herdado do antigo Lobby — perfil do aluno, IDs de pastas/rotinas Hevy, plano da semana, histórico -->
+## ⚠️ Regra de data (ler sempre primeiro)
+
+**Sempre derive o dia da semana e a data do relógio do sistema** (`TZ=America/Recife date`), nunca do texto datado destas notas. Notas podem estar defasadas; o relógio é a fonte da verdade.
 
 ## Aluno
 
@@ -13,26 +15,16 @@ Domínio: Hevy, rotinas, execução de treino, progressão, restrições física
 - **Fase atual**: Fase 1 — Adaptação Anatômica
 - **Parâmetros**: RPE 6-7, 3 séries × 10-15 reps, 60-90s descanso
 - **Restrições**: dor no joelho (sem agachamento profundo, sem impacto), dor leve nas costas (sem carga axial pesada)
-- **Mounjaro**: 7.5mg, toda sexta ou sábado (última injeção: 22/05, próxima: ~30/05)
+- **Mounjaro**: 7.5mg, ciclo semanal (sexta/sábado). Próxima pelo ciclo: ~20/06 (sexta) — confirmar com ele quando aplicar
 - **Equipamento casa**: TRX, 4 elásticos coloridos (amarelo, vermelho, verde, azul), âncora de porta
 - **Academia condomínio**: aparelhos completos (leg press, polia, banco, alteres, máquinas)
 
-## Plano da semana atual (27–31/05)
+## Estado vigente (atualizado 21/06/2026)
 
-- Treino A | Push — Qua 27/05
-- Treino B | Pull — Qui 28/05
-- Treino C | Lower + Full Body — Sáb 30/05
-- Sex 29 e Dom 31: descanso
-
-Estrutura atual dos treinos: 3 exercícios elástico + 1 TRX + 2 solo
-
-## Status recente
-
-- Jonas estava em silêncio 26-27/05 (Mounjaro nova dose 7.5mg)
-- Voltou com "oi" em 28/05 16:36 e em 30/05 manhã com treino em Natal
-- **Jonas está em Natal (viagem)** a partir de ~30/05
-- Treino A e B (27-28/05): status desconhecido — não confirmado
-- 30/05: Jonas fez treino próprio em Natal, nomeou "natal" no Hevy
+- **Hoje**: domingo, 21/06/2026 (derivar sempre do relógio — ver regra no topo)
+- **Local**: Jonas em Recife
+- **Último treino registrado no Hevy**: 13/06 ("Sábado | Leve — Coluna + Força + Boxe", elástico + solo). **Gap de 8 dias** até hoje.
+- Estrutura atual dos treinos: 3 exercícios elástico + 1 TRX + 2 solo (ou bodyweight + solo no padrão "leve")
 
 ## Hevy
 
@@ -52,16 +44,14 @@ Estrutura atual dos treinos: 3 exercícios elástico + 1 TRX + 2 solo
   - Dia 6 | Pull + Glúteo
   - Dia 7 | Full Body — Força
 - Estrutura: séries ascendentes (warmup → cargas progressivas), pesos pré-definidos
-- Total de treinos registrados: 3
-  - "Natal" — 30/05/2026 (25min)
-  - "Sessão 21/05 | Suave em Pé" — 21/05/2026 (15min)
-  - "Sessão Extra | Em Pé (Gancho)" — 20/05/2026 (18min)
+- Treinos recentes registrados (jun/2026):
+  - "Sábado | Leve — Coluna + Força + Boxe" — 13/06 (último registrado)
+  - "Treino Quarta | Força Crescente (Elástico)" — 10/06
+  - "Treino Emergencial | Elástico + Apoio" — 09/06
+  - "Treino A | Push" — 05/06
 
-## Semana atual (02/06–08/06)
+## Notas pessoais
 
-- Hoje: 04/06 (quinta)
-- Jonas em Recife (voltou de Natal 01/06)
-- Próxima injeção Mounjaro: ~06/06 (sexta)
 - Jonas revelou preocupações financeiras (04/06) — tratar com leveza, sem pressão
 
 ## Arquivos de referência

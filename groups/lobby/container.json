@@ -28,5 +28,6 @@
   ],
   "groupName": "Lobby",
   "assistantName": "Lobby",
-  "agentGroupId": "lobby"
+  "agentGroupId": "lobby",
+  "model": "claude-opus-4-8"
 }
