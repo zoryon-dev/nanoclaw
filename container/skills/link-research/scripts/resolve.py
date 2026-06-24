@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -83,15 +84,18 @@ def resolve_reel(url: str) -> str:
     import whisper as wwh  # lazy
 
     work = Path(tempfile.mkdtemp(prefix="brown-resolve-"))
-    dl = wdl.download(url, work / "dl")
-    video = dl["video_path"]
-    if dl.get("subtitle_path"):
-        try:
-            return wtr.format_transcript(wtr.parse_vtt(dl["subtitle_path"])).strip()
-        except Exception as exc:  # noqa: BLE001
-            print(f"[resolve] caption parse failed: {exc}", file=sys.stderr)
-    segs, _backend = wwh.transcribe_video(video, work / "audio.mp3")
-    return wtr.format_transcript(segs).strip()
+    try:
+        dl = wdl.download(url, work / "dl")
+        video = dl["video_path"]
+        if dl.get("subtitle_path"):
+            try:
+                return wtr.format_transcript(wtr.parse_vtt(dl["subtitle_path"])).strip()
+            except Exception as exc:  # noqa: BLE001
+                print(f"[resolve] caption parse failed: {exc}", file=sys.stderr)
+        segs, _backend = wwh.transcribe_video(video, work / "audio.mp3")
+        return wtr.format_transcript(segs).strip()
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
 
 
 def _platform(url: str) -> str:
@@ -112,7 +116,11 @@ def main() -> int:
 
     _ca_env()
     kind = classify_type(args.url)
-    text = resolve_reel(args.url) if kind == "reel" else resolve_carousel(args.url)
+    try:
+        text = resolve_reel(args.url) if kind == "reel" else resolve_carousel(args.url)
+    except Exception as exc:  # noqa: BLE001
+        print(f"[resolve] resolution failed: {exc}", file=sys.stderr)
+        return 2
     if not text:
         print("[resolve] no text could be extracted (private post or expired cookies?)",
               file=sys.stderr)
