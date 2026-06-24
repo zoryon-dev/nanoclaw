@@ -2,6 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+> **Status: ✅ IMPLEMENTED & smoke-verified 2026-06-24** (merged to `main` @ 897942a). Tasks 1–4 done + reviewed; final whole-branch review clean after fixes (the `notion_db.py --schema` flag, `SystemExit` catch, persona category). Live smoke (Task 5) passed: an IG carousel and an IG reel each produced a compiled wiki page + a Notion `Pesquisa` entry.
+
 **Goal:** Make Brown treat any incoming link as a *research seed* — resolve the link to text, research its theme, compile the findings into a wiki page, and catalog the seed link in Notion — replacing the old "archive the link as-is" capture.
 
 **Architecture:** A new container skill `link-research` orchestrates existing pieces. A new `resolve.py` extracts *text only* (caption for carousels, transcript for reels) from Instagram/TikTok by reusing the already-mounted `read-post`/`watch` modules — no media, no Drive. The skill then defers to Brown's existing `research` skill, the `wiki` skill, and `notion_db.py`. Brown's persona switches the link mode; Consulta and the scope guardrail are unchanged.
