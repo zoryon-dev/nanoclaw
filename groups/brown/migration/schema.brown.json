@@ -1,0 +1,58 @@
+{
+  "parent_page": "388481dd-f843-80a1-b09d-ce0d9e67cc3e",
+  "databases": {
+    "links": {
+      "database_id": "389481dd-f843-81b5-a077-e4a24e5fc438",
+      "title": "Links — Biblioteca",
+      "icon": "🔖",
+      "properties": {
+        "title": {
+          "notion": "Title",
+          "type": "title"
+        },
+        "id": {
+          "notion": "id",
+          "type": "text"
+        },
+        "url": {
+          "notion": "URL",
+          "type": "url"
+        },
+        "url_key": {
+          "notion": "url_key",
+          "type": "text"
+        },
+        "categoria": {
+          "notion": "Categoria",
+          "type": "select",
+          "options": [
+            "Repo Git",
+            "Inspiração Site",
+            "Artigo",
+            "Ferramenta",
+            "Vídeo",
+            "Doc/Referência",
+            "Outro"
+          ]
+        },
+        "tags": {
+          "notion": "Tags",
+          "type": "multi_select",
+          "options": []
+        },
+        "resumo": {
+          "notion": "Resumo",
+          "type": "text"
+        },
+        "nota": {
+          "notion": "Nota",
+          "type": "text"
+        },
+        "data": {
+          "notion": "Data",
+          "type": "created_time"
+        }
+      }
+    }
+  }
+}
