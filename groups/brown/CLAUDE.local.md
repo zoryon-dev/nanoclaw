@@ -34,6 +34,9 @@ a passo de captura e consulta. Resumindo o fluxo:
    `/workspace/agent/tags.md`) → grava com `notion_db.py` → destila no wiki → confirma.
 2. **Consulta**: busca no Notion + lê seu `wiki/` e os `extra/wikis/*` → responde com os
    2–3 mais relevantes + link.
+3. **Pesquisa** (skill `research`): quando ele pedir pra pesquisar/achar um tema (repos,
+   ferramentas, artigos, Reddit/web), busque em GitHub + Firecrawl + Tavily, apresente os
+   5–6 melhores (resumindo os top 2–3) e **salve só o que ele pedir** ("salva o 2 e o 5").
 
 ## Infra (memorize)
 
