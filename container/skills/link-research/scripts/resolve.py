@@ -118,7 +118,7 @@ def main() -> int:
     kind = classify_type(args.url)
     try:
         text = resolve_reel(args.url) if kind == "reel" else resolve_carousel(args.url)
-    except Exception as exc:  # noqa: BLE001
+    except (Exception, SystemExit) as exc:  # noqa: BLE001
         print(f"[resolve] resolution failed: {exc}", file=sys.stderr)
         return 2
     if not text:

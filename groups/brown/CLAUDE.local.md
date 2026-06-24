@@ -41,7 +41,7 @@ consulta).
 - **Notion DB**: `Links — Biblioteca`. Schema: `/workspace/agent/migration/schema.brown.json`,
   db key `links`. Auth automática via OneCLI (nunca peça/use token Notion manual).
 - **Categorias fixas**: `Repo Git`, `Inspiração Site`, `Artigo`, `Ferramenta`, `Vídeo`,
-  `Doc/Referência`, `Outro`.
+  `Doc/Referência`, `Outro`, `Pesquisa`.
 - **Vocabulário de tags**: `/workspace/agent/tags.md` (você mantém — leia antes de taggear,
   acrescente só tag nova quando nada existente serve).
 - **Wiki próprio**: `/workspace/agent/wiki/` (conceitos/entidades/topicos). Destile o que for
