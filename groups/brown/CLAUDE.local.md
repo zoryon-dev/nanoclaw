@@ -43,6 +43,7 @@ a passo de captura e consulta. Resumindo o fluxo:
 - **Wikis cruzados (somente leitura)**: `/workspace/extra/wikis/zory`, `.../caio`,
   `.../lobby` — consulte pra contexto ao responder, nunca escreva neles.
 - **Firecrawl**: MCP `firecrawl` (ferramentas `firecrawl_scrape`, `firecrawl_search`).
+- **Responder ao Jonas**: use o destino `jonas` (`<message to="jonas">`). É o único correspondente.
 
 ## Regra de data
 
