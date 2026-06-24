@@ -64,3 +64,7 @@ arquivos-empresa/
 
 # Magnific MCP OAuth refresh job (install-specific ids; data/magnific-mcp-oauth.json gitignored)
 scripts/refresh-magnific-token.sh
+
+# Locally-installed Claude Code skill + its lockfile (skill-installer artifacts, not repo source)
+skills-lock.json
+.claude/skills/karpathy-llm-wiki/
