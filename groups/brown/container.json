@@ -1,0 +1,48 @@
+{
+  "mcpServers": {
+    "firecrawl": {
+      "type": "http",
+      "url": "https://mcp.firecrawl.dev/fc-d8064d211d824a8e8a7b40773a6832ea/v2/mcp"
+    }
+  },
+  "packages": {
+    "apt": [],
+    "npm": []
+  },
+  "additionalMounts": [
+    {
+      "hostPath": "/root/nanoclaw/groups/_context",
+      "containerPath": "context",
+      "readonly": true
+    },
+    {
+      "hostPath": "/root/nanoclaw/groups/dm-with-jonas/wiki",
+      "containerPath": "wikis/zory",
+      "readonly": true
+    },
+    {
+      "hostPath": "/root/nanoclaw/groups/content-machine/wiki",
+      "containerPath": "wikis/caio",
+      "readonly": true
+    },
+    {
+      "hostPath": "/root/nanoclaw/groups/lobby/wiki",
+      "containerPath": "wikis/lobby",
+      "readonly": true
+    }
+  ],
+  "skills": [
+    "link-research",
+    "save-link",
+    "research",
+    "notion-db",
+    "wiki",
+    "tavily",
+    "onecli-gateway",
+    "self-customize"
+  ],
+  "groupName": "Brown",
+  "assistantName": "Brown",
+  "agentGroupId": "b335198d-2904-4b41-b92a-015cdc71c956",
+  "model": "claude-opus-4-8"
+}
