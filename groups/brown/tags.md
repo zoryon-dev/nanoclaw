@@ -5,4 +5,8 @@ nada aqui encaixa, e então acrescente a nova abaixo. Tags curtas, minúsculas, 
 técnico comum em inglês.
 
 ## Tags em uso
-_(vazio — começa a popular no primeiro link salvo)_
+- `asr` — reconhecimento de fala / speech recognition
+- `speech-to-text` — transcrição de áudio em texto
+- `openai` — produtos/repos da OpenAI
+- `python` — projeto/ferramenta em Python
+- `machine-learning` — ML / modelos de aprendizado

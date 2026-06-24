@@ -21,8 +21,11 @@ Caminhos no container:
    - **Repos** → `gh_search.py "<query>" 6` (relevância/best-match por padrão; acrescente
      `stars` como 4º arg — `gh_search.py "<query>" 6 stars` — pra rankear por popularidade).
    - **Web / Reddit / blogs** → `firecrawl_search` com a query (mire fontes quando útil:
-     inclua `reddit` no termo ou `site:reddit.com`). Para busca com filtro de domínio nativo
-     ou tema mais amplo, `tvly search "<query>" --include-domains reddit.com,news.ycombinator.com --max-results 8 --json`.
+     inclua `reddit` no termo ou `site:reddit.com`). **Firecrawl é a fonte web principal.**
+   - **Tavily (opcional/secundário)** → `tvly search "<query>" --include-domains reddit.com,news.ycombinator.com --max-results 8 --json`
+     pra filtro de domínio nativo. ⚠️ Se vier `Unauthorized`/`missing or invalid API key`,
+     a credencial do vault ainda **não está configurada** — **pule em silêncio** (não reporte
+     erro ao Jonas) e siga só com Firecrawl + GitHub, que já bastam.
    - Ajuste as fontes ao pedido (ex.: "uns repos de X" → só GitHub; "o que falam sobre Y" → Reddit/web).
 
    > Antes do primeiro `tvly` na sessão, confie na CA do gateway (senão dá erro de certificado):
