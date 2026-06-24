@@ -212,6 +212,44 @@ function buildTelegramAdapter(token: string, channelType: string, dmOnly: boolea
     botToken: token,
     mode: 'polling',
   });
+
+  // Plain-text fallback. Telegram's legacy `Markdown` parse mode rejects
+  // malformed entities — most often a lone `_` or `*` inside a bare URL (e.g.
+  // youtu.be/2T5wt22_Gpo), which sanitizeTelegramLegacyMarkdown can't strip
+  // without corrupting the link. A rejected send is retried then dropped, so
+  // the user just sees silence. On an entity-parse error, resend once as a
+  // `{ raw }` payload: with no `markdown`/`card` key the adapter omits
+  // parse_mode, so Telegram takes the literal text. A formatting glitch then
+  // degrades to an unformatted-but-delivered message instead of nothing.
+  // Cards (ask_question / send_card) hit the same parse mode, so fall back to
+  // their `fallbackText` — buttons are lost, but the message still arrives.
+  const originalPostMessage = telegramAdapter.postMessage.bind(telegramAdapter);
+  telegramAdapter.postMessage = async (threadId, message) => {
+    try {
+      return await originalPostMessage(threadId, message);
+    } catch (err) {
+      const detail = err instanceof Error ? err.message : String(err);
+      const isEntityError = /can't (?:parse entities|find end of the entity)/i.test(detail);
+      if (isEntityError && message && typeof message === 'object') {
+        const m = message as unknown as Record<string, unknown>;
+        let plain: Record<string, unknown> | null = null;
+        if (typeof m.markdown === 'string') {
+          // Chat message: keep other fields (e.g. files), swap markdown → raw.
+          const { markdown, ...rest } = m;
+          plain = { ...rest, raw: markdown };
+        } else if (typeof m.fallbackText === 'string') {
+          // Card payload: drop the card/buttons, deliver the plain fallback.
+          plain = { raw: m.fallbackText };
+        }
+        if (plain) {
+          log.warn('Telegram rejected markdown entities — resending as plain text', { channelType, detail });
+          return await originalPostMessage(threadId, plain as unknown as Parameters<typeof originalPostMessage>[1]);
+        }
+      }
+      throw err;
+    }
+  };
+
   const bridge = createChatSdkBridge({
     adapter: telegramAdapter,
     concurrency: 'concurrent',
