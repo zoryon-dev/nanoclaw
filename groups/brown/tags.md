@@ -10,3 +10,20 @@ técnico comum em inglês.
 - `openai` — produtos/repos da OpenAI
 - `python` — projeto/ferramenta em Python
 - `machine-learning` — ML / modelos de aprendizado
+- `claude` — Claude / Anthropic (modelos, skills, projetos)
+- `agentes-ia` — agentes/assistentes de IA, personas executivas
+- `prompts` — prompts/skills prontos pra instalar
+- `gestao` — gestão, negócios, board executivo
+- `firecrawl` — Firecrawl (scraping/extração web) e projetos relacionados
+- `open-source` — projeto de código aberto
+- `no-code` — ferramenta visual/drag-and-drop, sem código
+- `workflow` — orquestração/pipelines de tarefas
+- `cli` — ferramenta de linha de comando
+- `go` — projeto/ferramenta em Go
+- `developer-tools` — ferramentas para desenvolvedores
+- `pricing` — precificação, estratégia de preço (ex.: Van Westendorp)
+- `market-research` — pesquisa de mercado / com cliente
+- `personas-sinteticas` — personas/respondentes simulados por IA
+- `orquestracao-agentes` — gerenciar/otimizar/orquestrar frotas de agentes de IA
+- `geracao-imagem` — geração de imagem por IA (text-to-image)
+- `nano-banana` — modelo de imagem Nano Banana / Nano Banana Pro (Gemini/Google)
