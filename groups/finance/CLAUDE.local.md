@@ -7,6 +7,15 @@ Migração das finanças (PF+PJ + recorrentes/recebíveis/lembretes) pro Notion 
 - **Fonte de verdade = NOTION** ("Base | Pessoal"), via helper `notion-db`. **Google Sheets = backup CONGELADO e intacto** — NÃO escreva nele (serve de reversão).
 - Migrado/deduplicado 24/06: PF 4 · PJ 3 · Recorrentes 35 · Recebíveis 1 · Lembretes 1 (1 cópia por `id`).
 
+### WIPE autorizado 24/06 23:06 (recomeço do zero)
+
+Jonas pediu **direto** (`from="jonas" sender="Jonas Silva"`, 23:06: *"autorizo: pode zerar tudo no Notion — lançamentos, saldo e recorrências"*; relay prévio do Lobby 22:53). Executei 23:07 com `archive` (soft-delete **reversível**) + saldos zerados:
+- `lancamentos_pf` 4→0 · `lancamentos_pj` 3→0 · `recorrentes` 35→0 (todos archived) · `contas` saldo_inicial/atual = R$ 0,00 (6 contas, entidades mantidas).
+- `recebiveis` 1→0 e `lembretes` 1→0 também arquivados (Jonas confirmou direto 23:12: "pode zerar tudo"). **Notion agora 100% zerado.**
+- **Sheets segue congelado/intacto**; wipe é desfazível (des-arquivar páginas no Notion).
+- **Lembrete dia 25 (Aluguel+Localiza+Vivo = R$ 7.338) SUMIU** junto com as recorrentes — `finance-daily` 08:00 de 25/06 vai achar base vazia até o Jonas reenviar.
+- **Estado atual: base zerada, aguardando Jonas reenviar os dados do jeito certo.**
+
 ## Camada de dados = NOTION
 
 - Helper: `python3 /app/skills/notion-db/scripts/notion_db.py --schema /workspace/agent/migration/schema.finance.json <verbo>`

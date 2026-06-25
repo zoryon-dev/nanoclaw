@@ -14,6 +14,10 @@ Catálogo do que aprendi com os links salvos, por categoria. Atualizado a cada d
 ## Tópicos
 - [Camada de orquestração de agentes de IA](topicos/orquestracao-agentes-ia.md) — a nova camada de valor: gerenciar/otimizar/orquestrar agentes (Paperclip, Headroom, Agent Canvas)
 - [Biblioteca de prompts de imagem como skill](topicos/biblioteca-prompts-imagem-nano-banana.md) — 10k+ prompts curados de Nano Banana Pro recomendados dentro do Claude Code/OpenClaw
+- [AntV Infographic](topicos/antv-infographic.md) — engine declarativa de infográficos SVG com sintaxe AI-friendly (texto → LLM → render)
+- [Claude Ads — auditoria de mídia paga](topicos/claude-ads-auditoria-paga.md) — skill Claude Code: 250+ checks multi-plataforma, 6 sub-agents, Ads Health Score
+- [Harness engineering](topicos/harness-engineering.md) — disciplina de projetar o scaffolding em volta do agente (awesome-harness-engineering)
+- [24 things to install in Claude](topicos/24-things-to-install-in-claude.md) — catálogo do carrossel @sanskaar.ai: 8 plug-ins + 8 skills + 8 MCP servers, com o repo/produto real de cada
 
 ## Comparações
 _(vazio)_

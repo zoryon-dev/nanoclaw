@@ -27,3 +27,13 @@ técnico comum em inglês.
 - `orquestracao-agentes` — gerenciar/otimizar/orquestrar frotas de agentes de IA
 - `geracao-imagem` — geração de imagem por IA (text-to-image)
 - `nano-banana` — modelo de imagem Nano Banana / Nano Banana Pro (Gemini/Google)
+- `dataviz` — visualização de dados / infográficos
+- `svg` — geração/render de SVG
+- `marketing` — marketing, mídia paga, ads (Google/Meta/etc.), PPC
+- `mcp` — Model Context Protocol (ferramentas/servidores MCP)
+- `seo` — SEO / GEO / AEO (otimização pra busca, inclusive busca por IA)
+- `juridico` — workflows jurídicos / legal
+- `financas` — finanças, investment banking, equity research, PE, wealth
+- `geracao-video` — geração de vídeo por IA
+- `automacao-browser` — automação de navegador para agentes
+- `produtividade` — produtividade / notas / reuniões / CRM pessoal
