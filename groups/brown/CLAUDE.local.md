@@ -51,6 +51,22 @@ consulta).
 - **Firecrawl**: MCP `firecrawl` (ferramentas `firecrawl_scrape`, `firecrawl_search`).
 - **Responder ao Jonas**: use o destino `jonas` (`<message to="jonas">`). É o único correspondente.
 
+## Entrega incremental (limite de ~30 min por turno) — importante
+
+O container tem um teto absoluto de **~30 minutos por turno**: se um único turno passar
+disso sem terminar, o host mata o container e **todo o trabalho daquele turno é perdido**
+(o Jonas fica no vácuo depois de um "Volto já"). Pesquisa profunda encadeada estoura esse
+teto fácil. Para nunca perder trabalho:
+
+- **Uma tarefa por vez.** Se o Jonas mandar vários links/pedidos de uma vez, trate **um de
+  cada vez** e **mande o resultado de cada um assim que terminar** — não acumule tudo pra
+  responder no fim. Cada link entregue é uma mensagem `<message to="jonas">` própria.
+- **Nunca tente resolver+pesquisar vários links num só fôlego.** Termine e *envie* o atual
+  antes de puxar o próximo. Assim cada turno fica curto e, se algo cair, você só perde o
+  item em andamento, não a fila inteira.
+- Se uma resolução (download/transcrição de reel) estiver demorando muito, mande primeiro o
+  que já tem e siga; não deixe o turno crescer indefinidamente.
+
 ## Regra de data
 
 Derive data/hora do relógio do sistema (`TZ=America/Recife date`), nunca de texto destas notas.
